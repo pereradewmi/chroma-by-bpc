@@ -22,7 +22,7 @@
               </div>
             </div>
             <div class="col-lg-6 hero-media" data-aos="zoom-in" data-aos-delay="200">
-              <img src="{{ asset('front-assets/img/education/showcase-6.webp') }}" alt="Education" class="img-fluid main-image">
+              <img src="{{ asset('front-assets/img/home/header.jpg') }}" alt="Education" class="img-fluid main-image">
               <div class="image-overlay">
                 <div class="badge-accredited">
                   <i class="bi bi-patch-check-fill"></i>
@@ -84,12 +84,12 @@
               <span class="month">NOV</span>
             </div>
             <div class="event-info">
-              <h3>Spring Semester Open House</h3>
+              <h3>Abans BIG Sale</h3>
               <p>Join us to explore campus facilities, meet our faculty, and learn about scholarship opportunities.</p>
             </div>
             <div class="event-action">
-              <a href="#" class="btn-event">RSVP Now</a>
-              <span class="countdown">Starts in 3 weeks</span>
+              {{-- <a href="#" class="btn-event">RSVP Now</a> --}}
+              {{-- <span class="countdown">Starts in 3 weeks</span> --}}
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@
 
           <div class="col-lg-6">
             <div class="about-image" data-aos="zoom-in" data-aos-delay="300">
-              <img src="{{ asset('front-assets/img/education/campus-5.webp') }}" alt="Campus" class="img-fluid rounded">
+              <img src="{{ asset('front-assets/img/home/chroma.jpg') }}" alt="Campus" class="img-fluid rounded">
 
               <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
                 <div class="mission">
@@ -349,12 +349,12 @@
 
     </section><!-- /Featured Programs Section -->
 
-    <!-- Recent News Section -->
+    <!-- Recent  Section -->
     <section id="recent-news" class="recent-news section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Recent News</h2>
+        <h2>Recent Events</h2>
         <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
       </div><!-- End Section Title -->
 
