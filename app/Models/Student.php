@@ -9,15 +9,21 @@ class Student extends Model
 {
     use HasFactory;
 
+    protected $table = 'studentdetails';
+    protected $primaryKey = 'AutoID';
+
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'address',
-        'mobile_number',
-        'age'
+        'fName', 
+        'lName', 
+        'Age', 
+        'mobileNo', 
+        'Address', 
+        'Active'
+    
     ];
 
     protected $casts = [
-        'age' => 'integer'
+        'Age' => 'integer',
+        'Active' => 'boolean'
     ];
 }

@@ -36,20 +36,26 @@
                                     <th scope="col">Mobile Number</th>
                                     <th scope="col">Age</th>
                                     <th scope="col">Address</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($students as $student)
                                     <tr>
-                                        <td>{{ $student->id }}</td>
-                                        <td>{{ $student->firstname }} {{ $student->lastname }}</td>
-                                        <td>{{ $student->mobile_number }}</td>
-                                        <td>{{ $student->age }}</td>
-                                        <td>{{ Str::limit($student->address, 50) }}</td>
+                                        <td>{{ $student->AutoID }}</td>
+                                        <td>{{ $student->fName }} {{ $student->lName }}</td>
+                                        <td>{{ $student->mobileNo }}</td>
+                                        <td>{{ $student->Age }}</td>
+                                        <td>{{ Str::limit($student->Address, 50) }}</td>
                                         <td>
-                                            <a href="{{ route('students.form', $student->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                            <span class="badge badge-{{ $student->Active ? 'success' : 'secondary' }}">
+                                                {{ $student->Active ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('students.form', $student->AutoID) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('students.destroy', $student->AutoID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this student?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -58,7 +64,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No students found.</td>
+                                        <td colspan="7" class="text-center">No students found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

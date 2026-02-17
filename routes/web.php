@@ -6,30 +6,14 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\SessionController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', function () {
     return view('frontend.index');
 })->name('home');
 
-
-// Dashboard route (also accessible as 'home' for backward compatibility)
+// Dashboard route
 Route::get('/dashboard', function () {
     return view('backend.dashboard');
 })->name('dashboard');
-
-Route::get('/home', function () {
-    return redirect()->route('dashboard');
-})->name('home');
 
 // Profile routes (placeholder - you can implement these later)
 Route::get('/profile', function () {
@@ -49,6 +33,15 @@ Route::get('/map', function () { return redirect()->route('dashboard'); })->name
 Route::get('/table', function () { return redirect()->route('dashboard'); })->name('table');
 Route::get('/login', function () { return redirect()->route('dashboard'); })->name('login');
 Route::get('/register', function () { return redirect()->route('dashboard'); })->name('register');
+
+// Frontend routes
+Route::get('/events', function () {
+    return view('frontend.events');
+})->name('frontend.events');
+
+Route::get('/frontend-classes', function () {
+    return view('frontend.classes');
+})->name('frontend.classes');
 
 // Student routes
 Route::prefix('students')->name('students.')->group(function () {
@@ -82,11 +75,3 @@ Route::prefix('sessions')->name('sessions.')->group(function () {
     Route::post('/store', [SessionController::class, 'store'])->name('store');
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
 });
-
-Route::get('/events', function () {
-    return view('frontend.events');
-})->name('events');
-
-Route::get('/classes', function () {
-    return view('frontend.classes');
-})->name('classes');

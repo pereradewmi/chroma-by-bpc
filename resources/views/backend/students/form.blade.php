@@ -23,7 +23,7 @@
                             @csrf
                             @if($isEdit)
                                 <input type="hidden" name="is_update" value="1">
-                                <input type="hidden" name="student_id" value="{{ $student->id }}">
+                                <input type="hidden" name="student_id" value="{{ $student->AutoID }}">
                             @endif
                             
                             <h6 class="heading-small text-muted mb-4">Student Information</h6>
@@ -32,24 +32,24 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="firstname">First Name</label>
-                                            <input type="text" id="firstname" name="firstname" 
-                                                class="form-control form-control-alternative @error('firstname') is-invalid @enderror" 
+                                            <label class="form-control-label" for="fName">First Name</label>
+                                            <input type="text" id="fName" name="fName" 
+                                                class="form-control form-control-alternative @error('fName') is-invalid @enderror" 
                                                 placeholder="First Name" 
-                                                value="{{ old('firstname', $student->firstname) }}" required>
-                                            @error('firstname')
+                                                value="{{ old('fName', $student->fName) }}" required>
+                                            @error('fName')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="lastname">Last Name</label>
-                                            <input type="text" id="lastname" name="lastname" 
-                                                class="form-control form-control-alternative @error('lastname') is-invalid @enderror" 
+                                            <label class="form-control-label" for="lName">Last Name</label>
+                                            <input type="text" id="lName" name="lName" 
+                                                class="form-control form-control-alternative @error('lName') is-invalid @enderror" 
                                                 placeholder="Last Name" 
-                                                value="{{ old('lastname', $student->lastname) }}" required>
-                                            @error('lastname')
+                                                value="{{ old('lName', $student->lName) }}" required>
+                                            @error('lName')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -59,24 +59,24 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="mobile_number">Mobile Number</label>
-                                            <input type="text" id="mobile_number" name="mobile_number" 
-                                                class="form-control form-control-alternative @error('mobile_number') is-invalid @enderror" 
+                                            <label class="form-control-label" for="mobileNo">Mobile Number</label>
+                                            <input type="text" id="mobileNo" name="mobileNo" 
+                                                class="form-control form-control-alternative @error('mobileNo') is-invalid @enderror" 
                                                 placeholder="Mobile Number" 
-                                                value="{{ old('mobile_number', $student->mobile_number) }}" required>
-                                            @error('mobile_number')
+                                                value="{{ old('mobileNo', $student->mobileNo) }}" required>
+                                            @error('mobileNo')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="age">Age</label>
-                                            <input type="number" id="age" name="age" 
-                                                class="form-control form-control-alternative @error('age') is-invalid @enderror" 
+                                            <label class="form-control-label" for="Age">Age</label>
+                                            <input type="number" id="Age" name="Age" 
+                                                class="form-control form-control-alternative @error('Age') is-invalid @enderror" 
                                                 placeholder="Age" min="1" max="100"
-                                                value="{{ old('age', $student->age) }}" required>
-                                            @error('age')
+                                                value="{{ old('Age', $student->Age) }}" required>
+                                            @error('Age')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -86,12 +86,30 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="address">Address</label>
-                                            <textarea id="address" name="address" rows="4"
-                                                class="form-control form-control-alternative @error('address') is-invalid @enderror" 
-                                                placeholder="A few words about the address..." required>{{ old('address', $student->address) }}</textarea>
-                                            @error('address')
+                                            <label class="form-control-label" for="Address">Address</label>
+                                            <textarea id="Address" name="Address" rows="4"
+                                                class="form-control form-control-alternative @error('Address') is-invalid @enderror" 
+                                                placeholder="A few words about the address..." required>{{ old('Address', $student->Address) }}</textarea>
+                                            @error('Address')
                                                 <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Status</label>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="hidden" name="Active" value="0">
+                                                <input type="checkbox" id="Active" name="Active" value="1" 
+                                                    class="custom-control-input" 
+                                                    {{ old('Active', $student->Active) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="Active">Active Student</label>
+                                            </div>
+                                            @error('Active')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>

@@ -34,13 +34,14 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'address' => 'required|string',
-            'mobile_number' => 'required|string|max:20',
-            'age' => 'required|integer|min:1|max:100',
+            'fName' => 'required|string|max:255',
+            'lName' => 'required|string|max:255',
+            'Address' => 'required|string',
+            'mobileNo' => 'required|string|max:20',
+            'Age' => 'required|integer|min:1|max:100',
+            'Active' => 'boolean',
             'is_update' => 'boolean',
-            'student_id' => 'nullable|exists:students,id'
+            'student_id' => 'nullable|exists:studentdetails,AutoID'
         ]);
 
         if ($validator->fails()) {
@@ -49,7 +50,7 @@ class StudentController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['firstname', 'lastname', 'address', 'mobile_number', 'age']);
+        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'Active']);
 
         if ($request->get('is_update') && $request->get('student_id')) {
             // Update existing student
