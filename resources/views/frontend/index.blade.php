@@ -354,7 +354,7 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Recent Events</h2>
+        <h2>Recent Sessions</h2>
         <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
       </div><!-- End Section Title -->
 
@@ -519,7 +519,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="#" class="register-btn">Register Now</a>
+                  <a href="{{ route('events') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>

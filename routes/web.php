@@ -19,7 +19,8 @@ use App\Http\Controllers\SessionController;
 
 Route::get('/', function () {
     return view('frontend.index');
-});
+})->name('home');
+
 
 // Dashboard route (also accessible as 'home' for backward compatibility)
 Route::get('/dashboard', function () {
@@ -82,3 +83,10 @@ Route::prefix('sessions')->name('sessions.')->group(function () {
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
 });
 
+Route::get('/events', function () {
+    return view('frontend.events');
+})->name('events');
+
+Route::get('/classes', function () {
+    return view('frontend.classes');
+})->name('classes');
