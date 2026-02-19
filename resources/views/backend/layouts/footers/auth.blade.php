@@ -1,3 +1,3 @@
 <footer class="footer">
-    @include('layouts.footers.nav')
+    @include('backend.layouts.footers.nav')
 </footer>

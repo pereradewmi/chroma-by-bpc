@@ -168,6 +168,6 @@
             </div>
         </div>
         
-        @include('layouts.footers.auth')
+        @include('backend.layouts.footers.auth')
     </div>
 @endsection
