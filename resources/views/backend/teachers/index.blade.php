@@ -34,22 +34,28 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Mobile Number</th>
-                                    <th scope="col">Subject</th>
                                     <th scope="col">Address</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($teachers as $teacher)
                                     <tr>
-                                        <td>{{ $teacher->id }}</td>
-                                        <td>{{ $teacher->firstname }} {{ $teacher->lastname }}</td>
-                                        <td>{{ $teacher->mobile_number }}</td>
-                                        <td><span class="badge badge-primary">{{ $teacher->subject_name }}</span></td>
-                                        <td>{{ Str::limit($teacher->address, 40) }}</td>
+                                        <td>{{ $teacher->T_ID }}</td>
+                                        <td>{{ $teacher->tFName }} {{ $teacher->tLName }}</td>
+                                        <td>{{ $teacher->tMobileNo }}</td>
+                                        <td>{{ Str::limit($teacher->tAddress, 40) }}</td>
                                         <td>
-                                            <a href="{{ route('teachers.form', $teacher->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this teacher?');">
+                                            @if($teacher->Active)
+                                                <span class="badge badge-success">Active</span>
+                                            @else
+                                                <span class="badge badge-danger">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('teachers.form', $teacher->T_ID) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('teachers.destroy', $teacher->T_ID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this teacher?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>

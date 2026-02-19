@@ -9,29 +9,42 @@ class Teacher extends Model
 {
     use HasFactory;
 
+    protected $table = 'teacherdetails';
+    protected $primaryKey = 'T_ID';
+
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'address',
-        'mobile_number',
-        'subject_name'
+        'tFName',
+        'tLName',
+        'tMobileNo',
+        'tAddress',
+        'Active'
+    ];
+
+    protected $casts = [
+        'Active' => 'boolean',
     ];
 
     // Relationship with classes
     public function classes()
     {
-        return $this->hasMany(ClassRoom::class);
+        return $this->hasMany(ClassRoom::class, 'teacher_id', 'T_ID');
     }
 
     // Relationship with sessions
     public function sessions()
     {
-        return $this->hasMany(Session::class);
+        return $this->hasMany(Session::class, 'teacher_id', 'T_ID');
     }
 
     // Full name accessor
     public function getFullNameAttribute()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->tFName . ' ' . $this->tLName;
+    }
+
+    // Scope for active teachers
+    public function scopeActive($query)
+    {
+        return $query->where('Active', true);
     }
 }

@@ -34,7 +34,7 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Session Name</th>
                                     <th scope="col">Teacher</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Created Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -44,8 +44,18 @@
                                     <tr>
                                         <td>{{ $session->id }}</td>
                                         <td><strong>{{ $session->session_name }}</strong></td>
-                                        <td>{{ $session->teacher ? $session->teacher->firstname . ' ' . $session->teacher->lastname : 'N/A' }}</td>
-                                        <td><span class="badge badge-success">{{ $session->teacher ? $session->teacher->subject_name : 'N/A' }}</span></td>
+                                        <td>{{ $session->teacher ? $session->teacher->tFName . ' ' . $session->teacher->tLName : 'N/A' }}</td>
+                                        <td>
+                                            @if($session->teacher)
+                                                @if($session->teacher->Active)
+                                                    <span class="badge badge-success">Active</span>
+                                                @else
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                @endif
+                                            @else
+                                                <span class="badge badge-secondary">N/A</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $session->created_at->format('M d, Y') }}</td>
                                         <td>
                                             <a href="{{ route('sessions.form', $session->id) }}" class="btn btn-sm btn-primary">Edit</a>

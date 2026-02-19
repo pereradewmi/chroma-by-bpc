@@ -24,7 +24,7 @@ class ClassRoomController extends Controller
     public function form($id = null)
     {
         $class = $id ? ClassRoom::findOrFail($id) : new ClassRoom();
-        $teachers = Teacher::select('id', 'firstname', 'lastname')->get();
+        $teachers = Teacher::active()->select('T_ID', 'tFName', 'tLName')->get();
         $isEdit = !is_null($id);
         
         return view('backend.classes.form', compact('class', 'teachers', 'isEdit'));

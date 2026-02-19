@@ -519,7 +519,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="{{ route('events') }}" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.events') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>

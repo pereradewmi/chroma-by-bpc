@@ -34,7 +34,7 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Class Name</th>
                                     <th scope="col">Teacher</th>
-                                    <th scope="col">Subject</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Created Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -44,8 +44,18 @@
                                     <tr>
                                         <td>{{ $class->id }}</td>
                                         <td><strong>{{ $class->class_name }}</strong></td>
-                                        <td>{{ $class->teacher ? $class->teacher->firstname . ' ' . $class->teacher->lastname : 'N/A' }}</td>
-                                        <td><span class="badge badge-info">{{ $class->teacher ? $class->teacher->subject_name : 'N/A' }}</span></td>
+                                        <td>{{ $class->teacher ? $class->teacher->tFName . ' ' . $class->teacher->tLName : 'N/A' }}</td>
+                                        <td>
+                                            @if($class->teacher)
+                                                @if($class->teacher->Active)
+                                                    <span class="badge badge-success">Active</span>
+                                                @else
+                                                    <span class="badge badge-danger">Inactive</span>
+                                                @endif
+                                            @else
+                                                <span class="badge badge-secondary">N/A</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $class->created_at->format('M d, Y') }}</td>
                                         <td>
                                             <a href="{{ route('classes.form', $class->id) }}" class="btn btn-sm btn-primary">Edit</a>

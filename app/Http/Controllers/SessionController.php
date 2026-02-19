@@ -24,7 +24,7 @@ class SessionController extends Controller
     public function form($id = null)
     {
         $session = $id ? Session::findOrFail($id) : new Session();
-        $teachers = Teacher::select('id', 'firstname', 'lastname')->get();
+        $teachers = Teacher::active()->select('T_ID', 'tFName', 'tLName')->get();
         $isEdit = !is_null($id);
         
         return view('backend.sessions.form', compact('session', 'teachers', 'isEdit'));

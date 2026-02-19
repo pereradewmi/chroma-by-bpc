@@ -34,13 +34,13 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'address' => 'required|string',
-            'mobile_number' => 'required|string|max:20',
-            'subject_name' => 'required|string|max:255',
+            'tFName' => 'required|string|max:255',
+            'tLName' => 'required|string|max:255',
+            'tAddress' => 'required|string',
+            'tMobileNo' => 'required|string|max:20',
+            'Active' => 'boolean',
             'is_update' => 'boolean',
-            'teacher_id' => 'nullable|exists:teachers,id'
+            'teacher_id' => 'nullable|exists:teacherdetails,T_ID'
         ]);
 
         if ($validator->fails()) {
@@ -49,7 +49,8 @@ class TeacherController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['firstname', 'lastname', 'address', 'mobile_number', 'subject_name']);
+        $data = $request->only(['tFName', 'tLName', 'tAddress', 'tMobileNo']);
+        $data['Active'] = $request->has('Active') ? 1 : 0;
 
         if ($request->get('is_update') && $request->get('teacher_id')) {
             // Update existing teacher
@@ -83,6 +84,6 @@ class TeacherController extends Controller
      */
     public function getTeachersForDropdown()
     {
-        return Teacher::select('id', 'firstname', 'lastname')->get();
+        return Teacher::active()->select('T_ID', 'tFName', 'tLName')->get();
     }
 }

@@ -17,6 +17,6 @@ class Session extends Model
     // Relationship with teacher
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(Teacher::class, 'teacher_id', 'T_ID');
     }
 }

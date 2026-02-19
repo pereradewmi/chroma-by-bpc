@@ -51,7 +51,7 @@
                                                 @foreach($teachers as $teacher)
                                                     <option value="{{ $teacher->id }}" 
                                                         {{ (old('teacher_id', $session->teacher_id) == $teacher->id) ? 'selected' : '' }}>
-                                                        {{ $teacher->firstname }} {{ $teacher->lastname }}
+                                                        {{ $teacher->tFName }} {{ $teacher->tLName }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -70,7 +70,7 @@
                                                     <strong>Available Teachers:</strong>
                                                     <ul class="mb-0 mt-2">
                                                         @foreach($teachers as $teacher)
-                                                            <li>{{ $teacher->firstname }} {{ $teacher->lastname }} - <em>{{ $teacher->subject_name }}</em></li>
+                                                            <li>{{ $teacher->tFName }} {{ $teacher->tLName }}</li>
                                                         @endforeach
                                                     </ul>
                                                 </div>
