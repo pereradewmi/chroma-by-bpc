@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\BookingController;
 
 Route::get('/', function () {
     return view('frontend.index');
@@ -74,4 +75,22 @@ Route::prefix('sessions')->name('sessions.')->group(function () {
     Route::get('/form/{id?}', [SessionController::class, 'form'])->name('form');
     Route::post('/store', [SessionController::class, 'store'])->name('store');
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
+});
+
+// Booking/Calendar routes
+Route::prefix('calendar')->name('calendar.')->group(function () {
+    Route::get('/', [BookingController::class, 'index'])->name('index');
+    Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
+    Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+    Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
+});
+
+// Backend booking management
+Route::prefix('admin/bookings')->name('admin.bookings.')->group(function () {
+    Route::get('/', function () {
+        return view('backend.bookings.index');
+    })->name('index');
 });

@@ -13,6 +13,7 @@
           <li><a href="{{ route('frontend.classes') }}">Classes</a></li>
           <li><a href="news.html">Sessions</a></li>
           <li><a href="{{ route('frontend.events') }}">Events</a></li>
+          <li><a href="{{ route('calendar.index') }}">Book Appointment</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
