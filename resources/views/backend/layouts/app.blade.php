@@ -21,21 +21,17 @@
         <link type="text/css" href="{{ asset('argon') }}/css/argon.css?v=1.0.0" rel="stylesheet">
     </head>
     <body class="{{ $class ?? '' }}">
-        @auth()
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-            @include('layouts.navbars.sidebar')
-        @endauth
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        @include('backend.layouts.navbars.sidebar')
         
         <div class="main-content">
-            @include('layouts.navbars.navbar')
+            @include('backend.layouts.navbars.navbar')
             @yield('content')
         </div>
 
-        @guest()
-            @include('layouts.footers.guest')
-        @endguest
+        @include('backend.layouts.footers.auth')
 
         <script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
