@@ -11,9 +11,10 @@
         <ul>
           <li><a href="{{ route('home') }}" class="active">Home</a></li>
           <li><a href="{{ route('frontend.classes') }}">Classes</a></li>
-          <li><a href="news.html">Sessions</a></li>
+          <li><a href="{{ route('frontend.sessions') }}">Sessions</a></li>
           <li><a href="{{ route('frontend.events') }}">Events</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="{{ route('frontend.gallery') }}">Gallery</a></li>
+          <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
