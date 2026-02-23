@@ -12,7 +12,7 @@
         <h1 class="mb-2 mb-lg-0">Events</h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="{{ route('home') }}">Home</a></li>
             <li class="current">Events</li>
           </ol>
         </nav>
@@ -41,7 +41,7 @@
                     <span><i class="bi bi-geo-alt"></i> Main Campus Auditorium</span>
                   </div>
                   <p class="event-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                  <a href="#" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
                 </div>
               </div><!-- End Event Item -->
 
@@ -58,7 +58,7 @@
                     <span><i class="bi bi-geo-alt"></i> School Conference Center</span>
                   </div>
                   <p class="event-description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-                  <a href="#" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
                 </div>
               </div><!-- End Event Item -->
 
@@ -75,7 +75,7 @@
                     <span><i class="bi bi-geo-alt"></i> Campus Sports Ground</span>
                   </div>
                   <p class="event-description">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                  <a href="#" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
                 </div>
               </div><!-- End Event Item -->
 
@@ -92,7 +92,7 @@
                     <span><i class="bi bi-geo-alt"></i> University Grand Hall</span>
                   </div>
                   <p class="event-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi.</p>
-                  <a href="#" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
                 </div>
               </div><!-- End Event Item -->
 
@@ -109,7 +109,7 @@
                     <span><i class="bi bi-geo-alt"></i> Arts Center</span>
                   </div>
                   <p class="event-description">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam.</p>
-                  <a href="#" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
                 </div>
               </div><!-- End Event Item -->
 
@@ -157,7 +157,7 @@
               <div class="sidebar-item upcoming-events" data-aos="fade-up" data-aos-delay="200">
                 <h4>Upcoming Featured Events</h4>
                 <div class="featured-event">
-                  <img src="assets/img/education/events-5.webp" alt="Event" class="img-fluid">
+                  <img src="{{ asset('front-assets/img/education/events-5.webp') }}" alt="Event" class="img-fluid">
                   <div class="featured-event-details">
                     <h5>Summer Leadership Camp</h5>
                     <span class="event-date"><i class="bi bi-calendar"></i> July 10-15, 2023</span>
