@@ -25,7 +25,7 @@
                         <div class="text-center text-muted mb-4">
                             <small>{{ __('Or sign up with credentials') }}</small>
                         </div>
-                        <form role="form" method="POST" action="{{ route('register') }}">
+                        <form role="form" method="POST" action="{{ route('login') }}">
                             @csrf
 
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">

@@ -5,34 +5,36 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\BookingController;
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return view('frontend.index');
 })->name('home');
 
-// Dashboard route
-Route::get('/dashboard', function () {
-    return view('backend.dashboard');
-})->name('dashboard');
+// Authentication routes
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->middleware('guest');
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-// Profile routes (placeholder - you can implement these later)
-Route::get('/profile', function () {
-    return redirect()->route('dashboard');
-})->name('profile.edit');
+// Registration routes (optional - uncomment if you need registration)
+// Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+// Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
-// Logout route  
-Route::post('/logout', function () {
-    auth()->logout();
-    return redirect('/');
-})->name('logout');
+// Protected routes (require authentication)
+Route::middleware('check.login')->group(function () {
+    // Dashboard route
+    Route::get('/dashboard', function () {
+        return view('backend.dashboard');
+    })->name('dashboard');
 
-// Placeholder routes for template navigation (redirect to dashboard)
-Route::get('/user', function () { return redirect()->route('dashboard'); })->name('user.index');
-Route::get('/icons', function () { return redirect()->route('dashboard'); })->name('icons');  
-Route::get('/map', function () { return redirect()->route('dashboard'); })->name('map');
-Route::get('/table', function () { return redirect()->route('dashboard'); })->name('table');
-Route::get('/login', function () { return redirect()->route('dashboard'); })->name('login');
-Route::get('/register', function () { return redirect()->route('dashboard'); })->name('register');
+    // Profile routes
+    Route::get('/profile', function () {
+        return redirect()->route('dashboard');
+    })->name('profile.edit');
+});
 
 // Frontend routes
 Route::get('/Events', function () {
@@ -64,7 +66,7 @@ Route::get('/Registration', function () {
 })->name('frontend.register');
 
 // Student routes
-Route::prefix('students')->name('students.')->group(function () {
+Route::middleware('check.login')->prefix('students')->name('students.')->group(function () {
     Route::get('/', [StudentController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [StudentController::class, 'form'])->name('form');
     Route::post('/store', [StudentController::class, 'store'])->name('store');
@@ -72,7 +74,7 @@ Route::prefix('students')->name('students.')->group(function () {
 });
 
 // Teacher routes
-Route::prefix('teachers')->name('teachers.')->group(function () {
+Route::middleware('check.login')->prefix('teachers')->name('teachers.')->group(function () {
     Route::get('/', [TeacherController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [TeacherController::class, 'form'])->name('form');
     Route::post('/store', [TeacherController::class, 'store'])->name('store');
@@ -81,7 +83,7 @@ Route::prefix('teachers')->name('teachers.')->group(function () {
 });
 
 // Class routes
-Route::prefix('classes')->name('classes.')->group(function () {
+Route::middleware('check.login')->prefix('classes')->name('classes.')->group(function () {
     Route::get('/', [ClassRoomController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [ClassRoomController::class, 'form'])->name('form');
     Route::post('/store', [ClassRoomController::class, 'store'])->name('store');
@@ -89,9 +91,27 @@ Route::prefix('classes')->name('classes.')->group(function () {
 });
 
 // Session routes
-Route::prefix('sessions')->name('sessions.')->group(function () {
+Route::middleware('check.login')->prefix('sessions')->name('sessions.')->group(function () {
     Route::get('/', [SessionController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [SessionController::class, 'form'])->name('form');
     Route::post('/store', [SessionController::class, 'store'])->name('store');
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
+});
+
+// Booking/Calendar routes
+Route::middleware('check.login')->prefix('calendar')->name('calendar.')->group(function () {
+    Route::get('/', [BookingController::class, 'index'])->name('index');
+    Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
+    Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+    Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
+});
+
+// Backend booking management
+Route::middleware('check.login')->prefix('admin/bookings')->name('admin.bookings.')->group(function () {
+    Route::get('/', function () {
+        return view('backend.bookings.index');
+    })->name('index');
 });

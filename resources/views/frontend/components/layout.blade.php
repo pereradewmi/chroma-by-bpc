@@ -26,6 +26,8 @@
 
   <!-- Main CSS File -->
   <link href="{{ asset('front-assets/css/main.css') }}" rel="stylesheet">
+  
+  @stack('head-scripts')
 
 </head>
 
@@ -52,6 +54,8 @@
 
   <!-- Main JS File -->
   <script src="{{ asset('front-assets/js/main.js') }}"></script>
+  
+  @yield('scripts')
 
 </body>
 

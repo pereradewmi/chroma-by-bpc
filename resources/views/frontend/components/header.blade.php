@@ -15,6 +15,7 @@
           <li><a href="{{ route('frontend.events') }}">Events</a></li>
           <li><a href="{{ route('frontend.gallery') }}">Gallery</a></li>
           <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
+          <li><a href="{{ route('calendar.index') }}">Book Appointment</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

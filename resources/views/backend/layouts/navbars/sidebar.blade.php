@@ -6,7 +6,7 @@
         </button>
         <!-- Brand -->
         <a class="navbar-brand pt-0" href="{{ route('dashboard') }}">
-            <img src="{{ asset('argon') }}/img/brand/blue.png" class="navbar-brand-img" alt="...">
+            <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="CROMA" style="max-height: 40px;">
         </a>
         <!-- User -->
         <ul class="nav align-items-center d-md-none">
@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-6 collapse-brand">
                         <a href="{{ route('dashboard') }}">
-                            <img src="{{ asset('argon') }}/img/brand/blue.png">
+                            <img src="{{ asset('front-assets') }}/img/logo.png" style="max-height: 40px;" alt="CROMA">
                         </a>
                     </div>
                     <div class="col-6 collapse-close">
@@ -79,92 +79,32 @@
             <!-- Navigation -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dashboard') }}">
+                    <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}" href="{{ route('dashboard') }}">
                         <i class="ni ni-tv-2 text-primary"></i> {{ __('Dashboard') }}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
-                        <i class="fab fa-laravel" style="color: #f4645f;"></i>
-                        <span class="nav-link-text" style="color: #f4645f;">{{ __('Laravel Examples') }}</span>
-                    </a>
-
-                    <div class="collapse show" id="navbar-examples">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile.edit') }}">
-                                    {{ __('User profile') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('User Management') }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#navbar-school" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-school">
-                        <i class="fas fa-school text-success"></i>
-                        <span class="nav-link-text text-success">{{ __('School Management') }}</span>
-                    </a>
-
-                    <div class="collapse" id="navbar-school">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('students.index') }}">
-                                    <i class="fas fa-user-graduate text-primary"></i>
-                                    {{ __('Students') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('teachers.index') }}">
-                                    <i class="fas fa-chalkboard-teacher text-warning"></i>
-                                    {{ __('Teachers') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('classes.index') }}">
-                                    <i class="fas fa-school text-info"></i>
-                                    {{ __('Classes') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('sessions.index') }}">
-                                    <i class="fas fa-calendar-alt text-danger"></i>
-                                    {{ __('Sessions') }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('icons') }}">
-                        <i class="ni ni-planet text-blue"></i> {{ __('Icons') }}
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('map') }}">
-                        <i class="ni ni-pin-3 text-orange"></i> {{ __('Maps') }}
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'students') ? 'active' : '' }}" href="{{ route('students.index') }}">
+                        <i class="fas fa-user-graduate text-primary"></i>
+                        {{ __('Students') }}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('table') }}">
-                      <i class="ni ni-bullet-list-67 text-default"></i>
-                      <span class="nav-link-text">Tables</span>
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'teachers') ? 'active' : '' }}" href="{{ route('teachers.index') }}">
+                        <i class="fas fa-chalkboard-teacher text-warning"></i>
+                        {{ __('Teachers') }}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-circle-08 text-pink"></i> {{ __('Register') }}
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'classes') ? 'active' : '' }}" href="{{ route('classes.index') }}">
+                        <i class="fas fa-school text-info"></i>
+                        {{ __('Classes') }}
                     </a>
                 </li>
-                <li class="nav-item mb-5 mr-4 ml-4 pl-1 bg-danger" style="position: absolute; bottom: 0;">
-                    <a class="nav-link text-white" href="https://www.creative-tim.com/product/argon-dashboard-pro-laravel" target="_blank">
-                        <i class="ni ni-cloud-download-95"></i> Upgrade to PRO
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'sessions') ? 'active' : '' }}" href="{{ route('sessions.index') }}">
+                        <i class="fas fa-calendar-alt text-danger"></i>
+                        {{ __('Sessions') }}
                     </a>
                 </li>
             </ul>
