@@ -36,13 +36,33 @@ Route::get('/login', function () { return redirect()->route('dashboard'); })->na
 Route::get('/register', function () { return redirect()->route('dashboard'); })->name('register');
 
 // Frontend routes
-Route::get('/events', function () {
+Route::get('/Events', function () {
     return view('frontend.events');
 })->name('frontend.events');
 
-Route::get('/frontend-classes', function () {
+Route::get('/Classes', function () {
     return view('frontend.classes');
 })->name('frontend.classes');
+
+Route::get('/Sessions', function () {
+    return view('frontend.sessions');
+})->name('frontend.sessions');
+
+Route::get('/EventDetails', function () {
+    return view('frontend.event-details');
+})->name('frontend.event-details');
+
+Route::get('/Gallery', function () {
+    return view('frontend.gallery');
+})->name('frontend.gallery');
+
+Route::get('/ContactUs', function () {
+    return view('frontend.contact');
+})->name('frontend.contact');
+
+Route::get('/Registration', function () {
+    return view('frontend.register');
+})->name('frontend.register');
 
 // Student routes
 Route::prefix('students')->name('students.')->group(function () {

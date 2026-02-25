@@ -256,7 +256,7 @@
                     <span>Bachelor's Degree</span>
                   </div>
                 </div>
-                <a href="#" class="discover-btn">Discover Program</a>
+                <a href="{{ route('frontend.event-details') }}" class="discover-btn">Discover Program</a>
               </div>
             </div>
           </div><!-- End Program Banner -->
@@ -369,7 +369,7 @@
               </div>
 
               <div class="post-content flex-grow-1">
-                <a href="#" class="category">Design</a>
+                <a href="{{ route('frontend.sessions') }}" class="category">Design</a>
 
                 <h2 class="post-title">
                   <a href="#">Sed ut perspiciatis unde omnis</a>
@@ -397,7 +397,7 @@
               </div>
 
               <div class="post-content flex-grow-1">
-                <a href="#" class="category">Product</a>
+                <a href="{{ route('frontend.sessions') }}" class="category">Product</a>
 
                 <h2 class="post-title">
                   <a href="#">At vero eos et accusamus</a>
@@ -425,7 +425,7 @@
               </div>
 
               <div class="post-content flex-grow-1">
-                <a href="#" class="category">Software Engineering</a>
+                <a href="{{ route('frontend.sessions') }}" class="category">Software Engineering</a>
 
                 <h2 class="post-title">
                   <a href="#">Temporibus autem quibusdam</a>
@@ -453,7 +453,7 @@
               </div>
 
               <div class="post-content flex-grow-1">
-                <a href="#" class="category">Creative</a>
+                <a href="{{ route('frontend.sessions') }}" class="category">Creative</a>
 
                 <h2 class="post-title">
                   <a href="#">Nam libero tempore soluta</a>
@@ -519,7 +519,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="{{ route('frontend.events') }}" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.register') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>
@@ -555,7 +555,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="#" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.register') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>
@@ -591,7 +591,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="#" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.register') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>
@@ -627,7 +627,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="#" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.register') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>
@@ -663,7 +663,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="#" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.register') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>
@@ -699,7 +699,7 @@
                   </div>
                 </div>
                 <div class="event-footer">
-                  <a href="#" class="register-btn">Register Now</a>
+                  <a href="{{ route('frontend.register') }}" class="register-btn">Register Now</a>
                   <div class="event-share">
                     <i class="bi bi-share"></i>
                     <i class="bi bi-heart"></i>
@@ -723,7 +723,7 @@
               </div>
             </div>
             <div class="col-md-4 text-end">
-              <a href="#" class="view-calendar-btn">
+              <a href="" class="view-calendar-btn">
                 <i class="bi bi-calendar3"></i>
                 View Calendar
               </a>

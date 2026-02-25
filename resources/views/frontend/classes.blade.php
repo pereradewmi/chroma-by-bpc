@@ -75,14 +75,14 @@
         <div class="facilities-grid" data-aos="fade-up" data-aos-delay="200">
           <div class="category-card academic" data-aos="zoom-in" data-aos-delay="100">
             <div class="card-header">
-              <div class="icon-wrapper">
+              {{-- <div class="icon-wrapper">
                 <i class="bi bi-book"></i>
-              </div>
+              </div> --}}
               <h3>Art Class</h3>
             </div>
             <div class="card-content">
               <div class="facility-image">
-                <img src="assets/img/education/campus-7.webp" alt="Academic Building" class="img-fluid">
+                <img src="{{ asset('front-assets/img/education/activities-2.webp') }}" alt="Academic Building" class="img-fluid">
               </div>
               <div class="facility-list">
                 <div class="facility-item">
@@ -110,14 +110,14 @@
 
           <div class="category-card sports" data-aos="zoom-in" data-aos-delay="200">
             <div class="card-header">
-              <div class="icon-wrapper">
-                <i class="bi bi-trophy"></i>
-              </div>
+                {{-- <div class="icon-wrapper">
+                  <i class="bi bi-trophy"></i>
+                </div> --}}
               <h3>Karate Class</h3>
             </div>
             <div class="card-content">
               <div class="facility-image">
-                <img src="assets/img/education/campus-8.webp" alt="Sports Complex" class="img-fluid">
+                <img src="{{ asset('front-assets/img/education/campus-8.webp') }}" alt="Sports Complex" class="img-fluid">
               </div>
               <div class="facility-list">
                 <div class="facility-item">
@@ -145,14 +145,14 @@
 
           <div class="category-card residence" data-aos="zoom-in" data-aos-delay="300">
             <div class="card-header">
-              <div class="icon-wrapper">
+              {{-- <div class="icon-wrapper">
                 <i class="bi bi-house-heart"></i>
-              </div>
+              </div> --}}
               <h3>Vocal Training Class</h3>
             </div>
             <div class="card-content">
               <div class="facility-image">
-                <img src="assets/img/education/campus-9.webp" alt="Student Housing" class="img-fluid">
+                <img src="{{ asset('front-assets/img/education/campus-9.webp') }}" alt="Student Housing" class="img-fluid">
               </div>
               <div class="facility-list">
                 <div class="facility-item">
