@@ -1,13 +1,21 @@
 <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
     <div class="container-fluid">
-        <!-- Toggler -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Sidebar Header with Toggle -->
+        <div class="navbar-brand-wrapper d-flex align-items-center justify-content-between">
+            <!-- Brand -->
+            <a class="navbar-brand pt-0" href="{{ route('dashboard') }}">
+                <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="CROMA" style="max-height: 40px;">
+            </a>
+            <!-- Sidebar Toggle Button -->
+            <button class="btn btn-sm btn-outline-primary d-none d-md-block" type="button" id="sidebar-toggle" title="Toggle Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <!-- Brand -->
-        <a class="navbar-brand pt-0" href="{{ route('dashboard') }}">
-            <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="CROMA" style="max-height: 40px;">
-        </a>
         <!-- User -->
         <ul class="nav align-items-center d-md-none">
             <li class="nav-item dropdown">
@@ -39,8 +47,7 @@
                         <span>{{ __('Support') }}</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
+                    <a href="#" class="dropdown-item text-danger" onclick="return confirmLogout();">
                         <i class="ni ni-user-run"></i>
                         <span>{{ __('Logout') }}</span>
                     </a>
@@ -105,6 +112,23 @@
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'sessions') ? 'active' : '' }}" href="{{ route('sessions.index') }}">
                         <i class="fas fa-calendar-alt text-danger"></i>
                         {{ __('Sessions') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.calendar') ? 'active' : '' }}" href="{{ route('admin.calendar.index') }}">
+                        <i class="fas fa-calendar text-success"></i>
+                        {{ __('Calendar') }}
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Logout Section -->
+            <hr class="my-3">
+            <ul class="navbar-nav mb-md-3">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="return confirmLogout();">
+                        <i class="fas fa-sign-out-alt text-danger"></i>
+                        <span>{{ __('Logout') }}</span>
                     </a>
                 </li>
             </ul>
