@@ -107,12 +107,12 @@
                 <form id="bookingForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="title" class="form-label">Title*</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
+                            <label for="bTitle" class="form-label">Title*</label>
+                            <input type="text" class="form-control" id="bTitle" name="bTitle" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="type" class="form-label">Type*</label>
-                            <select class="form-select" id="type" name="type" required>
+                            <label for="bEvent_type" class="form-label">Event Type*</label>
+                            <select class="form-select" id="bEvent_type" name="bEvent_type" required>
                                 <option value="">Select Type</option>
                                 <option value="event">Event</option>
                                 <option value="session">Session</option>
@@ -121,64 +121,70 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3  d-none" >
                             <label for="booking_date" class="form-label">Date*</label>
                             <input type="date" class="form-control" id="booking_date" name="booking_date" required>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="start_time" class="form-label">Start Time*</label>
-                            <input type="time" class="form-control" id="start_time" name="start_time" required>
+                        <div class="col-md-6 mb-3">
+                            <label for="bStart_datetime" class="form-label">Start Date & Time*</label>
+                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" required>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="end_time" class="form-label">End Time</label>
-                            <input type="time" class="form-control" id="end_time" name="end_time">
+                        <div class="col-md-6 mb-3">
+                            <label for="bEnd_datetime" class="form-label">End Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime">
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="duration_hours" class="form-label">Duration (Hours)</label>
-                            <select class="form-select" id="duration_hours" name="duration_hours">
-                                <option value="">Select Duration</option>
-                                <option value="1">1 Hour</option>
-                                <option value="2">2 Hours</option>
-                                <option value="3">3 Hours</option>
-                                <option value="4">4 Hours</option>
-                                <option value="6">6 Hours</option>
-                                <option value="8">8 Hours</option>
+                            <label for="bStatus" class="form-label">Status</label>
+                            <select class="form-select" id="bStatus" name="bStatus">
+                                <option value="pending" selected>Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="number_of_people" class="form-label">Number of People*</label>
-                            <input type="number" class="form-control" id="number_of_people" name="number_of_people" min="1" max="100" value="1" required>
+                            <label for="bPayment_status" class="form-label">Payment Status</label>
+                            <select class="form-select" id="bPayment_status" name="bPayment_status">
+                                <option value="pending" selected>Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="refunded">Refunded</option>
+                            </select>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="customer_name" class="form-label">Your Name*</label>
-                            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                            <label for="bName" class="form-label">Your Name*</label>
+                            <input type="text" class="form-control" id="bName" name="bName" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="phone_number" class="form-label">Phone Number*</label>
-                            <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+                            <label for="bPhone" class="form-label">Phone Number*</label>
+                            <input type="tel" class="form-control" id="bPhone" name="bPhone" required>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
+                            <label for="bEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="bEmail" name="bEmail">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="price" class="form-label">Price ($)</label>
-                            <input type="number" class="form-control" id="price" name="price" min="0" step="0.01">
+                            <label for="bPrice" class="form-label">Price ($)</label>
+                            <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
                     
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Additional details about your booking..."></textarea>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="bDescription" name="bDescription" rows="3" placeholder="Additional details about your booking..."></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bRejection_reason" class="form-label">Rejection Reason</label>
+                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="3" placeholder="Reason for rejection (if applicable)..."></textarea>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -240,8 +246,13 @@ document.addEventListener('DOMContentLoaded', function() {
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         height: 'auto',
-        // Temporarily disable events loading to test basic calendar
-        // events: '{{ route("calendar.bookings") }}',
+        events: {
+            url: '{{ route("calendar.bookings") }}',
+            failure: function(error) {
+                console.error('Error loading events:', error);
+                alert('Failed to load calendar events');
+            }
+        },
         selectable: true,
         selectMirror: true,
         editable: false,
@@ -262,12 +273,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Event styling
         eventDidMount: function(info) {
             info.el.setAttribute('title', info.event.title + ' - ' + info.event.extendedProps.customer_name);
+        },
+        
+        // Add success callback for events loading
+        eventSourceSuccess: function(events) {
+            console.log('Events loaded:', events);
         }
     });
     
     console.log('Rendering calendar...');
     calendar.render();
     console.log('Calendar rendered successfully');
+    
+    // Make calendar globally accessible for refreshing
+    window.calendarInstance = calendar;
     
     // Load statistics
     loadStats();
@@ -281,14 +300,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showBookingModal(selectedDate) {
     document.getElementById('booking_date').value = selectedDate;
+    
+    // Set default start datetime to selected date at current time
+    const now = new Date();
+    const startDateTime = selectedDate + 'T' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    document.getElementById('bStart_datetime').value = startDateTime;
+    
     document.getElementById('bookingForm').reset();
     document.getElementById('booking_date').value = selectedDate; // Reset after form reset
+    document.getElementById('bStart_datetime').value = startDateTime;
     
     const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
     modal.show();
 }
 
 function submitBooking() {
+    console.log('Submitting booking...');
     const form = document.getElementById('bookingForm');
     const formData = new FormData(form);
     
@@ -297,6 +324,8 @@ function submitBooking() {
     formData.forEach((value, key) => {
         data[key] = value;
     });
+    
+    console.log('Form data:', data);
     
     // Show loading state
     const submitButton = document.getElementById('submitBooking');
@@ -312,8 +341,13 @@ function submitBooking() {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
     .then(data => {
+        console.log('Response data:', data);
+        
         if (data.success) {
             Swal.fire({
                 icon: 'success',
@@ -323,9 +357,17 @@ function submitBooking() {
                 showConfirmButton: false
             });
             
-            // Close modal and refresh calendar
+            // Close modal and refresh calendar events
             bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
-            location.reload(); // Refresh to update calendar
+            
+            // Refresh calendar events instead of full page reload
+            if (window.calendarInstance) {
+                window.calendarInstance.refetchEvents();
+                console.log('Calendar events refreshed');
+            }
+            
+            // Also refresh statistics
+            loadStats();
         } else {
             let errorMessage = data.message || 'An error occurred';
             if (data.errors) {
@@ -340,11 +382,11 @@ function submitBooking() {
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Fetch Error:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'An unexpected error occurred'
+            text: 'Network error: ' + error.message
         });
     })
     .finally(() => {
