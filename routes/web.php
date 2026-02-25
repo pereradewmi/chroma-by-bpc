@@ -98,15 +98,32 @@ Route::middleware('check.login')->prefix('sessions')->name('sessions.')->group(f
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
 });
 
-// Booking/Calendar routes
+// Frontend Calendar routes
 Route::middleware('check.login')->prefix('calendar')->name('calendar.')->group(function () {
-    Route::get('/', [BookingController::class, 'index'])->name('index');
+    Route::get('/', [BookingController::class, 'frontendIndex'])->name('index');
     Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
     Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
+});
+
+// Backend Calendar routes
+Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar.')->group(function () {
+    Route::get('/', [BookingController::class, 'backendIndex'])->name('index');
+    Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
+    Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+    Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
+    
+    // Admin-specific booking management
+    Route::post('/bookings/{id}/approve', [BookingController::class, 'approveBooking'])->name('bookings.approve');
+    Route::post('/bookings/{id}/reject', [BookingController::class, 'rejectBooking'])->name('bookings.reject');
+    Route::put('/bookings/{id}/update', [BookingController::class, 'updateBooking'])->name('bookings.update');
+    Route::get('/bookings/{id}/logs', [BookingController::class, 'getBookingLogs'])->name('bookings.logs');
 });
 
 // Backend booking management
