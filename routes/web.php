@@ -19,10 +19,6 @@ Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLog
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->middleware('guest');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-// Registration routes (optional - uncomment if you need registration)
-// Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
-// Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
-
 // Protected routes (require authentication)
 Route::middleware('check.login')->group(function () {
     // Dashboard route
