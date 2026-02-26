@@ -3,287 +3,536 @@
 @section('content')
     @include('backend.layouts.headers.cards')
     
-    <div class="container-fluid mt--7">
+        <!-- Calendar Section -->
         <div class="row">
-            <div class="col-xl-8 mb-5 mb-xl-0">
-                <div class="card bg-gradient-default shadow">
-                    <div class="card-header bg-transparent">
+            <div class="col-lg-9">
+                <div class="card shadow">
+                    <div class="card-header bg-gradient-primary">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                                <h2 class="text-white mb-0">Sales value</h2>
-                            </div>
-                            <div class="col">
-                                <ul class="nav nav-pills justify-content-end">
-                                    <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":[{"data":[0, 20, 10, 30, 15, 40, 20, 60, 60]}]}}' data-prefix="$" data-suffix="k">
-                                        <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                            <span class="d-none d-md-block">Month</span>
-                                            <span class="d-md-none">M</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":[{"data":[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}' data-prefix="$" data-suffix="k">
-                                        <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
-                                            <span class="d-none d-md-block">Week</span>
-                                            <span class="d-md-none">W</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <h3 class="mb-0 text-white">
+                                    <i class="fas fa-calendar-alt mr-2"></i>Booking Calendar
+                                </h3>
+                                <p class="text-white-50 mb-0">Manage appointments and bookings</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <!-- Chart -->
-                        <div class="chart">
-                            <!-- Chart wrapper -->
-                            <canvas id="chart-sales" class="chart-canvas"></canvas>
-                        </div>
+                    <div class="card-body p-0">
+                        <div id="calendar"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4">
-                <div class="card shadow">
-                    <div class="card-header bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                                <h2 class="mb-0">Total orders</h2>
-                            </div>
-                        </div>
+            
+            <div class="col-lg-3">
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-gradient-info">
+                        <h6 class="mb-0 text-white">
+                            <i class="fas fa-info-circle mr-2"></i>Legend
+                        </h6>
                     </div>
                     <div class="card-body">
-                        <!-- Chart -->
-                        <div class="chart">
-                            <canvas id="chart-orders" class="chart-canvas"></canvas>
+                        <div class="mb-2">
+                            <span class="badge badge-warning">■</span>
+                            <small class="ml-2">Pending Approval</small>
+                        </div>
+                        <div class="mb-2">
+                            <span class="badge badge-success">■</span>
+                            <small class="ml-2">Approved</small>
+                        </div>
+                        <div class="mb-2">
+                            <span class="badge badge-danger">■</span>
+                            <small class="ml-2">Rejected</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow">
+                    <div class="card-header bg-gradient-success">
+                        <h6 class="mb-0 text-white">
+                            <i class="fas fa-chart-bar mr-2"></i>Statistics
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <h4 class="text-primary mb-1" id="totalBookings">-</h4>
+                                    <small class="text-muted">Total</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <h4 class="text-warning mb-1" id="pendingBookings">-</h4>
+                                    <small class="text-muted">Pending</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <h4 class="text-success mb-1" id="approvedBookings">-</h4>
+                                    <small class="text-muted">Approved</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-0">
+                                    <h4 class="text-info mb-1" id="todayBookings">-</h4>
+                                    <small class="text-muted">Today</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-xl-8 mb-5 mb-xl-0">
-                <div class="card shadow">
-                    <div class="card-header border-0">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0">Page visits</h3>
-                            </div>
-                            <div class="col text-right">
-                                <a href="#!" class="btn btn-sm btn-primary">See all</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <!-- Projects table -->
-                        <table class="table align-items-center table-flush">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Page name</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col">Unique users</th>
-                                    <th scope="col">Bounce rate</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/
-                                    </th>
-                                    <td>
-                                        4,569
-                                    </td>
-                                    <td>
-                                        340
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/index.html
-                                    </th>
-                                    <td>
-                                        3,985
-                                    </td>
-                                    <td>
-                                        319
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/charts.html
-                                    </th>
-                                    <td>
-                                        3,513
-                                    </td>
-                                    <td>
-                                        294
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> 36,49%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/tables.html
-                                    </th>
-                                    <td>
-                                        2,050
-                                    </td>
-                                    <td>
-                                        147
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> 50,87%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        /argon/profile.html
-                                    </th>
-                                    <td>
-                                        1,795
-                                    </td>
-                                    <td>
-                                        190
-                                    </td>
-                                    <td>
-                                        <i class="fas fa-arrow-down text-danger mr-3"></i> 46,53%
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4">
-                <div class="card shadow">
-                    <div class="card-header border-0">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0">Social traffic</h3>
-                            </div>
-                            <div class="col text-right">
-                                <a href="#!" class="btn btn-sm btn-primary">See all</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <!-- Projects table -->
-                        <table class="table align-items-center table-flush">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Referral</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">
-                                        Facebook
-                                    </th>
-                                    <td>
-                                        1,480
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">60%</span>
-                                            <div>
-                                                <div class="progress">
-                                                <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Facebook
-                                    </th>
-                                    <td>
-                                        5,480
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">70%</span>
-                                            <div>
-                                                <div class="progress">
-                                                <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Google
-                                    </th>
-                                    <td>
-                                        4,807
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">80%</span>
-                                            <div>
-                                                <div class="progress">
-                                                <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        Instagram
-                                    </th>
-                                    <td>
-                                        3,678
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">75%</span>
-                                            <div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">
-                                        twitter
-                                    </th>
-                                    <td>
-                                        2,645
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="mr-2">30%</span>
-                                            <div>
-                                                <div class="progress">
-                                                <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        
 
         @include('backend.layouts.footers.auth')
     </div>
-@endsection
+
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary text-white">
+                <h5 class="modal-title" id="bookingModalLabel">
+                    <i class="fas fa-plus-circle mr-2"></i>Book Appointment
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bTitle" class="form-label">Title*</label>
+                            <input type="text" class="form-control" id="bTitle" name="bTitle" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bEvent_type" class="form-label">Event Type*</label>
+                            <select class="form-control" id="bEvent_type" name="bEvent_type" required>
+                                <option value="">Select Type</option>
+                                <option value="event">Event</option>
+                                <option value="session">Session</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3 d-none">
+                            <label for="booking_date" class="form-label">Date*</label>
+                            <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bStart_datetime" class="form-label">Start Date & Time*</label>
+                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bEnd_datetime" class="form-label">End Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bStatus" class="form-label">Status</label>
+                            <select class="form-control" id="bStatus" name="bStatus">
+                                <option value="pending" selected>Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bPayment_status" class="form-label">Payment Status</label>
+                            <select class="form-control" id="bPayment_status" name="bPayment_status">
+                                <option value="pending" selected>Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="refunded">Refunded</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bName" class="form-label">Your Name*</label>
+                            <input type="text" class="form-control" id="bName" name="bName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bPhone" class="form-label">Phone Number*</label>
+                            <input type="tel" class="form-control" id="bPhone" name="bPhone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="bEmail" name="bEmail">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bPrice" class="form-label">Price ($)</label>
+                            <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="bDescription" name="bDescription" rows="3" placeholder="Additional details about your booking..."></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bRejection_reason" class="form-label">Rejection Reason</label>
+                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="3" placeholder="Reason for rejection (if applicable)..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="submitBooking" onclick="submitBooking()">
+                    <i class="fas fa-check mr-2"></i>Book Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Booking Modal -->
+<div class="modal fade" id="viewBookingModal" tabindex="-1" aria-labelledby="viewBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-info text-white">
+                <h5 class="modal-title" id="viewBookingModalLabel">
+                    <i class="fas fa-eye mr-2"></i>Booking Details
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bookingDetails">
+                <!-- Booking details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
 
 @push('js')
-    <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.min.js"></script>
-    <script src="{{ asset('argon') }}/vendor/chart.js/dist/Chart.extension.js"></script>
+<!-- FullCalendar CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<!-- SweetAlert2 for better alerts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing calendar...');
+    const calendarEl = document.getElementById('calendar');
+    
+    if (!calendarEl) {
+        console.error('Calendar element not found!');
+        return;
+    }
+    
+    console.log('Calendar element found, creating calendar...');
+    
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        height: 'auto',
+        events: {
+            url: '{{ route("admin.calendar.bookings") }}',
+            failure: function(error) {
+                console.error('Error loading events:', error);
+                alert('Failed to load calendar events');
+            }
+        },
+        selectable: true,
+        selectMirror: true,
+        editable: false,
+        dayMaxEvents: true,
+        
+        // Handle date selection
+        select: function(info) {
+            console.log('Date selected:', info.startStr);
+            showBookingModal(info.startStr);
+        },
+        
+        // Handle event click
+        eventClick: function(info) {
+            console.log('Event clicked:', info.event.id);
+            showBookingDetails(info.event.id);
+        },
+        
+        // Event styling
+        eventDidMount: function(info) {
+            info.el.setAttribute('title', info.event.title + ' - ' + info.event.extendedProps.customer_name);
+        },
+        
+        // Add success callback for events loading
+        eventSourceSuccess: function(events) {
+            console.log('Events loaded:', events);
+        }
+    });
+    
+    console.log('Rendering calendar...');
+    calendar.render();
+    console.log('Calendar rendered successfully');
+    
+    // Make calendar globally accessible for refreshing
+    window.calendarInstance = calendar;
+    
+    // Load statistics
+    loadStats();
+    
+    // Auto-refresh calendar every 30 seconds
+    setInterval(function() {
+        calendar.refetchEvents();
+        loadStats();
+    }, 30000);
+});
+
+function showBookingModal(selectedDate) {
+    document.getElementById('booking_date').value = selectedDate;
+    
+    // Set default start datetime to selected date at current time
+    const now = new Date();
+    const startDateTime = selectedDate + 'T' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    document.getElementById('bStart_datetime').value = startDateTime;
+    
+    document.getElementById('bookingForm').reset();
+    document.getElementById('booking_date').value = selectedDate; // Reset after form reset
+    document.getElementById('bStart_datetime').value = startDateTime;
+    
+    $('#bookingModal').modal('show');
+}
+
+function submitBooking() {
+    console.log('Submitting booking...');
+    const form = document.getElementById('bookingForm');
+    const formData = new FormData(form);
+    
+    // Convert FormData to JSON
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+    
+    console.log('Form data:', data);
+    
+    // Show loading state
+    const submitButton = document.getElementById('submitBooking');
+    const originalText = submitButton.innerHTML;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Booking...';
+    submitButton.disabled = true;
+    
+    fetch('{{ route("admin.calendar.bookings.store") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: data.message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+            // Close modal and refresh calendar events
+            $('#bookingModal').modal('hide');
+            
+            // Refresh calendar events instead of full page reload
+            if (window.calendarInstance) {
+                window.calendarInstance.refetchEvents();
+                console.log('Calendar events refreshed');
+            }
+            
+            // Also refresh statistics
+            loadStats();
+        } else {
+            let errorMessage = data.message || 'An error occurred';
+            if (data.errors) {
+                errorMessage = Object.values(data.errors).flat().join('\n');
+            }
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: errorMessage
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Fetch Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Network error: ' + error.message
+        });
+    })
+    .finally(() => {
+        // Reset button state
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    });
+}
+
+function showBookingDetails(bookingId) {
+    fetch('{{ route("admin.calendar.bookings.show", ":id") }}'.replace(':id', bookingId))
+    .then(response => response.json())
+    .then(booking => {
+        const statusBadge = getStatusBadge(booking.status);
+        const typeBadge = booking.type === 'event' ? 
+            '<span class="badge badge-primary">Event</span>' : 
+            '<span class="badge badge-info">Session</span>';
+            
+        document.getElementById('bookingDetails').innerHTML = `
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Title:</strong> ${booking.title}</p>
+                    <p><strong>Type:</strong> ${typeBadge}</p>
+                    <p><strong>Date:</strong> ${new Date(booking.booking_date).toLocaleDateString()}</p>
+                    <p><strong>Time:</strong> ${booking.start_time} ${booking.end_time ? '- ' + booking.end_time : ''}</p>
+                    <p><strong>Duration:</strong> ${booking.duration_hours ? booking.duration_hours + ' hours' : 'Not specified'}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Customer:</strong> ${booking.customer_name}</p>
+                    <p><strong>Phone:</strong> ${booking.phone_number}</p>
+                    <p><strong>Email:</strong> ${booking.email || 'Not provided'}</p>
+                    <p><strong>People:</strong> ${booking.number_of_people}</p>
+                    <p><strong>Status:</strong> ${statusBadge}</p>
+                </div>
+            </div>
+            ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
+            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> $${booking.price}</div>` : ''}
+        `;
+        
+        $('#viewBookingModal').modal('show');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Could not load booking details'
+        });
+    });
+}
+
+function getStatusBadge(status) {
+    const badges = {
+        'pending': '<span class="badge badge-warning">Pending</span>',
+        'approved': '<span class="badge badge-success">Approved</span>',
+        'rejected': '<span class="badge badge-danger">Rejected</span>'
+    };
+    return badges[status] || '<span class="badge badge-secondary">Unknown</span>';
+}
+
+function loadStats() {
+    fetch('{{ route("admin.calendar.stats") }}')
+    .then(response => response.json())
+    .then(stats => {
+        document.getElementById('totalBookings').textContent = stats.total;
+        document.getElementById('pendingBookings').textContent = stats.pending;
+        document.getElementById('approvedBookings').textContent = stats.approved;
+        document.getElementById('todayBookings').textContent = stats.today;
+    })
+    .catch(error => {
+        console.error('Error loading stats:', error);
+    });
+}
+
+// Auto-calculate end time based on duration
+if (document.getElementById('duration_hours')) {
+    document.getElementById('duration_hours').addEventListener('change', function() {
+        const startTime = document.getElementById('start_time').value;
+        const duration = parseInt(this.value);
+        
+        if (startTime && duration) {
+            const start = new Date('2000-01-01T' + startTime);
+            start.setHours(start.getHours() + duration);
+            
+            const endTime = start.toTimeString().substr(0, 5);
+            document.getElementById('end_time').value = endTime;
+        }
+    });
+}
+
+// Auto-calculate duration based on end time
+if (document.getElementById('end_time')) {
+    document.getElementById('end_time').addEventListener('change', function() {
+        const startTime = document.getElementById('start_time').value;
+        const endTime = this.value;
+        
+        if (startTime && endTime) {
+            const start = new Date('2000-01-01T' + startTime);
+            const end = new Date('2000-01-01T' + endTime);
+            
+            if (end > start) {
+                const duration = (end - start) / (1000 * 60 * 60);
+                document.getElementById('duration_hours').value = Math.round(duration);
+            }
+        }
+    });
+}
+</script>
+
+<style>
+.fc-header-toolbar {
+    margin-bottom: 1rem;
+}
+
+.fc-event {
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.fc-event:hover {
+    opacity: 0.8;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.badge {
+    font-size: 0.875em;
+}
+
+#calendar {
+    padding: 20px;
+}
+
+.fc-daygrid-event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-primary { color: #007bff !important; }
+.text-success { color: #28a745 !important; }
+.text-warning { color: #ffc107 !important; }
+.text-info { color: #17a2b8 !important; }
+</style>
 @endpush
+@endsection
