@@ -78,6 +78,6 @@ class LoginController extends Controller
     {
         session()->flush();
         
-        return redirect('/');
+        return redirect()->route('login')->with('message', 'You have been successfully logged out.');
     }
 }

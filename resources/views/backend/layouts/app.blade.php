@@ -137,6 +137,9 @@
         <script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         
+        <!-- SweetAlert2 for better alerts -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
         @stack('js')
         
         <!-- Argon JS -->
@@ -210,11 +213,52 @@
                 });
             });
             
-            // Enhanced logout confirmation
+            
+            // Professional logout confirmation with SweetAlert2
             function confirmLogout() {
-                if (confirm('Are you sure you want to logout?')) {
-                    document.getElementById('logout-form').submit();
-                }
+                Swal.fire({
+                    title: 'Are you sure you want to logout?',
+                    text: "You will be redirected to the login page.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '<i class="fas fa-sign-out-alt mr-2"></i>Yes, Logout',
+                    cancelButtonText: '<i class="fas fa-times mr-2"></i>Cancel',
+                    reverseButtons: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: true,
+                    focusCancel: true,
+                    customClass: {
+                        popup: 'animated fadeInDown',
+                        confirmButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show loading while processing logout
+                        Swal.fire({
+                            title: 'Logging out...',
+                            text: 'Please wait while we sign you out.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false,
+                            customClass: {
+                                popup: 'animated fadeIn'
+                            },
+                            didOpen: () => {
+                                Swal.showLoading();
+                                // Submit logout form after short delay for user feedback
+                                setTimeout(() => {
+                                    document.getElementById('logout-form').submit();
+                                }, 800);
+                            }
+                        });
+                    }
+                });
+                
                 return false;
             }
         </script>

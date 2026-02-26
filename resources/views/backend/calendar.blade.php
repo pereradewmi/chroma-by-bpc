@@ -140,15 +140,18 @@
                     <div class="row">
                         <div class="col-md-4 mb-3 d-none">
                             <label for="booking_date" class="form-label">Date*</label>
-                            <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                            <input type="date" class="form-control" id="booking_date" name="booking_date" 
+                                   min="{{ date('Y-m-d') }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="bStart_datetime" class="form-label">Start Date & Time*</label>
-                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" required>
+                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" 
+                                   min="{{ date('Y-m-d\TH:i') }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="bEnd_datetime" class="form-label">End Date & Time</label>
-                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime">
+                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime"
+                                   min="{{ date('Y-m-d\TH:i') }}">
                         </div>
                     </div>
                     
@@ -291,15 +294,18 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="editBooking_date" class="form-label">Date*</label>
-                            <input type="date" class="form-control" id="editBooking_date" name="booking_date" required>
+                            <input type="date" class="form-control" id="editBooking_date" name="booking_date" 
+                                   min="{{ date('Y-m-d') }}" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="editStart_datetime" class="form-label">Start DateTime*</label>
-                            <input type="datetime-local" class="form-control" id="editStart_datetime" name="bStart_datetime" required>
+                            <input type="datetime-local" class="form-control" id="editStart_datetime" name="bStart_datetime" 
+                                   min="{{ date('Y-m-d\TH:i') }}" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="editEnd_datetime" class="form-label">End DateTime</label>
-                            <input type="datetime-local" class="form-control" id="editEnd_datetime" name="bEnd_datetime">
+                            <input type="datetime-local" class="form-control" id="editEnd_datetime" name="bEnd_datetime"
+                                   min="{{ date('Y-m-d\TH:i') }}">
                         </div>
                     </div>
                     
@@ -499,6 +505,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showBookingModal(selectedDate = null) {
+    // Check if selected date is in the past (only if date is provided)
+    if (selectedDate) {
+        const today = new Date().toISOString().split('T')[0];
+        if (selectedDate < today) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Date',
+                text: 'You cannot book appointments for past dates. Please select today or a future date.'
+            });
+            return;
+        }
+    }
+    
     // Reset form and set title
     document.getElementById('bookingForm').reset();
     document.getElementById('bookingModalLabel').innerHTML = '<i class="fas fa-plus-circle mr-2"></i>Book Appointment';
@@ -507,9 +526,22 @@ function showBookingModal(selectedDate = null) {
     if (selectedDate) {
         document.getElementById('booking_date').value = selectedDate;
         
-        // Set default start datetime to selected date at current time
+        // Set default start datetime to selected date at appropriate time
         const now = new Date();
-        const startDateTime = selectedDate + 'T' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        const selectedDateObj = new Date(selectedDate + 'T00:00:00');
+        const todayDate = new Date().toISOString().split('T')[0];
+        
+        let startDateTime;
+        if (selectedDate === todayDate) {
+            // If selecting today, use current time but round up to next hour
+            const currentHour = now.getHours();
+            const nextHour = currentHour + 1;
+            startDateTime = selectedDate + 'T' + nextHour.toString().padStart(2, '0') + ':00';
+        } else {
+            // If selecting future date, default to 9 AM
+            startDateTime = selectedDate + 'T09:00';
+        }
+        
         document.getElementById('bStart_datetime').value = startDateTime;
     }
     
@@ -518,6 +550,45 @@ function showBookingModal(selectedDate = null) {
 
 function submitBooking() {
     console.log('Submitting booking...');
+    
+    // Validate dates before submitting
+    const bookingDate = document.getElementById('booking_date').value;
+    const startDateTime = document.getElementById('bStart_datetime').value;
+    const endDateTime = document.getElementById('bEnd_datetime').value;
+    
+    const today = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString();
+    
+    // Check booking date
+    if (bookingDate && bookingDate < today) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Date',
+            text: 'Booking date cannot be in the past.'
+        });
+        return;
+    }
+    
+    // Check start datetime
+    if (startDateTime && startDateTime < now.substring(0, 16)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Date/Time',
+            text: 'Start date and time cannot be in the past.'
+        });
+        return;
+    }
+    
+    // Check end datetime is after start datetime
+    if (startDateTime && endDateTime && endDateTime <= startDateTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Time Range',
+            text: 'End date and time must be after start date and time.'
+        });
+        return;
+    }
+    
     const form = document.getElementById('bookingForm');
     const formData = new FormData(form);
     
@@ -672,6 +743,44 @@ function editCurrentBooking() {
 }
 
 function submitEditBooking() {
+    // Validate dates before submitting
+    const bookingDate = document.getElementById('editBooking_date').value;
+    const startDateTime = document.getElementById('editStart_datetime').value;
+    const endDateTime = document.getElementById('editEnd_datetime').value;
+    
+    const today = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString();
+    
+    // Check booking date
+    if (bookingDate && bookingDate < today) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Date',
+            text: 'Booking date cannot be in the past.'
+        });
+        return;
+    }
+    
+    // Check start datetime
+    if (startDateTime && startDateTime < now.substring(0, 16)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Date/Time',
+            text: 'Start date and time cannot be in the past.'
+        });
+        return;
+    }
+    
+    // Check end datetime is after start datetime
+    if (startDateTime && endDateTime && endDateTime <= startDateTime) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Time Range',
+            text: 'End date and time must be after start date and time.'
+        });
+        return;
+    }
+    
     const form = document.getElementById('editBookingForm');
     const formData = new FormData(form);
     
