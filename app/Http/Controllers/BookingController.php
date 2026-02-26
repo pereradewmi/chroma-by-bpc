@@ -97,8 +97,8 @@ class BookingController extends Controller
             $validator = Validator::make($request->all(), [
                 'bTitle' => 'required|string|max:50',
                 'bEvent_type' => 'required|in:event,session',
-                'booking_date' => 'required|date',
-                'bStart_datetime' => 'required|date',
+                'booking_date' => 'required|date|after_or_equal:today',
+                'bStart_datetime' => 'required|date|after_or_equal:today',
                 'bEnd_datetime' => 'nullable|date|after:bStart_datetime',
                 'bName' => 'required|string|max:50',
                 'bPhone' => 'required|string|max:10',
@@ -108,6 +108,9 @@ class BookingController extends Controller
                 'bPrice' => 'nullable|numeric|min:0',
                 'bPayment_status' => 'nullable|in:pending,paid,refunded',
                 'bRejection_reason' => 'nullable|string|max:500'
+            ], [
+                'booking_date.after_or_equal' => 'Booking date cannot be in the past.',
+                'bStart_datetime.after_or_equal' => 'Start date and time cannot be in the past.'
             ]);
 
             if ($validator->fails()) {
@@ -432,8 +435,8 @@ class BookingController extends Controller
             $validator = Validator::make($request->all(), [
                 'bTitle' => 'required|string|max:50',
                 'bEvent_type' => 'required|in:event,session',
-                'booking_date' => 'required|date',
-                'bStart_datetime' => 'required|date',
+                'booking_date' => 'required|date|after_or_equal:today',
+                'bStart_datetime' => 'required|date|after_or_equal:today',
                 'bEnd_datetime' => 'nullable|date|after:bStart_datetime',
                 'bName' => 'required|string|max:50',
                 'bPhone' => 'required|string|max:10',
@@ -442,6 +445,9 @@ class BookingController extends Controller
                 'bStatus' => 'nullable|in:pending,approved,rejected',
                 'bPrice' => 'nullable|numeric|min:0',
                 'bPayment_status' => 'nullable|in:pending,paid,refunded'
+            ], [
+                'booking_date.after_or_equal' => 'Booking date cannot be in the past.',
+                'bStart_datetime.after_or_equal' => 'Start date and time cannot be in the past.'
             ]);
 
             if ($validator->fails()) {
