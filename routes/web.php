@@ -61,6 +61,15 @@ Route::get('/Registration', function () {
     return view('frontend.register');
 })->name('frontend.register');
 
+// Frontend Calendar routes (public access - no authentication required)
+Route::prefix('calendar')->name('calendar.')->group(function () {
+    Route::get('/', [BookingController::class, 'frontendIndex'])->name('index');
+    Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
+});
+
 // Student routes
 Route::middleware('check.login')->prefix('students')->name('students.')->group(function () {
     Route::get('/', [StudentController::class, 'index'])->name('index');
@@ -94,16 +103,6 @@ Route::middleware('check.login')->prefix('sessions')->name('sessions.')->group(f
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
 });
 
-// Frontend Calendar routes
-Route::middleware('check.login')->prefix('calendar')->name('calendar.')->group(function () {
-    Route::get('/', [BookingController::class, 'frontendIndex'])->name('index');
-    Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
-    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-    Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
-    Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
-    Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
-    Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
-});
 
 // Backend Calendar routes
 Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar.')->group(function () {
