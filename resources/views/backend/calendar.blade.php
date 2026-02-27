@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="card shadow">
-                    <div class="card-header bg-gradient-primary">
+                    <!-- <div class="card-header bg-gradient-primary">
                         <div class="row align-items-center">
                             <div class="col">
                                 <h3 class="mb-0 text-white">
@@ -18,7 +18,7 @@
                                 <p class="text-white-50 mb-0">Click on a date to create new booking or click on existing events to view details</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="card-body p-0">
                         <div id="calendar"></div>
                     </div>

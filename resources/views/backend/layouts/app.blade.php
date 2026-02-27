@@ -253,7 +253,7 @@
                                 // Submit logout form after short delay for user feedback
                                 setTimeout(() => {
                                     document.getElementById('logout-form').submit();
-                                }, 800);
+                                }, 400);
                             }
                         });
                     }
