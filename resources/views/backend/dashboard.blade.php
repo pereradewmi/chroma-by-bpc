@@ -3,200 +3,21 @@
 @section('content')
     @include('backend.layouts.headers.cards')
     
+    <!-- Page content -->
+    <div class="container-fluid ">
         <!-- Calendar Section -->
-        <div class="row">
-            <div class="col-lg-9">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12">
                 <div class="card shadow">
-                    <div class="card-header bg-gradient-primary">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0 text-white">
-                                    <i class="fas fa-calendar-alt mr-2"></i>Booking Calendar
-                                </h3>
-                                <p class="text-white-50 mb-0">Manage appointments and bookings</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
+                    <div class="card-body p-4">
                         <div id="calendar"></div>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-lg-3">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-gradient-info">
-                        <h6 class="mb-0 text-white">
-                            <i class="fas fa-info-circle mr-2"></i>Legend
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <span class="badge badge-warning">■</span>
-                            <small class="ml-2">Pending Approval</small>
-                        </div>
-                        <div class="mb-2">
-                            <span class="badge badge-success">■</span>
-                            <small class="ml-2">Approved</small>
-                        </div>
-                        <div class="mb-2">
-                            <span class="badge badge-danger">■</span>
-                            <small class="ml-2">Rejected</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card shadow">
-                    <div class="card-header bg-gradient-success">
-                        <h6 class="mb-0 text-white">
-                            <i class="fas fa-chart-bar mr-2"></i>Statistics
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-primary mb-1" id="totalBookings">-</h4>
-                                    <small class="text-muted">Total</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-warning mb-1" id="pendingBookings">-</h4>
-                                    <small class="text-muted">Pending</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-success mb-1" id="approvedBookings">-</h4>
-                                    <small class="text-muted">Approved</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-0">
-                                    <h4 class="text-info mb-1" id="todayBookings">-</h4>
-                                    <small class="text-muted">Today</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
         
-
         @include('backend.layouts.footers.auth')
     </div>
-
-<!-- Booking Modal -->
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-gradient-primary text-white">
-                <h5 class="modal-title" id="bookingModalLabel">
-                    <i class="fas fa-plus-circle mr-2"></i>Book Appointment
-                </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="bookingForm">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bTitle" class="form-label">Title*</label>
-                            <input type="text" class="form-control" id="bTitle" name="bTitle" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bEvent_type" class="form-label">Event Type*</label>
-                            <select class="form-control" id="bEvent_type" name="bEvent_type" required>
-                                <option value="">Select Type</option>
-                                <option value="event">Event</option>
-                                <option value="session">Session</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4 mb-3 d-none">
-                            <label for="booking_date" class="form-label">Date*</label>
-                            <input type="date" class="form-control" id="booking_date" name="booking_date" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bStart_datetime" class="form-label">Start Date & Time*</label>
-                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bEnd_datetime" class="form-label">End Date & Time</label>
-                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime">
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bStatus" class="form-label">Status</label>
-                            <select class="form-control" id="bStatus" name="bStatus">
-                                <option value="pending" selected>Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bPayment_status" class="form-label">Payment Status</label>
-                            <select class="form-control" id="bPayment_status" name="bPayment_status">
-                                <option value="pending" selected>Pending</option>
-                                <option value="paid">Paid</option>
-                                <option value="refunded">Refunded</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bName" class="form-label">Your Name*</label>
-                            <input type="text" class="form-control" id="bName" name="bName" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bPhone" class="form-label">Phone Number*</label>
-                            <input type="tel" class="form-control" id="bPhone" name="bPhone" required>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="bEmail" name="bEmail">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bPrice" class="form-label">Price ($)</label>
-                            <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="bDescription" name="bDescription" rows="3" placeholder="Additional details about your booking..."></textarea>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bRejection_reason" class="form-label">Rejection Reason</label>
-                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="3" placeholder="Reason for rejection (if applicable)..."></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    <i class="fas fa-times mr-2"></i>Cancel
-                </button>
-                <button type="button" class="btn btn-primary" id="submitBooking" onclick="submitBooking()">
-                    <i class="fas fa-check mr-2"></i>Book Appointment
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- View Booking Modal -->
 <div class="modal fade" id="viewBookingModal" tabindex="-1" aria-labelledby="viewBookingModalLabel" aria-hidden="true">
@@ -243,7 +64,10 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        height: 'auto',
+        height: 600,
+        aspectRatio: 1.8,
+        contentHeight: 'auto',
+        expandRows: true,
         events: {
             url: '{{ route("admin.calendar.bookings") }}',
             failure: function(error) {
@@ -255,6 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
         selectMirror: true,
         editable: false,
         dayMaxEvents: true,
+        
+        // Responsive behavior
+        windowResizeDelay: 100,
+        
+        // Better styling
+        themeSystem: 'bootstrap4',
         
         // Handle date selection
         select: function(info) {
