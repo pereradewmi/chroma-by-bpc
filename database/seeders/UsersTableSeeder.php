@@ -14,11 +14,10 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'Admin Admin',
-            'email' => 'admin@argon.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('secret'),
+        DB::table('logindetails')->insert([
+            'lName' => 'CROMA Admin',
+            'lUserName' => 'admin@croma.com',
+            'lPassword' => Hash::make('password'),
             'created_at' => now(),
             'updated_at' => now()
         ]);

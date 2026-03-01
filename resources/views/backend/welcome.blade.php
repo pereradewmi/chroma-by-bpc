@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'bg-default'])
+<!-- @extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
     <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -19,4 +19,4 @@
     </div>
 
     <div class="container mt--10 pb-5"></div>
-@endsection
+@endsection -->
