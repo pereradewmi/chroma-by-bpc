@@ -27,86 +27,20 @@
           <h3 class="text-center mb-4">Student Life Gallery</h3>
 
           <div class="row g-3">
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
-              <a href="{{ asset('front-assets/img/education/students-1.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-1.webp') }} " class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
-              <a href="{{ asset('front-assets/img/education/students-2.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-2.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
-              <a href="{{ asset('front-assets/img/education/students-3.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-3.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
-              <a href="{{ asset('front-assets/img/education/students-4.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-4.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="500">
-              <a href="{{ asset('front-assets/img/education/students-5.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-5.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="600">
-              <a href="{{ asset('front-assets/img/education/students-6.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-6.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
-              <a href="{{ asset('front-assets/img/education/students-4.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-4.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="500">
-              <a href="{{ asset('front-assets/img/education/students-5.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-5.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
-
-            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="600">
-              <a href="{{ asset('front-assets/img/education/students-6.webp') }}" class="gallery-item glightbox">
-                <img src="{{ asset('front-assets/img/education/students-6.webp') }}" class="img-fluid" loading="lazy" alt="Student Life">
-                <div class="gallery-overlay">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-              </a>
-            </div>
+            @forelse($images as $image)
+              <div class="col-md-4" data-aos="zoom-in" data-aos-delay="{{ (($loop->index % 6) + 1) * 100 }}">
+                <a href="{{ asset('storage/' . $image->image_path) }}" class="gallery-item glightbox">
+                  <img src="{{ asset('storage/' . $image->image_path) }}" class="img-fluid" loading="lazy" alt="Gallery Image">
+                  <div class="gallery-overlay">
+                    <i class="bi bi-plus-circle"></i>
+                  </div>
+                </a>
+              </div>
+            @empty
+              <div class="col-12 text-center">
+                <p class="mb-0">No gallery images found.</p>
+              </div>
+            @endforelse
 
           </div>
         </div>
