@@ -151,7 +151,7 @@
 
           <div class="col-lg-4">
             <div class="event-sidebar">
-              <div class="sidebar-widget registration-form" data-aos="fade-left" data-aos-delay="200">
+              {{-- <div class="sidebar-widget registration-form" data-aos="fade-left" data-aos-delay="200">
                 <h3>Register for this Event</h3>
                 <form>
                   <div class="mb-3">
@@ -180,7 +180,7 @@
                     <button type="submit" class="btn btn-register">Register Now</button>
                   </div>
                 </form>
-              </div>
+              </div> --}}
 
               <div class="sidebar-widget related-events" data-aos="fade-left" data-aos-delay="400">
                 <h3>Related Events</h3>

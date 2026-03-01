@@ -6,6 +6,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ImageController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -49,9 +50,7 @@ Route::get('/EventDetails', function () {
     return view('frontend.event-details');
 })->name('frontend.event-details');
 
-Route::get('/Gallery', function () {
-    return view('frontend.gallery');
-})->name('frontend.gallery');
+Route::get('/Gallery', [ImageController::class, 'frontendIndex'])->name('frontend.gallery');
 
 Route::get('/ContactUs', function () {
     return view('frontend.contact');
@@ -126,4 +125,12 @@ Route::middleware('check.login')->prefix('admin/bookings')->name('admin.bookings
     Route::get('/', function () {
         return view('backend.bookings.index');
     })->name('index');
+});
+
+Route::middleware('check.login')->prefix('admin/images')->name('admin.images.')->group(function () {
+    Route::get('/', [ImageController::class, 'index'])->name('index');
+    Route::post('/', [ImageController::class, 'store'])->name('store');
+    Route::get('/{id}', [ImageController::class, 'show'])->name('show');
+    Route::put('/{id}', [ImageController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ImageController::class, 'destroy'])->name('destroy');
 });
