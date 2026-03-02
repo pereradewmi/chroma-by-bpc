@@ -114,7 +114,7 @@
               </div><!-- End Event Item -->
 
               <!-- Pagination -->
-              <div class="events-pagination" data-aos="fade-up" data-aos-delay="100">
+              {{-- <div class="events-pagination" data-aos="fade-up" data-aos-delay="100">
                 <ul class="pagination justify-content-center">
                   <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-arrow-left"></i></a></li>
                   <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -122,15 +122,16 @@
                   <li class="page-item"><a class="page-link" href="#">3</a></li>
                   <li class="page-item"><a class="page-link" href="#"><i class="bi bi-arrow-right"></i></a></li>
                 </ul>
-              </div>
-            </div><!-- End Events List -->
+              </div> --}}
+            </div>
+            <!-- End Events List -->
           </div>
 
           <div class="col-lg-4">
             <!-- Sidebar -->
             <div class="events-sidebar">
               <!-- Search Form -->
-              <div class="sidebar-item search-form" data-aos="fade-up">
+              {{-- <div class="sidebar-item search-form" data-aos="fade-up">
                 <h4>Search Events</h4>
                 <form action="">
                   <div class="input-group">
@@ -138,7 +139,8 @@
                     <button class="btn" type="submit"><i class="bi bi-search"></i></button>
                   </div>
                 </form>
-              </div><!-- End Search Form -->
+              </div> --}}
+              <!-- End Search Form -->
 
               <!-- Categories -->
               <div class="sidebar-item categories" data-aos="fade-up" data-aos-delay="100">
@@ -167,7 +169,7 @@
               </div><!-- End Upcoming Events -->
 
               <!-- Event Calendar -->
-              <div class="sidebar-item event-calendar" data-aos="fade-up" data-aos-delay="300">
+              {{-- <div class="sidebar-item event-calendar" data-aos="fade-up" data-aos-delay="300">
                 <h4>Event Calendar</h4>
                 <div class="calendar-widget">
                   <div class="calendar-header">
@@ -238,7 +240,8 @@
                     </tbody>
                   </table>
                 </div>
-              </div><!-- End Event Calendar -->
+              </div> --}}
+              <!-- End Event Calendar -->
             </div><!-- End Sidebar -->
           </div>
         </div>
