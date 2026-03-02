@@ -56,6 +56,12 @@
                         {{ __('Calendar') }}
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.images') ? 'active' : '' }}" href="{{ route('admin.images.index') }}">
+                        <i class="fas fa-images text-info"></i>
+                        {{ __('Gallery') }}
+                    </a>
+                </li>
             </ul>
             
             <!-- Logout Section at bottom -->
