@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\FrontendController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -55,6 +56,7 @@ Route::get('/Gallery', [ImageController::class, 'frontendIndex'])->name('fronten
 Route::get('/ContactUs', function () {
     return view('frontend.contact');
 })->name('frontend.contact');
+Route::post('/ContactUs', [FrontendController::class, 'sendContactMail'])->name('frontend.contact.send');
 
 Route::get('/Registration', function () {
     return view('frontend.register');

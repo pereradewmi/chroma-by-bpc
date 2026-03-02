@@ -164,7 +164,7 @@
           </div>
         </div>
 
-        <div class="row mt-5">
+        {{-- <div class="row mt-5">
           <div class="col-lg-12">
             <div class="core-values" data-aos="fade-up" data-aos-delay="500">
               <h3 class="text-center mb-4">Core Values</h3>
@@ -211,7 +211,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> --}}
 
       </div>
 
@@ -711,7 +711,7 @@
 
         </div>
 
-        <div class="events-navigation" data-aos="fade-up" data-aos-delay="500">
+        {{-- <div class="events-navigation" data-aos="fade-up" data-aos-delay="500">
           <div class="row align-items-center">
             <div class="col-md-8">
               <div class="filter-tabs">
@@ -729,7 +729,7 @@
               </a>
             </div>
           </div>
-        </div>
+        </div> --}}
 
       </div>
 

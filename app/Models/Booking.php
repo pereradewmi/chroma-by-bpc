@@ -23,6 +23,7 @@ class Booking extends Model
         'bTitle',
         'bDescription',
         'bEvent_type',
+        'bEvent_Category',
         'bStatus',
         'bPrice',
         'bPayment_status',
