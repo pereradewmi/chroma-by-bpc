@@ -6,19 +6,6 @@
 
 <main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title light-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Gallery</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="{{ route('home') }}">Home</a></li>
-            <li class="current">Gallery</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
-
     <!-- Students Life Section -->
     <section id="students-life" class="students-life section">
 

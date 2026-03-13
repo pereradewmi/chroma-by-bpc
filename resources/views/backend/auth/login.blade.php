@@ -10,12 +10,12 @@
                     <div class="card-header bg-transparent text-center py-4">
                         <div class="logo-section">
                             <!-- Chroma Logo -->
-                            <img src="{{ asset('front-assets/img/logo.png') }}" 
-                                 alt="Chroma Logo" 
+                            <img src="{{ asset('front-assets/img/logo.png') }}"
+                                 alt="Chroma Logo"
                                  class="logo-img mb-3">
-                            
+
                             <!-- Professional Title -->
-                            <h3 class="text-primary font-weight-bold mb-2">CHROMA</h3>
+                            <h3 class="text-primary font-weight-bold mb-2">Chroma By BPC</h3>
                             <small class="text-muted">Admin Portal</small>
                         </div>
                     </div>
@@ -145,36 +145,36 @@
         }
         
         .form-control:focus {
-            border-color: #5e72e4;
-            box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.15);
+            border-color: #04415f;
+            box-shadow: 0 0 0 0.2rem rgba(4, 65, 95, 0.15);
         }
-        
+
         .input-group-text {
             border: 1px solid #dee2e6;
             background: #f8f9fe;
             border-right: none;
         }
-        
+
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #04415f 0%, #064d7a 100%);
             border: none;
             border-radius: 6px;
             padding: 12px 30px;
             font-size: 14px;
             transition: all 0.3s ease;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(94, 114, 228, 0.4);
+            box-shadow: 0 5px 15px rgba(4, 65, 95, 0.4);
         }
-        
+
         .text-primary {
-            color: #5e72e4 !important;
+            color: #04415f !important;
         }
-        
+
         .bg-default {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
             min-height: 100vh;
         }
         
