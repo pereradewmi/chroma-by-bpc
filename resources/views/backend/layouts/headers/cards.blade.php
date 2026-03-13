@@ -1,5 +1,5 @@
 @if(request()->routeIs('dashboard'))
-<div class="header bg-gradient-primary pb-4 pt-4 pt-md-7">
+<div class="header bg-gradient-primary pb-4  pt-md-2">
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->

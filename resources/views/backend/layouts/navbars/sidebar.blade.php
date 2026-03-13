@@ -3,8 +3,9 @@
         <!-- Sidebar Header with Toggle -->
         <div class="navbar-brand-wrapper d-flex align-items-center justify-content-between p-3">
             <!-- Brand -->
-            <a class="navbar-brand pt-0 m-0" href="{{ route('dashboard') }}">
-                <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="CROMA" style="max-height: 40px;">
+            <a class="navbar-brand pt-0 m-0 d-flex align-items-center" href="{{ route('dashboard') }}">
+                <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="Chroma Logo" style="max-height: 40px;">
+                <span class="ms-2 text-white font-weight-bold" style="font-size: 0.9rem;">Chroma</span>
             </a>
             <!-- Sidebar Toggle Button -->
             <button class="btn btn-sm btn-outline-primary d-none d-md-block" type="button" id="sidebar-toggle" title="Toggle Sidebar">
@@ -51,6 +52,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'events') ? 'active' : '' }}" href="{{ route('events.index') }}">
+                        <i class="fas fa-star text-warning"></i>
+                        {{ __('Events') }}
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.calendar') ? 'active' : '' }}" href="{{ route('admin.calendar.index') }}">
                         <i class="fas fa-calendar text-success"></i>
                         {{ __('Calendar') }}
@@ -62,6 +69,13 @@
                         {{ __('Gallery') }}
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'reports') ? 'active' : '' }}" href="{{ route('reports.index') }}">
+                        <i class="fas fa-chart-bar text-primary"></i>
+                        {{ __('Reports') }}
+                    </a>
+                </li>
+
             </ul>
             
             <!-- Logout Section at bottom -->

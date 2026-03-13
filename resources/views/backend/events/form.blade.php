@@ -10,34 +10,34 @@
                     <div class="card-header bg-white border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">{{ $isEdit ? 'Edit Session' : 'Create New Session' }}</h3>
+                                <h3 class="mb-0">{{ $isEdit ? 'Edit Event' : 'Create New Event' }}</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="{{ route('sessions.index') }}" class="btn btn-sm btn-primary">Back to List</a>
+                                <a href="{{ route('events.index') }}" class="btn btn-sm btn-primary">Back to List</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('sessions.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @if($isEdit)
                                 <input type="hidden" name="is_update" value="1">
-                                <input type="hidden" name="session_id" value="{{ $session->sID }}">
+                                <input type="hidden" name="event_id" value="{{ $event->eID }}">
                             @endif
 
-                            <h6 class="heading-small text-muted mb-4">Session Information</h6>
+                            <h6 class="heading-small text-muted mb-4">Event Information</h6>
 
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="sName">Session Name</label>
-                                            <input type="text" id="sName" name="sName"
-                                                class="form-control form-control-alternative @error('sName') is-invalid @enderror"
-                                                placeholder="Enter session name (e.g., Morning Session, Advanced Training)"
-                                                value="{{ old('sName', $session->sName) }}" required>
-                                            @error('sName')
+                                            <label class="form-control-label" for="eName">Event Name</label>
+                                            <input type="text" id="eName" name="eName"
+                                                class="form-control form-control-alternative @error('eName') is-invalid @enderror"
+                                                placeholder="Enter event name (e.g., Annual Science Fair, Summer Camp)"
+                                                value="{{ old('eName', $event->eName) }}" required>
+                                            @error('eName')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -45,20 +45,20 @@
 
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="sImage">Session Image</label>
+                                            <label class="form-control-label" for="eImage">Event Image</label>
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input @error('sImage') is-invalid @enderror"
-                                                    id="sImage" name="sImage" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
-                                                <label class="custom-file-label" for="sImage">Choose image...</label>
+                                                <input type="file" class="custom-file-input @error('eImage') is-invalid @enderror"
+                                                    id="eImage" name="eImage" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
+                                                <label class="custom-file-label" for="eImage">Choose image...</label>
                                             </div>
                                             <small class="form-text text-muted d-block mt-2">
                                                 <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
-                                                @if($isEdit && $session->sImage)
-                                                    <br><strong>Current Image:</strong> {{ $session->sImage }}
+                                                @if($isEdit && $event->eImage)
+                                                    <br><strong>Current Image:</strong> {{ $event->eImage }}
                                                 @endif
                                                 <br><strong>Note:</strong> If no image is uploaded, the Chroma logo will be used as default.
                                             </small>
-                                            @error('sImage')
+                                            @error('eImage')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -68,24 +68,24 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="sDescription">Description</label>
-                                            <textarea id="sDescription" name="sDescription"
-                                                class="form-control form-control-alternative @error('sDescription') is-invalid @enderror"
-                                                placeholder="Enter session description..." rows="6">{{ old('sDescription', $session->sDescription) }}</textarea>
-                                            @error('sDescription')
+                                            <label class="form-control-label" for="eDescription">Description</label>
+                                            <textarea id="eDescription" name="eDescription"
+                                                class="form-control form-control-alternative @error('eDescription') is-invalid @enderror"
+                                                placeholder="Enter event description..." rows="6">{{ old('eDescription', $event->eDescription) }}</textarea>
+                                            @error('eDescription')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
 
-                                @if($isEdit && $session->sImage && file_exists(storage_path('app/public/sessions/' . $session->sImage)))
+                                @if($isEdit && $event->eImage && file_exists(storage_path('app/public/events/' . $event->eImage)))
                                     <div class="row mb-4">
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label class="form-control-label">Current Image Preview</label>
                                                 <div class="mt-2">
-                                                    <img src="{{ $session->getSessionImage() }}" alt="Session Image" style="max-width: 200px; max-height: 150px; object-fit: cover; border-radius: 4px;">
+                                                    <img src="{{ $event->getEventImage() }}" alt="Event Image" style="max-width: 200px; max-height: 150px; object-fit: cover; border-radius: 4px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -95,9 +95,9 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <button type="submit" class="btn btn-primary">
-                                            {{ $isEdit ? 'Update Session' : 'Create Session' }}
+                                            {{ $isEdit ? 'Update Event' : 'Create Event' }}
                                         </button>
-                                        <a href="{{ route('sessions.index') }}" class="btn btn-secondary">Cancel</a>
+                                        <a href="{{ route('events.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
 
     <script>
         // Handle file input label update
-        document.getElementById('sImage').addEventListener('change', function(e) {
+        document.getElementById('eImage').addEventListener('change', function(e) {
             const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose image...';
             document.querySelector('.custom-file-label').textContent = fileName;
         });

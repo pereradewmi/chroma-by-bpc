@@ -7,85 +7,22 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endpush
 
-@section('title', 'Book Appointment - Chroma Calendar')
+@section('title', 'Book Appointment | Chroma By BPC')
 
 @section('main')
 
 <main class="main">
 
-<div class="container-fluid py-5">
+<div class="container py-4">
     <div class="row">
         <div class="col-12">
-            <div class="text-center mb-4">
-                <h1 class="display-4 text-primary mb-3">Book Your Appointment</h1>
-                <p class="lead text-muted">Select a date and time to schedule your session or event</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-lg-9">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Calendar</h5>
-                </div>
-                <div class="card-body p-0">
-                    <div id="calendar"></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3">
-            <div class="card shadow-lg border-0 mb-4">
-                <div class="card-header bg-info text-white">
-                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Legend</h6>
-                </div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <span class="badge" style="background-color: #ffc107; color: #000;">■</span>
-                        <small class="ms-2">Pending Approval</small>
+            <div class="calendar-wrapper">
+                <div class="card shadow border-0" style="border-radius: 10px;">
+                    <div class="card-header bg-primary text-white" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="mb-0" style="color: #ffffff;"><i class="fas fa-calendar-alt me-2" style="color: #ffffff;"></i><span style="color: #ffffff;">Book Your Appointment</span></h5>
                     </div>
-                    <div class="mb-2">
-                        <span class="badge" style="background-color: #28a745;">■</span>
-                        <small class="ms-2">Approved</small>
-                    </div>
-                    <div class="mb-2">
-                        <span class="badge" style="background-color: #dc3545;">■</span>
-                        <small class="ms-2">Rejected</small>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-success text-white">
-                    <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Statistics</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <h4 class="text-primary mb-1" id="totalBookings">-</h4>
-                                <small class="text-muted">Total</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <h4 class="text-warning mb-1" id="pendingBookings">-</h4>
-                                <small class="text-muted">Pending</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <h4 class="text-success mb-1" id="approvedBookings">-</h4>
-                                <small class="text-muted">Approved</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-0">
-                                <h4 class="text-info mb-1" id="todayBookings">-</h4>
-                                <small class="text-muted">Today</small>
-                            </div>
-                        </div>
+                    <div class="card-body p-0">
+                        <div id="calendar" style="padding: 20px;"></div>
                     </div>
                 </div>
             </div>

@@ -9,16 +9,23 @@ class ClassRoom extends Model
 {
     use HasFactory;
 
-    protected $table = 'class_rooms';
+    protected $table = 'classdetails';
+    protected $primaryKey = 'cID';
 
     protected $fillable = [
-        'class_name',
-        'teacher_id'
+        'cName',
+        'cDescription',
+        'cImage'
     ];
 
-    // Relationship with teacher
-    public function teacher()
+    /**
+     * Get the default image if none is set
+     */
+    public function getClassImage()
     {
-        return $this->belongsTo(Teacher::class, 'teacher_id', 'T_ID');
+        if ($this->cImage && file_exists(storage_path('app/public/classes/' . $this->cImage))) {
+            return asset('storage/classes/' . $this->cImage);
+        }
+        return asset('front-assets/img/logo.png');
     }
 }

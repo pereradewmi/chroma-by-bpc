@@ -32,9 +32,9 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
+                                    <th scope="col">Class Image</th>
                                     <th scope="col">Class Name</th>
-                                    <th scope="col">Teacher</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Description</th>
                                     <th scope="col">Created Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -42,24 +42,18 @@
                             <tbody>
                                 @forelse($classes as $class)
                                     <tr>
-                                        <td>{{ $class->id }}</td>
-                                        <td><strong>{{ $class->class_name }}</strong></td>
-                                        <td>{{ $class->teacher ? $class->teacher->tFName . ' ' . $class->teacher->tLName : 'N/A' }}</td>
+                                        <td>{{ $class->cID }}</td>
                                         <td>
-                                            @if($class->teacher)
-                                                @if($class->teacher->Active)
-                                                    <span class="badge badge-success">Active</span>
-                                                @else
-                                                    <span class="badge badge-danger">Inactive</span>
-                                                @endif
-                                            @else
-                                                <span class="badge badge-secondary">N/A</span>
-                                            @endif
+                                            <img src="{{ $class->getClassImage() }}" alt="Class Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                        </td>
+                                        <td><strong>{{ $class->cName }}</strong></td>
+                                        <td>
+                                            <small>{{ Str::limit($class->cDescription, 50) }}</small>
                                         </td>
                                         <td>{{ $class->created_at->format('M d, Y') }}</td>
                                         <td>
-                                            <a href="{{ route('classes.form', $class->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('classes.destroy', $class->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this class?');">
+                                            <a href="{{ route('classes.form', $class->cID) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('classes.destroy', $class->cID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this class?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>

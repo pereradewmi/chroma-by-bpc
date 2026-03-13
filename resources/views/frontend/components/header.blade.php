@@ -2,9 +2,8 @@
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-end">
 
       <a href="{{ route('home') }}" class="logo d-flex align-items-center me-auto">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="{{ asset('front-assets/img/logo.png') }}" alt="">
-        {{-- <h1 class="sitename">Chroma By BPC</h1> --}}
+        <img src="{{ asset('front-assets/img/logo.png') }}" alt="Chroma Logo">
+        <!-- <h1 class="sitename ms-2 mb-0">Chroma By BPC</h1> -->
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -14,8 +13,8 @@
           <li><a href="{{ route('frontend.sessions') }}">Sessions</a></li>
           <li><a href="{{ route('frontend.events') }}">Events</a></li>
           <li><a href="{{ route('frontend.gallery') }}">Gallery</a></li>
+          <li><a href="{{ route('calendar.index') }}">Appointment</a></li>
           <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
-          <li><a href="{{ route('calendar.index') }}">Book Appointment</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
