@@ -9,14 +9,23 @@ class Session extends Model
 {
     use HasFactory;
 
+    protected $table = 'sessiondetails';
+    protected $primaryKey = 'sID';
+
     protected $fillable = [
-        'session_name',
-        'teacher_id'
+        'sName',
+        'sDescription',
+        'sImage'
     ];
 
-    // Relationship with teacher
-    public function teacher()
+    /**
+     * Get the default image if none is set
+     */
+    public function getSessionImage()
     {
-        return $this->belongsTo(Teacher::class, 'teacher_id', 'T_ID');
+        if ($this->sImage && file_exists(storage_path('app/public/sessions/' . $this->sImage))) {
+            return asset('storage/sessions/' . $this->sImage);
+        }
+        return asset('front-assets/img/logo.png');
     }
 }

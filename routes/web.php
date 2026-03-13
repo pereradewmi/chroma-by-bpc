@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\FrontendController;
@@ -105,6 +106,13 @@ Route::middleware('check.login')->prefix('sessions')->name('sessions.')->group(f
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
 });
 
+// Event routes
+Route::middleware('check.login')->prefix('events')->name('events.')->group(function () {
+    Route::get('/', [EventController::class, 'index'])->name('index');
+    Route::get('/form/{id?}', [EventController::class, 'form'])->name('form');
+    Route::post('/store', [EventController::class, 'store'])->name('store');
+    Route::delete('/{id}', [EventController::class, 'destroy'])->name('destroy');
+});
 
 // Backend Calendar routes
 Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar.')->group(function () {

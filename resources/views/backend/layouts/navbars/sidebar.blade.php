@@ -52,6 +52,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'events') ? 'active' : '' }}" href="{{ route('events.index') }}">
+                        <i class="fas fa-star text-warning"></i>
+                        {{ __('Events') }}
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.calendar') ? 'active' : '' }}" href="{{ route('admin.calendar.index') }}">
                         <i class="fas fa-calendar text-success"></i>
                         {{ __('Calendar') }}
@@ -63,6 +69,13 @@
                         {{ __('Gallery') }}
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'reports') ? 'active' : '' }}" href="{{ route('reports.index') }}">
+                        <i class="fas fa-chart-bar text-primary"></i>
+                        {{ __('Reports') }}
+                    </a>
+                </li>
+
             </ul>
             
             <!-- Logout Section at bottom -->

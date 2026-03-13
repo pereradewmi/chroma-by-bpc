@@ -32,9 +32,9 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
+                                    <th scope="col">Session Image</th>
                                     <th scope="col">Session Name</th>
-                                    <th scope="col">Teacher</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Description</th>
                                     <th scope="col">Created Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -42,24 +42,18 @@
                             <tbody>
                                 @forelse($sessions as $session)
                                     <tr>
-                                        <td>{{ $session->id }}</td>
-                                        <td><strong>{{ $session->session_name }}</strong></td>
-                                        <td>{{ $session->teacher ? $session->teacher->tFName . ' ' . $session->teacher->tLName : 'N/A' }}</td>
+                                        <td>{{ $session->sID }}</td>
                                         <td>
-                                            @if($session->teacher)
-                                                @if($session->teacher->Active)
-                                                    <span class="badge badge-success">Active</span>
-                                                @else
-                                                    <span class="badge badge-danger">Inactive</span>
-                                                @endif
-                                            @else
-                                                <span class="badge badge-secondary">N/A</span>
-                                            @endif
+                                            <img src="{{ $session->getSessionImage() }}" alt="Session Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                        </td>
+                                        <td><strong>{{ $session->sName }}</strong></td>
+                                        <td>
+                                            <small>{{ Str::limit($session->sDescription, 50) }}</small>
                                         </td>
                                         <td>{{ $session->created_at->format('M d, Y') }}</td>
                                         <td>
-                                            <a href="{{ route('sessions.form', $session->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('sessions.destroy', $session->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this session?');">
+                                            <a href="{{ route('sessions.form', $session->sID) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('sessions.destroy', $session->sID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this session?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
