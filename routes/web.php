@@ -8,6 +8,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\ReportsController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -135,4 +136,11 @@ Route::middleware('check.login')->prefix('admin/images')->name('admin.images.')-
     Route::get('/{id}', [ImageController::class, 'show'])->name('show');
     Route::put('/{id}', [ImageController::class, 'update'])->name('update');
     Route::delete('/{id}', [ImageController::class, 'destroy'])->name('destroy');
+});
+
+// Reports routes
+Route::middleware('check.login')->prefix('reports')->name('reports.')->group(function () {
+    Route::get('/', [ReportsController::class, 'index'])->name('index');
+    Route::get('/download', [ReportsController::class, 'download'])->name('download');
+    Route::get('/filter-options', [ReportsController::class, 'getFilterOptions'])->name('filter-options');
 });

@@ -7,9 +7,9 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'CROMA Dashboard') }}</title>
+        <title>{{ config('app.name', 'Chroma By BPC Dashboard') }}</title>
         <!-- Favicon -->
-        <link href="{{ asset('argon') }}/img/brand/favicon.png" rel="icon" type="image/png">
+        <link href="{{ asset('front-assets/img/logo.png') }}" rel="icon" type="image/png">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
         <!-- Extra details for Live View on GitHub Pages -->
@@ -66,10 +66,10 @@
                 color: #6c757d;
                 transition: all 0.3s ease;
             }
-            
+
             #sidebar-toggle:hover {
-                color: #007bff;
-                background: rgba(0, 123, 255, 0.1);
+                color: #04415f;
+                background: rgba(4, 65, 95, 0.1);
             }
             
             /* Responsive adjustments */
@@ -92,8 +92,9 @@
             /* Brand wrapper styling */
             .navbar-brand-wrapper {
                 padding: 1rem;
-                border-bottom: 1px solid #e9ecef;
+                border-bottom: 2px solid #04415f;
                 margin-bottom: 1rem;
+                background: #f8f9fa;
             }
             
             /* Online status indicator */
@@ -119,7 +120,224 @@
                 border-radius: 0.375rem;
                 transition: all 0.3s ease;
             }
-        </style>
+
+            /*--------------------------------------------------------------
+            # Chroma By BPC - Navy Blue Theme
+            =================================================================*/
+
+            /* Primary Color Override - Navy Blue */
+            :root {
+                --bs-primary: #04415f !important;
+                --bs-primary-rgb: 4, 65, 95 !important;
+            }
+
+            /* Sidebar styling */
+            #sidenav-main {
+                background: #ffffff !important;
+                border-right: 2px solid #e9ecef;
+            }
+
+            #sidenav-main .navbar-brand {
+                color: #04415f !important;
+                font-weight: 700;
+                font-size: 1.2rem;
+            }
+
+            #sidenav-main .nav-link {
+                color: #04415f !important;
+                transition: all 0.3s ease;
+            }
+
+            #sidenav-main .nav-link:hover {
+                color: #04415f !important;
+                background: rgba(4, 65, 95, 0.08) !important;
+                border-left: 3px solid #04415f !important;
+            }
+
+            #sidenav-main .nav-link.active {
+                background: rgba(4, 65, 95, 0.1) !important;
+                color: #04415f !important;
+                border-left: 3px solid #04415f !important;
+                font-weight: 600;
+            }
+
+            /* Top Navbar */
+            .navbar.navbar-main {
+                background: #ffffff;
+                box-shadow: 0 2px 8px rgba(4, 65, 95, 0.1);
+            }
+
+            /* Top navbar styling */
+            .navbar.navbar-top {
+                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+            }
+
+            .navbar.navbar-top .navbar-brand {
+                color: #ffffff !important;
+            }
+
+            .navbar.navbar-top a {
+                color: #ffffff !important;
+            }
+
+            .navbar.navbar-horizontal {
+                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+            }
+
+            /* Buttons */
+            .btn-primary {
+                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+                border: none !important;
+                box-shadow: 0 2px 8px rgba(4, 65, 95, 0.2) !important;
+                color: #ffffff !important;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #032d42 0%, #052a5c 100%) !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 4px 16px rgba(4, 65, 95, 0.3) !important;
+            }
+
+            .btn-primary:focus {
+                box-shadow: 0 0 0 0.2rem rgba(4, 65, 95, 0.25) !important;
+            }
+
+            .btn-primary:active {
+                background: linear-gradient(135deg, #021d2c 0%, #041c3f 100%) !important;
+            }
+
+            /* Badge styling */
+            .badge.bg-primary {
+                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+            }
+
+            /* Card styling */
+            .card {
+                border: 1px solid #e9ecef;
+                transition: all 0.3s ease;
+            }
+
+            .card:hover {
+                box-shadow: 0 4px 16px rgba(4, 65, 95, 0.1) !important;
+                border-color: #04415f;
+            }
+
+            .card-header {
+                background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                border-bottom: 2px solid #04415f !important;
+            }
+
+            /* Form controls */
+            .form-control:focus {
+                border-color: #04415f !important;
+                box-shadow: 0 0 0 0.2rem rgba(4, 65, 95, 0.15) !important;
+            }
+
+            .form-check-input:checked {
+                background-color: #04415f !important;
+                border-color: #04415f !important;
+            }
+
+            .form-check-input:focus {
+                border-color: #04415f !important;
+                box-shadow: 0 0 0 0.2rem rgba(4, 65, 95, 0.15) !important;
+            }
+
+            /* Tables */
+            .table-hover tbody tr:hover {
+                background: rgba(4, 65, 95, 0.05) !important;
+            }
+
+            .table thead th {
+                background: #f8f9fa;
+                color: #04415f;
+                font-weight: 600;
+                border-color: #dee2e6;
+            }
+
+            /* Pagination */
+            .pagination .page-link.active {
+                background-color: #04415f !important;
+                border-color: #04415f !important;
+            }
+
+            .pagination .page-link:hover {
+                color: #04415f !important;
+                border-color: #04415f !important;
+            }
+
+            /* Alerts */
+            .alert-primary {
+                background: linear-gradient(135deg, #e8f1f6 0%, #f0f5f9 100%) !important;
+                border: 1px solid #04415f !important;
+                color: #032d42 !important;
+            }
+
+            /* Progress bar */
+            .progress-bar {
+                background: linear-gradient(90deg, #04415f 0%, #064d7a 100%) !important;
+            }
+
+            /* Dropdown */
+            .dropdown-menu {
+                border: 1px solid #e9ecef;
+                box-shadow: 0 4px 12px rgba(4, 65, 95, 0.1) !important;
+            }
+
+            .dropdown-item.active,
+            .dropdown-item:active {
+                background-color: #04415f !important;
+            }
+
+            .dropdown-item:hover {
+                background-color: rgba(4, 65, 95, 0.1) !important;
+            }
+
+            /* Nav pills */
+            .nav-pills .nav-link.active {
+                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+            }
+
+            /* List group */
+            .list-group-item.active {
+                background-color: #04415f !important;
+                border-color: #04415f !important;
+            }
+
+            /* Background colors and gradients */
+            .bg-primary {
+                background-color: #04415f !important;
+            }
+
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+            }
+
+            /* Text utilities */
+            .text-primary {
+                color: #04415f !important;
+            }
+
+            .text-primary-emphasis {
+                color: #032d42 !important;
+            }
+
+            /* Links */
+            a {
+                color: #04415f;
+                transition: all 0.3s ease;
+            }
+
+            a:hover {
+                color: #032d42;
+            }
+
+            /* Headers */
+            h1, h2, h3, h4, h5, h6 {
+                color: #011e2c;
+            }
+</style>
     </head>
     <body class="{{ $class ?? '' }}">
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
