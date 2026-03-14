@@ -430,8 +430,8 @@
                     }
                 });
             });
-            
-            
+
+
             // Professional logout confirmation with SweetAlert2
             function confirmLogout() {
                 Swal.fire({
@@ -476,9 +476,44 @@
                         });
                     }
                 });
-                
+
                 return false;
             }
+
+            // Calendar notification system - load count of private events needing attention
+            function updateCalendarNotifications() {
+                const badge = document.getElementById('calendar-notification-badge');
+                if (!badge) return; // Only run on pages with calendar notification badge
+
+                fetch('{{ route("admin.calendar.bookings") }}')
+                .then(response => response.json())
+                .then(bookings => {
+                    // Filter for private bookings
+                    const privateBookings = bookings.filter(booking =>
+                        booking.extendedProps && booking.extendedProps.pubprievent === 'PRI'
+                    );
+
+                    const count = privateBookings.length;
+
+                    if (count > 0) {
+                        badge.textContent = count;
+                        badge.classList.remove('d-none');
+                        badge.title = `${count} event(s) pending review`;
+                    } else {
+                        badge.classList.add('d-none');
+                    }
+                })
+                .catch(error => {
+                    console.log('Could not load calendar notifications:', error);
+                    // Silently fail - this is not critical functionality
+                });
+            }
+
+            // Initialize calendar notifications on page load
+            updateCalendarNotifications();
+
+            // Refresh calendar notifications every 2 minutes
+            setInterval(updateCalendarNotifications, 120000);
         </script>
     </body>
 </html>

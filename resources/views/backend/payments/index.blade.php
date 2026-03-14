@@ -1,0 +1,121 @@
+@extends('backend.layouts.app')
+
+@section('content')
+    @include('backend.layouts.headers.cards')
+
+    <div class="container-fluid mt--7">
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                    <div class="card-header border-0">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 class="mb-0">Payment Records</h3>
+                            </div>
+                            <div class="col text-right">
+                                <a href="{{ route('payments.form') }}" class="btn btn-sm btn-primary">Add New Payment</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show mx-4 mt-3" role="alert">
+                            <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                            <span class="alert-text">{{ session('success') }}</span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Payment ID</th>
+                                    <th scope="col">Student</th>
+                                    <th scope="col">Class</th>
+                                    <th scope="col">Month</th>
+                                    <th scope="col">Class Fee</th>
+                                    <th scope="col">Payment Date</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($payments as $payment)
+                                    <tr>
+                                        <td>{{ $payment->paymentID }}</td>
+                                        <td>
+                                            <div class="media align-items-center">
+                                                <div class="media-body">
+                                                    <span class="mb-0 text-sm font-weight-bold">
+                                                        {{ $payment->student->fName }} {{ $payment->student->lName }}
+                                                    </span>
+                                                    <br>
+                                                    <small class="text-muted">ID: {{ $payment->student->AutoID }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-dot mr-4">
+                                                <span class="status"></span>
+                                                <span class="text-dark">{{ $payment->classRoom->cName }}</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $months = [
+                                                    '01' => 'January', '02' => 'February', '03' => 'March', '04' => 'April',
+                                                    '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August',
+                                                    '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December'
+                                                ];
+                                            @endphp
+                                            {{ $months[$payment->month] ?? 'Unknown' }}
+                                        </td>
+                                        <td>Rs. {{ number_format($payment->classRoom->classfee ?? 0, 2) }}</td>
+                                        <td>{{ $payment->created_at->format('M d, Y') }}</td>
+                                        <td class="text-right">
+                                            <div class="dropdown">
+                                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                    <form action="{{ route('payments.destroy', $payment->paymentID) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this payment record?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="dropdown-item text-danger">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="text-center">
+                                                <i class="fas fa-receipt fa-3x text-muted mb-3"></i>
+                                                <h4>No Payment Records Found</h4>
+                                                <p class="text-muted">There are no payment records in the system yet.</p>
+                                                <a href="{{ route('payments.form') }}" class="btn btn-primary">Add First Payment</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if($payments->hasPages())
+                        <div class="card-footer py-4">
+                            <nav class="d-flex justify-content-end" aria-label="...">
+                                {{ $payments->links() }}
+                            </nav>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

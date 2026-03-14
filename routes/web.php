@@ -10,6 +10,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\PaymentDetailController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -114,6 +115,17 @@ Route::middleware('check.login')->prefix('events')->name('events.')->group(funct
     Route::delete('/{id}', [EventController::class, 'destroy'])->name('destroy');
 });
 
+// Payment routes
+Route::middleware('check.login')->prefix('backend/payments')->name('payments.')->group(function () {
+    Route::get('/', [PaymentDetailController::class, 'index'])->name('index');
+    Route::get('/form', [PaymentDetailController::class, 'form'])->name('form');
+    Route::get('/search-student', [PaymentDetailController::class, 'searchStudent'])->name('search-student');
+    Route::get('/student-details/{id}', [PaymentDetailController::class, 'getStudentDetails'])->name('student-details');
+    Route::post('/confirm', [PaymentDetailController::class, 'confirm'])->name('confirm');
+    Route::post('/store', [PaymentDetailController::class, 'store'])->name('store');
+    Route::delete('/{id}', [PaymentDetailController::class, 'destroy'])->name('destroy');
+});
+
 // Backend Calendar routes
 Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar.')->group(function () {
     Route::get('/', [BookingController::class, 'backendIndex'])->name('index');
@@ -128,6 +140,7 @@ Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar
     Route::post('/bookings/{id}/approve', [BookingController::class, 'approveBooking'])->name('bookings.approve');
     Route::post('/bookings/{id}/reject', [BookingController::class, 'rejectBooking'])->name('bookings.reject');
     Route::put('/bookings/{id}/update', [BookingController::class, 'updateBooking'])->name('bookings.update');
+    Route::put('/bookings/{id}/visibility', [BookingController::class, 'updatePubPrivateStatus'])->name('bookings.visibility');
     Route::get('/bookings/{id}/logs', [BookingController::class, 'getBookingLogs'])->name('bookings.logs');
 });
 

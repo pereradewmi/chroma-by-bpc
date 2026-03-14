@@ -84,6 +84,21 @@
                     </div>
                 </div>
 
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-gradient-warning">
+                        <h6 class="mb-0 text-white">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Pending Review
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="pendingBookingsList">
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>Loading...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card shadow">
                     <div class="card-header bg-gradient-dark">
                         <h6 class="mb-0 text-white">
@@ -171,6 +186,17 @@
                                 <option value="paid">Paid</option>
                                 <option value="refunded">Refunded</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pubprievent" class="form-label">Event Visibility</label>
+                            <select class="form-control" id="pubprievent" name="pubprievent">
+                                <option value="PRI" selected>Private (Admin Only)</option>
+                                <option value="PUB">Public (Visible to All)</option>
+                            </select>
+                            <small class="form-text text-muted">Private events are only visible in admin calendar. Public events are visible to everyone.</small>
                         </div>
                     </div>
                     
@@ -494,13 +520,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Make calendar globally accessible for refreshing
     window.calendarInstance = calendar;
     
-    // Load statistics
+    // Load statistics and pending bookings
     loadStats();
-    
+    loadPendingBookings();
+
     // Auto-refresh calendar every 60 seconds
     setInterval(function() {
         calendar.refetchEvents();
         loadStats();
+        loadPendingBookings();
     }, 60000);
 });
 
@@ -634,6 +662,7 @@ function submitBooking() {
             $('#bookingModal').modal('hide');
             refreshCalendar();
             loadStats();
+            loadPendingBookings();
         } else {
             let errorMessage = data.message || 'An error occurred';
             if (data.errors) {
@@ -670,10 +699,11 @@ function showBookingDetails(bookingId) {
     .then(booking => {
         const statusBadge = getStatusBadge(booking.status);
         const paymentBadge = getPaymentBadge(booking.payment_status);
-        const typeBadge = booking.type === 'event' ? 
-            '<span class="badge badge-primary">Event</span>' : 
+        const visibilityBadge = getVisibilityBadge(booking.pubprievent || 'PRI');
+        const typeBadge = booking.type === 'event' ?
+            '<span class="badge badge-primary">Event</span>' :
             '<span class="badge badge-info">Session</span>';
-            
+
         document.getElementById('bookingDetails').innerHTML = `
             <div class="row">
                 <div class="col-md-6">
@@ -691,6 +721,25 @@ function showBookingDetails(bookingId) {
                     <p><strong>People:</strong> ${booking.number_of_people || 'N/A'}</p>
                     <p><strong>Status:</strong> ${statusBadge}</p>
                     <p><strong>Payment:</strong> ${paymentBadge}</p>
+                    <p><strong>Visibility:</strong> ${visibilityBadge}</p>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h6>Event Visibility Controls:</h6>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn ${booking.pubprievent === 'PUB' ? 'btn-success' : 'btn-outline-success'}"
+                                onclick="updateEventVisibility(${booking.id}, 'PUB')">
+                            <i class="fas fa-eye mr-1"></i>Make Public
+                        </button>
+                        <button type="button" class="btn ${booking.pubprievent === 'PRI' ? 'btn-warning' : 'btn-outline-warning'}"
+                                onclick="updateEventVisibility(${booking.id}, 'PRI')">
+                            <i class="fas fa-eye-slash mr-1"></i>Make Private
+                        </button>
+                    </div>
+                    <small class="form-text text-muted d-block mt-2">
+                        Public events are visible to all users on the frontend calendar. Private events are only visible to admins.
+                    </small>
                 </div>
             </div>
             ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
@@ -877,6 +926,76 @@ function getPaymentBadge(status) {
     return badges[status] || '<span class="badge badge-secondary">Unknown</span>';
 }
 
+function getVisibilityBadge(pubprievent) {
+    const badges = {
+        'PUB': '<span class="badge badge-success"><i class="fas fa-eye mr-1"></i>Public</span>',
+        'PRI': '<span class="badge badge-warning"><i class="fas fa-eye-slash mr-1"></i>Private</span>'
+    };
+    return badges[pubprievent] || '<span class="badge badge-secondary">Unknown</span>';
+}
+
+function updateEventVisibility(bookingId, visibility) {
+    const visibilityLabel = visibility === 'PUB' ? 'Public' : 'Private';
+
+    // Show confirmation dialog
+    Swal.fire({
+        title: `Make Event ${visibilityLabel}?`,
+        text: `Are you sure you want to make this event ${visibilityLabel.toLowerCase()}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Yes, make it ${visibilityLabel.toLowerCase()}!`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Send AJAX request to update visibility
+            fetch('{{ route("admin.calendar.bookings.visibility", ":id") }}'.replace(':id', bookingId), {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    pubprievent: visibility
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    // Refresh calendar to show updated visibility
+                    refreshCalendar();
+                    loadPendingBookings();
+
+                    // Close the booking details modal
+                    $('#viewBookingModal').modal('hide');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'Failed to update event visibility'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Network error occurred while updating visibility'
+                });
+            });
+        }
+    });
+}
+
 function loadStats() {
     fetch('{{ route("admin.calendar.stats") }}')
     .then(response => response.json())
@@ -888,6 +1007,58 @@ function loadStats() {
     })
     .catch(error => {
         console.error('Error loading stats:', error);
+    });
+}
+
+function loadPendingBookings() {
+    // Load private bookings that need admin attention
+    fetch('{{ route("admin.calendar.bookings") }}?private_only=true')
+    .then(response => response.json())
+    .then(bookings => {
+        const privateBookings = bookings.filter(booking =>
+            booking.extendedProps && booking.extendedProps.pubprievent === 'PRI'
+        );
+
+        const pendingList = document.getElementById('pendingBookingsList');
+
+        if (privateBookings.length === 0) {
+            pendingList.innerHTML = `
+                <p class="text-muted mb-0">
+                    <i class="fas fa-check-circle text-success mr-2"></i>No events pending review
+                </p>
+            `;
+        } else {
+            let html = `<small class="text-muted">Recent private events needing review:</small><br>`;
+
+            privateBookings.slice(0, 5).forEach(booking => {
+                const date = new Date(booking.start).toLocaleDateString();
+                html += `
+                    <div class="d-flex justify-content-between align-items-center mt-2 p-2 border rounded">
+                        <div>
+                            <strong class="d-block">${booking.title}</strong>
+                            <small class="text-muted">${date}</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" onclick="showBookingDetails(${booking.id})">
+                            Review
+                        </button>
+                    </div>
+                `;
+            });
+
+            if (privateBookings.length > 5) {
+                html += `<small class="text-muted mt-2 d-block">...and ${privateBookings.length - 5} more</small>`;
+            }
+
+            pendingList.innerHTML = html;
+        }
+    })
+    .catch(error => {
+        console.error('Error loading pending bookings:', error);
+        document.getElementById('pendingBookingsList').innerHTML = `
+            <p class="text-danger mb-0">
+                <i class="fas fa-exclamation-triangle mr-2"></i>Error loading pending events
+            </p>
+        `;
     });
 }
 

@@ -13,13 +13,14 @@ class Student extends Model
     protected $primaryKey = 'AutoID';
 
     protected $fillable = [
-        'fName', 
-        'lName', 
-        'Age', 
-        'mobileNo', 
-        'Address', 
-        'Active'
-    
+        'fName',
+        'lName',
+        'Age',
+        'mobileNo',
+        'Address',
+        'Active',
+        'studentemail',
+        'studentpic'
     ];
 
     protected $casts = [

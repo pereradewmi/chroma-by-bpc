@@ -30,7 +30,7 @@
 
                             <div class="pl-lg-4">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-control-label" for="cName">Class Name</label>
                                             <input type="text" id="cName" name="cName"
@@ -43,7 +43,20 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="classfee">Class Fee (Rs.)</label>
+                                            <input type="number" id="classfee" name="classfee" step="0.01" min="0"
+                                                class="form-control form-control-alternative @error('classfee') is-invalid @enderror"
+                                                placeholder="Enter class fee"
+                                                value="{{ old('classfee', $class->classfee) }}" required>
+                                            @error('classfee')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-control-label" for="cImage">Class Image</label>
                                             <div class="custom-file">
