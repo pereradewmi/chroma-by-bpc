@@ -77,25 +77,6 @@
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="bStatus" class="form-label">Status</label>
-                            <select class="form-select" id="bStatus" name="bStatus">
-                                <option value="pending" selected>Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bPayment_status" class="form-label">Payment Status</label>
-                            <select class="form-select" id="bPayment_status" name="bPayment_status">
-                                <option value="pending" selected>Pending</option>
-                                <option value="paid">Paid</option>
-                                <option value="refunded">Refunded</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
                             <label for="bName" class="form-label">Your Name*</label>
                             <input type="text" class="form-control" id="bName" name="bName" required>
                         </div>
@@ -104,26 +85,18 @@
                             <input type="tel" class="form-control" id="bPhone" name="bPhone" required>
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="bEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="bEmail" name="bEmail">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bPrice" class="form-label">Price ($)</label>
-                            <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="bDescription" class="form-label">Description</label>
                             <textarea class="form-control" id="bDescription" name="bDescription" rows="3" placeholder="Additional details about your booking..."></textarea>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bRejection_reason" class="form-label">Rejection Reason</label>
-                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="3" placeholder="Reason for rejection (if applicable)..."></textarea>
                         </div>
                     </div>
                 </form>
@@ -354,10 +327,11 @@ function submitBooking() {
         if (data.success) {
             Swal.fire({
                 icon: 'success',
-                title: 'Success!',
-                text: data.message,
-                timer: 2000,
-                showConfirmButton: false
+                title: 'Booking Submitted Successfully!',
+                text: 'Thank you for your booking request. Our admin or support person will contact you shortly to confirm your appointment.',
+                timer: 4000,
+                showConfirmButton: true,
+                confirmButtonText: 'Okay'
             });
             
             // Close modal and refresh calendar events

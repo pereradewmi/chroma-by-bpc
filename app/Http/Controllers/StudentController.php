@@ -39,6 +39,8 @@ class StudentController extends Controller
             'Address' => 'required|string',
             'mobileNo' => 'required|string|max:20',
             'Age' => 'required|integer|min:1|max:100',
+            'studentemail' => 'required|email|max:255',
+            'studentpic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'Active' => 'boolean',
             'is_update' => 'boolean',
             'student_id' => 'nullable|exists:studentdetails,AutoID'
@@ -50,11 +52,32 @@ class StudentController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'Active']);
+        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'Active', 'studentemail']);
+
+        // Handle image upload
+        if ($request->hasFile('studentpic')) {
+            $image = $request->file('studentpic');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+
+            // Create directory if it doesn't exist
+            $uploadPath = storage_path('app/public/students');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $image->move($uploadPath, $imageName);
+            $data['studentpic'] = $imageName;
+        }
 
         if ($request->get('is_update') && $request->get('student_id')) {
             // Update existing student
             $student = Student::findOrFail($request->get('student_id'));
+
+            // Delete old image if new image is uploaded
+            if (isset($data['studentpic']) && $student->studentpic && file_exists(storage_path('app/public/students/' . $student->studentpic))) {
+                unlink(storage_path('app/public/students/' . $student->studentpic));
+            }
+
             $student->update($data);
             $message = 'Student updated successfully!';
         } else {

@@ -58,9 +58,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'payments') ? 'active' : '' }}" href="{{ route('payments.index') }}">
+                        <i class="fas fa-credit-card text-success"></i>
+                        {{ __('Payments') }}
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.calendar') ? 'active' : '' }}" href="{{ route('admin.calendar.index') }}">
-                        <i class="fas fa-calendar text-success"></i>
+                        <i class="fas fa-calendar text-info"></i>
                         {{ __('Calendar') }}
+                        <span id="calendar-notification-badge" class="badge badge-warning ml-2 d-none">0</span>
                     </a>
                 </li>
                 <li class="nav-item">
