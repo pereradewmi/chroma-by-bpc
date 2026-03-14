@@ -37,6 +37,7 @@ class ClassRoomController extends Controller
         $validator = Validator::make($request->all(), [
             'cName' => 'required|string|max:255',
             'cDescription' => 'nullable|string',
+            'classfee' => 'required|numeric|min:0',
             'cImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
             'is_update' => 'boolean',
             'class_id' => 'nullable|exists:classdetails,cID'
@@ -48,7 +49,7 @@ class ClassRoomController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['cName', 'cDescription']);
+        $data = $request->only(['cName', 'cDescription', 'classfee']);
 
         // Handle image upload
         if ($request->hasFile('cImage')) {

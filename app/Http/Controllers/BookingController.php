@@ -35,20 +35,29 @@ class BookingController extends Controller
     {
         try {
             $query = Booking::query();
-            
+
+            // Check if this is frontend or backend request based on route name
+            $routeName = $request->route()->getName();
+            $isFrontend = $routeName === 'calendar.bookings';
+
             // Filter bookings by date range if provided
             $start = $request->get('start');
             $end = $request->get('end');
-            
+
             if ($start && $end) {
                 $query->whereBetween('booking_date', [$start, $end]);
             }
-            
+
+            // For frontend, only show public events
+            if ($isFrontend) {
+                $query->where('pubprievent', Booking::EVENT_PUBLIC);
+            }
+
             $bookings = $query->get();
-            
+
             // Format for FullCalendar
-            $formattedBookings = $bookings->map(function($booking) {
-                
+            $formattedBookings = $bookings->map(function($booking) use ($isFrontend) {
+
                 // Determine color based on status
                 $color = '#ffc107'; // default yellow for pending
                 if ($booking->bStatus === 'approved') {
@@ -56,31 +65,41 @@ class BookingController extends Controller
                 } elseif ($booking->bStatus === 'rejected') {
                     $color = '#dc3545'; // red
                 }
-                
+
+                $extendedProps = [
+                    'type' => $booking->bEvent_type,
+                    'customer_name' => $booking->bName,
+                    'phone_number' => $booking->bPhone,
+                    'email' => $booking->bEmail,
+                    'description' => $booking->bDescription ?? ''
+                ];
+
+                // Add additional fields for backend only
+                if (!$isFrontend) {
+                    $extendedProps = array_merge($extendedProps, [
+                        'status' => $booking->bStatus,
+                        'price' => $booking->bPrice,
+                        'payment_status' => $booking->bPayment_status,
+                        'rejection_reason' => $booking->bRejection_reason,
+                        'pubprievent' => $booking->pubprievent
+                    ]);
+                }
+
                 return [
                     'id' => $booking->booking_ID,
                     'title' => $booking->bTitle . ' - ' . $booking->bName,
                     'start' => $booking->bStart_datetime->format('Y-m-d\TH:i:s'),
-                    'end' => $booking->bEnd_datetime ? 
+                    'end' => $booking->bEnd_datetime ?
                             $booking->bEnd_datetime->format('Y-m-d\TH:i:s') : null,
                     'backgroundColor' => $color,
                     'borderColor' => $color,
                     'textColor' => '#ffffff',
-                    'extendedProps' => [
-                        'type' => $booking->bEvent_type,
-                        'customer_name' => $booking->bName,
-                        'phone_number' => $booking->bPhone,
-                        'email' => $booking->bEmail,
-                        'status' => $booking->bStatus,
-                        'description' => $booking->bDescription ?? '',
-                        'price' => $booking->bPrice,
-                        'payment_status' => $booking->bPayment_status
-                    ]
+                    'extendedProps' => $extendedProps
                 ];
             });
 
             return response()->json($formattedBookings->values());
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to load bookings: ' . $e->getMessage()
@@ -139,7 +158,8 @@ class BookingController extends Controller
                 'bApproved_at' => null,
                 'bReject_by' => null,
                 'bReject_at' => null,
-                'bRejection_reason' => $request->bRejection_reason ?? ''
+                'bRejection_reason' => $request->bRejection_reason ?? '',
+                'pubprievent' => Booking::EVENT_PRIVATE // Default to private
             ]);
 
             // Log the creation
@@ -542,6 +562,64 @@ class BookingController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error retrieving booking logs: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update booking public/private status
+     */
+    public function updatePubPrivateStatus(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'pubprievent' => 'required|in:PUB,PRI'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $booking = Booking::find($id);
+
+            if (!$booking) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Booking not found'
+                ], 404);
+            }
+
+            // Store old data for logging
+            $oldData = $booking->toArray();
+
+            $user = Auth::user();
+            $booking->update([
+                'pubprievent' => $request->pubprievent
+            ]);
+
+            // Log the status change
+            $statusLabel = $request->pubprievent === 'PUB' ? 'Public' : 'Private';
+            BookingLog::logBookingChange(
+                $booking,
+                'visibility_updated',
+                $oldData,
+                $booking->fresh()->toArray(),
+                "Event visibility changed to {$statusLabel}"
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => "Event visibility updated to {$statusLabel} successfully!",
+                'booking' => $booking->fresh()
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating event visibility: ' . $e->getMessage()
             ], 500);
         }
     }

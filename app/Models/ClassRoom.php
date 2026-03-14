@@ -15,7 +15,8 @@ class ClassRoom extends Model
     protected $fillable = [
         'cName',
         'cDescription',
-        'cImage'
+        'cImage',
+        'classfee'
     ];
 
     /**

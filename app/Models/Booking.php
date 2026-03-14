@@ -15,7 +15,7 @@ class Booking extends Model
 
     protected $fillable = [
         'bName',
-        'bEmail', 
+        'bEmail',
         'bPhone',
         'booking_date',
         'bStart_datetime',
@@ -31,7 +31,8 @@ class Booking extends Model
         'bApproved_at',
         'bReject_by',
         'bReject_at',
-        'bRejection_reason'
+        'bRejection_reason',
+        'pubprievent'
     ];
 
     protected $casts = [
@@ -56,6 +57,10 @@ class Booking extends Model
     const PAYMENT_PENDING = 'pending';
     const PAYMENT_PAID = 'paid';
     const PAYMENT_REFUNDED = 'refunded';
+
+    // Public/Private Event constants
+    const EVENT_PUBLIC = 'PUB';
+    const EVENT_PRIVATE = 'PRI';
 
     // Color constants
     const COLOR_PENDING = '#ffc107'; // Yellow
@@ -89,5 +94,21 @@ class Booking extends Model
     public function scopePending($query)
     {
         return $query->where('bStatus', self::STATUS_PENDING);
+    }
+
+    /**
+     * Scope for public events
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('pubprievent', self::EVENT_PUBLIC);
+    }
+
+    /**
+     * Scope for private events
+     */
+    public function scopePrivate($query)
+    {
+        return $query->where('pubprievent', self::EVENT_PRIVATE);
     }
 }

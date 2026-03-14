@@ -19,7 +19,7 @@
                     </div>
                     
                     <div class="card-body">
-                        <form action="{{ route('students.store') }}" method="POST">
+                        <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @if($isEdit)
                                 <input type="hidden" name="is_update" value="1">
@@ -60,9 +60,9 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="mobileNo">Mobile Number</label>
-                                            <input type="text" id="mobileNo" name="mobileNo" 
-                                                class="form-control form-control-alternative @error('mobileNo') is-invalid @enderror" 
-                                                placeholder="Mobile Number" 
+                                            <input type="text" id="mobileNo" name="mobileNo"
+                                                class="form-control form-control-alternative @error('mobileNo') is-invalid @enderror"
+                                                placeholder="Mobile Number"
                                                 value="{{ old('mobileNo', $student->mobileNo) }}" required>
                                             @error('mobileNo')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -71,12 +71,41 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
+                                            <label class="form-control-label" for="studentemail">Email Address</label>
+                                            <input type="email" id="studentemail" name="studentemail"
+                                                class="form-control form-control-alternative @error('studentemail') is-invalid @enderror"
+                                                placeholder="Email Address"
+                                                value="{{ old('studentemail', $student->studentemail) }}" required>
+                                            @error('studentemail')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
                                             <label class="form-control-label" for="Age">Age</label>
-                                            <input type="number" id="Age" name="Age" 
-                                                class="form-control form-control-alternative @error('Age') is-invalid @enderror" 
+                                            <input type="number" id="Age" name="Age"
+                                                class="form-control form-control-alternative @error('Age') is-invalid @enderror"
                                                 placeholder="Age" min="1" max="100"
                                                 value="{{ old('Age', $student->Age) }}" required>
                                             @error('Age')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="studentpic">Student Picture</label>
+                                            <input type="file" id="studentpic" name="studentpic"
+                                                class="form-control form-control-alternative @error('studentpic') is-invalid @enderror"
+                                                accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
+                                            @if($isEdit && $student->studentpic)
+                                                <small class="text-muted">Current picture: {{ $student->studentpic }}</small>
+                                            @endif
+                                            @error('studentpic')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
