@@ -19,23 +19,20 @@
   --nav-font: "Poppins",  sans-serif;
 }
 
-:root {
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+:root { 
   --background-color: #f1f5f7; /* Background color for the entire website, including individual sections */
   --default-color: #010608; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #011e2c; /* Color for headings, subheadings and title throughout the website */
   --accent-color: #04415f; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
-  --secondary-color: #17a2b8; /* Secondary accent color for variety */
-  --success-color: #28a745; /* Success color for positive actions */
-  --warning-color: #ffc107; /* Warning color */
-  --danger-color: #dc3545; /* Danger color */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: #ffffff;  /* The default color of the main navmenu links */
-  --nav-hover-color: #d0d0d0; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-color: #04415f;  /* The default color of the main navmenu links */
+  --nav-hover-color: #2086b8; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
   --nav-dropdown-color: #010608; /* Used for navigation links of the dropdown items in the navigation menu. */
@@ -601,28 +598,25 @@ h6 {
   position: fixed;
   visibility: hidden;
   opacity: 0;
-  right: 20px;
-  bottom: 20px;
+  right: 15px;
+  bottom: 15px;
   z-index: 99999;
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%);
-  width: 50px;
-  height: 50px;
-  border-radius: 8px;
+  background-color: var(--accent-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
   transition: all 0.4s;
-  box-shadow: 0 4px 12px rgba(4, 65, 95, 0.3);
 }
 
 .scroll-top i {
-  font-size: 28px;
-  color: #ffffff;
+  font-size: 24px;
+  color: var(--contrast-color);
   line-height: 0;
 }
 
 .scroll-top:hover {
-  background: linear-gradient(135deg, #032d42 0%, #052a5c 100%);
-  color: #ffffff;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(4, 65, 95, 0.4);
+  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  color: var(--contrast-color);
 }
 
 .scroll-top.active {
@@ -749,6 +743,29 @@ section,
   position: relative;
   overflow: hidden;
   padding: 0px;
+}
+
+.hero .hero-background {
+  position: relative;
+  overflow: hidden;
+  background-color: #013a562b;
+}
+
+.hero .hero-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('../img/home/background3.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.hero .hero-background > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero .hero-wrapper {
@@ -991,7 +1008,8 @@ section,
 }
 
 .hero .upcoming-event {
-  background: var(--heading-color);
+  /* background: var(--heading-color); */
+  background-image: linear-gradient(45deg, #000000, #52033d, #053c56);
   color: var(--contrast-color);
   padding: 0;
   margin: 30px 0 0;
@@ -1001,7 +1019,7 @@ section,
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 50px;
   position: relative;
   border-radius: 10px;
   overflow: hidden;
@@ -8382,382 +8400,4 @@ section,
 --------------------------------------------------------------*/
 .starter-section {
   /* Add your styles here */
-}
-
-/*--------------------------------------------------------------
-# Bootstrap Primary Color Override - Navy Blue Theme
---------------------------------------------------------------*/
-:root {
-  --bs-primary: #04415f !important;
-  --bs-primary-rgb: 4, 65, 95 !important;
-}
-
-.text-primary,
-.text-primary-emphasis {
-  color: #04415f !important;
-}
-
-.bg-primary {
-  background-color: #04415f !important;
-}
-
-.bg-primary-gradient {
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
-}
-
-.btn-primary,
-.btn-primary:focus {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-  color: #ffffff !important;
-}
-
-.btn-primary:hover {
-  background-color: #032d42 !important;
-  border-color: #032d42 !important;
-}
-
-.btn-primary:active,
-.btn-primary.active {
-  background-color: #021d2c !important;
-  border-color: #021d2c !important;
-}
-
-.btn-outline-primary {
-  color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.btn-outline-primary:hover {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-  color: #ffffff !important;
-}
-
-.btn-outline-primary:focus {
-  box-shadow: 0 0 0 0.25rem rgba(4, 65, 95, 0.25) !important;
-}
-
-.btn-check:checked + .btn-outline-primary,
-.btn-outline-primary.active {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.badge.bg-primary {
-  background-color: #04415f !important;
-}
-
-.form-switch .form-check-input:checked {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.form-check-input:checked {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.nav-pills .nav-link.active {
-  background-color: #04415f !important;
-}
-
-.list-group-item.active {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.pagination .page-link.active {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.progress-bar {
-  background-color: #04415f !important;
-}
-
-.table-primary {
-  background-color: #d3e4ed !important;
-}
-
-.table-primary th {
-  background-color: #04415f !important;
-  color: #ffffff !important;
-}
-
-.alert-primary {
-  color: #032d42 !important;
-  background-color: #d9e8f0 !important;
-  border-color: #c5dfe7 !important;
-}
-
-.alert-primary hr {
-  border-top-color: #b1d6de !important;
-}
-
-.alert-primary .alert-link {
-  color: #021d2c !important;
-}
-
-/*--------------------------------------------------------------
-# Enhanced Animations & Styling
---------------------------------------------------------------*/
-
-/* Hero section with gradient background */
-.hero {
-  background: linear-gradient(135deg, #f1f5f7 0%, #e6edf0 100%) !important;
-}
-
-.hero .btn-primary {
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
-  box-shadow: 0 4px 12px rgba(4, 65, 95, 0.2) !important;
-}
-
-/* Upcoming event styling */
-.upcoming-event {
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.btn {
-  transition: all 0.3s ease !important;
-}
-
-.btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(4, 65, 95, 0.2) !important;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
-  border: none !important;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #032d42 0%, #052a5c 100%) !important;
-  box-shadow: 0 6px 16px rgba(4, 65, 95, 0.3) !important;
-}
-
-/* Card animations */
-.card {
-  transition: all 0.3s ease !important;
-}
-
-.card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-}
-
-/* Feature cards styling */
-.feature-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
-  border: 1px solid #e9ecef !important;
-  transition: all 0.3s ease !important;
-  border-radius: 10px;
-}
-
-.feature-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 12px 32px rgba(4, 65, 95, 0.15) !important;
-  border-color: #04415f !important;
-}
-
-.feature-card.active {
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
-  color: #ffffff !important;
-}
-
-/* Event items styling */
-.event-item {
-  transition: all 0.3s ease !important;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.event-item:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 12px 28px rgba(4, 65, 95, 0.2) !important;
-}
-
-.event-image img {
-  transition: transform 0.3s ease !important;
-}
-
-.event-item:hover .event-image img {
-  transform: scale(1.05) !important;
-}
-
-/* Program items styling */
-.program-item {
-  transition: all 0.3s ease !important;
-  border-left: 4px solid transparent !important;
-}
-
-.program-item:hover {
-  border-left-color: #04415f !important;
-  background-color: rgba(4, 65, 95, 0.05) !important;
-  transform: translateX(4px) !important;
-}
-
-/* Header gradient */
-.header {
-  background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
-}
-
-/* Smooth link animations */
-a:not(.btn) {
-  position: relative;
-  transition: color 0.3s ease !important;
-}
-
-a:not(.btn)::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #04415f;
-  transition: width 0.3s ease !important;
-}
-
-a:not(.btn):hover::after {
-  width: 100%;
-}
-
-/* Badge animations */
-.badge {
-  transition: all 0.3s ease !important;
-  font-weight: 500 !important;
-}
-
-.badge:hover {
-  transform: scale(1.05) !important;
-}
-
-.badge-accredited {
-  animation: pulse 2s infinite !important;
-}
-
-/* Pulse animation */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-/* Fade in animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Apply fade-in animation to AOS elements */
-[data-aos] {
-  animation: fadeInUp 0.6s ease forwards !important;
-}
-
-/* Gradient backgrounds for sections */
-.hero {
-  background: linear-gradient(135deg, #f1f5f7 0%, #e6edf0 100%) !important;
-}
-
-.about {
-  background: #ffffff !important;
-}
-
-/* Section title styling */
-.section-title h2 {
-  position: relative;
-  display: inline-block;
-  transition: all 0.3s ease !important;
-}
-
-.section-title h2::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, #04415f 0%, #064d7a 100%);
-  border-radius: 2px;
-}
-
-/* Post items styling */
-.post-item {
-  transition: all 0.3s ease !important;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.post-item:hover {
-  box-shadow: 0 8px 20px rgba(4, 65, 95, 0.15) !important;
-  transform: translateY(-4px) !important;
-}
-
-.post-img img {
-  transition: transform 0.3s ease !important;
-}
-
-.post-item:hover .post-img img {
-  transform: scale(1.08) !important;
-}
-
-/* Form controls styling */
-.form-control, .form-select {
-  border-color: #d3d3d3 !important;
-  transition: all 0.3s ease !important;
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: #04415f !important;
-  box-shadow: 0 0 0 0.2rem rgba(4, 65, 95, 0.25) !important;
-}
-
-/* Modal animations */
-.modal.fade .modal-dialog {
-  transition: transform 0.3s ease !important;
-}
-
-.modal.show .modal-dialog {
-  transform: scale(1) !important;
-}
-
-/* Calendar styling */
-#calendar {
-  font-family: var(--default-font) !important;
-}
-
-.fc-daygrid-day-number {
-  color: #04415f !important;
-  font-weight: 600 !important;
-}
-
-.fc-button-primary {
-  background-color: #04415f !important;
-  border-color: #04415f !important;
-}
-
-.fc-button-primary:hover {
-  background-color: #032d42 !important;
-  border-color: #032d42 !important;
-}
-
-.fc-button-primary:not(:disabled):active {
-  background-color: #021d2c !important;
-  border-color: #021d2c !important;
-}
-
-.fc-event-title {
-  font-weight: 500 !important;
 }

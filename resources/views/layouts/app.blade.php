@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'CROMA') }}</title>
+        <title>{{ config('app.name', 'CHROMA') }}</title>
         <!-- Favicon -->
         <link href="{{ asset('front-assets') }}/img/favicon.png" rel="icon" type="image/png">
         <!-- Fonts -->

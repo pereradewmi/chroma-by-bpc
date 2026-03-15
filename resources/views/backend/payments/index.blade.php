@@ -83,8 +83,8 @@
                                                     <form action="{{ route('payments.destroy', $payment->paymentID) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this payment record?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger">
-                                                            <i class="fas fa-trash"></i> Delete
+                                                        <button type="submit" class="dropdown-item text-danger" title="Delete" aria-label="Delete">
+                                                            <i class="fas fa-trash" aria-hidden="true"></i>
                                                         </button>
                                                     </form>
                                                 </div>

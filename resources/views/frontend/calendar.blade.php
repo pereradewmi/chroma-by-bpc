@@ -5,24 +5,136 @@
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 <!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    .calendar-page {
+        background: linear-gradient(180deg, #f4f8fb 0%, #eef4f8 100%);
+        min-height: calc(100vh - 140px);
+    }
+
+    .calendar-page .calendar-wrapper .card {
+        border: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 14px 36px rgba(4, 65, 95, 0.14);
+    }
+
+    .calendar-page .calendar-wrapper .card-header {
+        background: linear-gradient(135deg, #04415f 0%, #086190 100%);
+        border-bottom: 0;
+        padding: 1rem 1.25rem;
+    }
+
+    .calendar-page .calendar-title {
+        color: #ffffff;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+    }
+
+    .calendar-page #calendar {
+        padding: 18px;
+        background: #ffffff;
+    }
+
+    .calendar-page .fc-header-toolbar {
+        margin-bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .calendar-page .fc-toolbar-title {
+        color: #04415f;
+        font-size: 1.15rem;
+        font-weight: 700;
+    }
+
+    .calendar-page .fc-button-primary {
+        background: #04415f;
+        border-color: #04415f;
+        box-shadow: 0 4px 12px rgba(4, 65, 95, 0.2);
+    }
+
+    .calendar-page .fc-button-primary:hover,
+    .calendar-page .fc-button-primary:focus,
+    .calendar-page .fc-button-primary:active {
+        background: #03344d;
+        border-color: #03344d;
+    }
+
+    .calendar-page .fc-daygrid-event,
+    .calendar-page .fc-timegrid-event {
+        border: 0;
+        border-radius: 8px;
+        padding: 2px 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+    }
+
+    .calendar-page .fc-event:hover {
+        opacity: 0.88;
+    }
+
+    .calendar-page .modal-content {
+        border: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 16px 36px rgba(4, 65, 95, 0.18);
+    }
+
+    .calendar-page .modal-header {
+        border-bottom: 0;
+    }
+
+    .calendar-page .modal-footer {
+        border-top: 1px solid #edf2f7;
+    }
+
+    .calendar-page .form-control,
+    .calendar-page .form-select {
+        border-radius: 10px;
+    }
+
+    .calendar-page .badge {
+        font-size: 0.78rem;
+        font-weight: 600;
+        border-radius: 999px;
+        padding: 0.38rem 0.58rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .calendar-page #calendar {
+            padding: 12px;
+        }
+
+        .calendar-page .fc-header-toolbar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .calendar-page .fc-toolbar-title {
+            font-size: 1rem;
+        }
+    }
+</style>
 @endpush
 
 @section('title', 'Book Appointment | Chroma By BPC')
 
 @section('main')
 
-<main class="main">
+<main class="main calendar-page">
 
 <div class="container py-4">
     <div class="row">
         <div class="col-12">
             <div class="calendar-wrapper">
-                <div class="card shadow border-0" style="border-radius: 10px;">
-                    <div class="card-header bg-primary text-white" style="border-radius: 10px 10px 0 0;">
-                        <h5 class="mb-0" style="color: #ffffff;"><i class="fas fa-calendar-alt me-2" style="color: #ffffff;"></i><span style="color: #ffffff;">Book Your Appointment</span></h5>
+                <div class="card shadow border-0">
+                    <div class="card-header text-white">
+                        <h5 class="mb-0 calendar-title"><i class="fas fa-calendar-alt me-2"></i>Book Your Appointment</h5>
                     </div>
                     <div class="card-body p-0">
-                        <div id="calendar" style="padding: 20px;"></div>
+                        <div id="calendar"></div>
                     </div>
                 </div>
             </div>
@@ -470,45 +582,4 @@ document.getElementById('end_time').addEventListener('change', function() {
 });
 </script>
 
-<style>
-.fc-header-toolbar {
-    margin-bottom: 1rem;
-}
-
-.fc-event {
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.fc-event:hover {
-    opacity: 0.8;
-}
-
-.card {
-    border-radius: 10px;
-}
-
-.modal-content {
-    border-radius: 10px;
-}
-
-.badge {
-    font-size: 0.875em;
-}
-
-#calendar {
-    padding: 20px;
-}
-
-.fc-daygrid-event {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.text-primary { color: #007bff !important; }
-.text-success { color: #28a745 !important; }
-.text-warning { color: #ffc107 !important; }
-.text-info { color: #17a2b8 !important; }
-</style>
 @endsection

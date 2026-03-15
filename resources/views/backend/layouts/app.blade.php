@@ -185,6 +185,32 @@
             }
 
             /* Buttons */
+            .btn {
+                padding: 0.7rem 1.3rem !important;
+                border-radius: 12px !important;
+                font-weight: 600;
+                font-size: 0.95rem;
+                line-height: 1.2;
+                box-shadow: 0 6px 16px rgba(4, 65, 95, 0.14);
+                transition: all 0.25s ease;
+            }
+
+            .btn:hover,
+            .btn:focus {
+                transform: translateY(-1px);
+                box-shadow: 0 10px 22px rgba(4, 65, 95, 0.2) !important;
+            }
+
+            .btn-sm {
+                padding: 0.55rem 1rem !important;
+                border-radius: 10px !important;
+            }
+
+            .btn-lg {
+                padding: 0.9rem 1.65rem !important;
+                border-radius: 14px !important;
+            }
+
             .btn-primary {
                 background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
                 border: none !important;
@@ -256,6 +282,20 @@
                 border-color: #dee2e6;
             }
 
+            /* Rounded + shadow tables (backend-wide) */
+            .main-content .table-responsive,
+            .main-content table.table {
+                border-radius: 12px;
+                overflow: hidden;
+                background: #ffffff;
+                box-shadow: 0 8px 24px rgba(4, 65, 95, 0.12);
+            }
+
+            .main-content .table-responsive table.table {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
             /* Pagination */
             .pagination .page-link.active {
                 background-color: #04415f !important;
@@ -311,7 +351,8 @@
             }
 
             .bg-gradient-primary {
-                background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+                background: linear-gradient(14deg, #272727 0%, #00568c 100%) !important;
+                /* background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important; */
             }
 
             /* Text utilities */

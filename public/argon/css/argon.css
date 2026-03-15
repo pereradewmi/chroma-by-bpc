@@ -12094,7 +12094,7 @@ button.bg-darker:focus
     .pt-md-2,
     .py-md-2
     {
-        padding-top: .5rem !important;
+        padding-top: 6.5rem !important;
     }
     .pr-md-2,
     .px-md-2
@@ -15030,7 +15030,8 @@ button.bg-lighter:focus
 
 .bg-gradient-primary
 {
-    background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important;
+    background: linear-gradient(14deg, #272727 0%, #00568c 100%) !important;
+    /* background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%) !important; */
 }
 
 .bg-gradient-secondary
@@ -16835,7 +16836,7 @@ a.text-lighter:focus
 .btn-group .btn,
 .input-group .btn
 {
-    margin-right: 0;
+    margin-right: 5px;
 
     transform: translateY(0);
 }
