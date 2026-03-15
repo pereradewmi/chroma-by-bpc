@@ -54,11 +54,15 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('teachers.form', $teacher->T_ID) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="{{ route('teachers.form', $teacher->T_ID) }}" class="btn btn-sm btn-primary" title="Edit" aria-label="Edit">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </a>
                                             <form action="{{ route('teachers.destroy', $teacher->T_ID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this teacher?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete" aria-label="Delete">
+                                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

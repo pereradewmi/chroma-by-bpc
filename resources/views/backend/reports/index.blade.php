@@ -23,19 +23,19 @@
                 <div class="card-body">
                     <form id="filter-form" method="GET" action="{{ route('reports.index') }}">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6">
                                 <div class="form-group">
                                     <label class="form-control-label">{{ __('From Date') }}</label>
                                     <input class="form-control" type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6">
                                 <div class="form-group">
                                     <label class="form-control-label">{{ __('To Date') }}</label>
                                     <input class="form-control" type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6">
                                 <div class="form-group">
                                     <label class="form-control-label">{{ __('Event Type') }}</label>
                                     <select class="form-control" name="event_type" id="event_type">
@@ -45,7 +45,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6">
                                 <div class="form-group">
                                     <label class="form-control-label">{{ __('Payment Status') }}</label>
                                     <select class="form-control" name="payment_status" id="payment_status">
@@ -57,8 +57,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6">
                                 <div class="form-group">
                                     <label class="form-control-label">{{ __('Booking Status') }}</label>
                                     <select class="form-control" name="status" id="status">
@@ -69,7 +70,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+
+                            <div class="col-md-3 col-sm-6">
                                 <div class="form-group">
                                     <label class="form-control-label">{{ __('Event Category') }}</label>
                                     <select class="form-control" name="event_category" id="event_category">
@@ -78,30 +80,30 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 d-flex align-items-end">
-                                <div class="form-group mb-0">
+
+                            <div class="col-md-6 d-flex align-items-end justify-content-md-end">
+                                <div class="form-group mb-0 d-flex flex-wrap justify-content-md-end" style="gap: 8px;">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-filter"></i> {{ __('Apply Filters') }}
                                     </button>
-                                    <button type="button" class="btn btn-secondary ml-2" onclick="exportFilteredData()">
+                                    <button type="button" class="btn btn-secondary" onclick="exportFilteredData()">
                                         <i class="fas fa-download"></i> {{ __('Export Filtered') }}
                                     </button>
+
+                                    <div class="dropdown">
+                                        <button class="btn btn-neutral dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-download"></i> {{ __('Download') }}
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#" onclick="downloadReport('csv'); return false;">
+                                                <i class="fas fa-file-csv"></i> {{ __('Download as CSV') }}
+                                            </a>
+                                            <a class="dropdown-item" href="#" onclick="downloadReport('excel'); return false;">
+                                                <i class="fas fa-file-excel"></i> {{ __('Download as Excel') }}
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                       <div class="col-lg-6 col-5 text-right">
-                    <div class="dropdown">
-                        <button class="btn btn-neutral dropdown-toggle" type="button" data-toggle="dropdown">
-                            <i class="fas fa-download"></i> {{ __('Download') }}
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" onclick="downloadReport('csv')">
-                                <i class="fas fa-file-csv"></i> {{ __('Download as CSV') }}
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="downloadReport('excel')">
-                                <i class="fas fa-file-excel"></i> {{ __('Download as Excel') }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
                             </div>
                         </div>
                     </form>
@@ -211,7 +213,6 @@
         </div>
     </div>
     
-    @include('backend.layouts.footers.auth')
 </div>
 @endsection
 

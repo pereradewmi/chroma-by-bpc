@@ -55,14 +55,14 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('events.form', $event->eID) }}" class="btn btn-sm btn-info">
-                                                    <i class="fas fa-edit"></i> Edit
+                                                <a href="{{ route('events.form', $event->eID) }}" class="btn btn-sm btn-primary" title="Edit" aria-label="Edit">
+                                                    <i class="fas fa-edit" aria-hidden="true"></i>
                                                 </a>
                                                 <form action="{{ route('events.destroy', $event->eID) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                                        <i class="fas fa-trash"></i> Delete
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')" title="Delete" aria-label="Delete">
+                                                        <i class="fas fa-trash" aria-hidden="true"></i>
                                                     </button>
                                                 </form>
                                             </div>

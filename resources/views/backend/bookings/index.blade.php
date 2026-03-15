@@ -123,11 +123,11 @@ function displayBookings(bookings) {
                     ${statusBadge}
                 </td>
                 <td class="align-middle text-center">
-                    <button class="btn btn-link text-dark px-3 mb-0" onclick="viewBookingDetails('${booking.id}')">
-                        <i class="fas fa-eye text-dark me-2" aria-hidden="true"></i>View
+                    <button class="btn btn-link text-dark px-3 mb-0" onclick="viewBookingDetails('${booking.id}')" title="View" aria-label="View">
+                        <i class="fas fa-eye text-dark" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-link text-danger px-3 mb-0" onclick="deleteBooking('${booking.id}')">
-                        <i class="fas fa-trash text-danger me-2" aria-hidden="true"></i>Delete
+                    <button class="btn btn-link text-danger px-3 mb-0" onclick="deleteBooking('${booking.id}')" title="Delete" aria-label="Delete">
+                        <i class="fas fa-trash text-danger" aria-hidden="true"></i>
                     </button>
                 </td>
             </tr>

@@ -61,7 +61,9 @@
                                             <form action="{{ route('admin.images.destroy', $image->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this image?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete" aria-label="Delete">
+                                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

@@ -69,29 +69,31 @@
             </div>
             <div class="card-content">
               <div class="facility-image">
-                <img src="{{ asset('front-assets/img/education/activities-2.webp') }}" alt="Academic Building" class="img-fluid">
+                <img src="{{ asset('front-assets/img/home/art.jpg') }}" alt="Academic Building" class="img-fluid">
               </div>
               <div class="facility-list">
                 <div class="facility-item">
                   <i class="bi bi-check2-circle"></i>
-                  <span>Advanced Art Studios</span>
+                  <span>KIDS (Monthly fee 3000/-)</span>
                 </div>
                 <div class="facility-item">
                   <i class="bi bi-check2-circle"></i>
-                  <span>Modern Art Equipment</span>
+                  <span>Tuesday (Time 4:30 pm – 6:00 pm) <br>
+                    Friday (Time 4:00 pm – 5:30 pm)
+                  </span>
                 </div>
                 <div class="facility-item">
                   <i class="bi bi-check2-circle"></i>
-                  <span>Digital Library</span>
+                  <span>ADULTS (Below 18 – 3000/-) (Above 18 – 4000/-)</span>
                 </div>
                 <div class="facility-item">
                   <i class="bi bi-check2-circle"></i>
-                  <span>Study Lounges</span>
+                  <span>Saturday (Time 3:30 pm – 5:00 pm)</span>
                 </div>
               </div>
             </div>
             <div class="card-footer">
-              <a href="#" class="explore-btn">Explore Academic <i class="bi bi-arrow-right"></i></a>
+              {{-- <a href="#" class="explore-btn">Explore Academic <i class="bi bi-arrow-right"></i></a> --}}
             </div>
           </div>
 

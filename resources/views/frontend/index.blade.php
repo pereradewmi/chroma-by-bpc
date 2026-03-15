@@ -9,25 +9,25 @@
     <!-- Hero Section -->
     <section id="hero" class="hero section">
 
-      <div class="hero-wrapper">
+      <div class="hero-wrapper hero-background">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-delay="100">
               <h1>Inspiring Excellence Through Education</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget lacus id tortor facilisis tincidunt. Donec gravida risus at sollicitudin luctus.</p>
-              
+              <p>Discover a wide range of exciting classes and events. Browse schedules, book your sessions, and manage your activities easily through Chroma</p>
+              <p>Explore a variety of engaging sessions designed to help you learn new skills, meet new people, and enjoy meaningful experiences.</p>
               <div class="action-buttons">
-                <a href="#" class="btn-primary">Start Your Journey</a>
-                <a href="#" class="btn-secondary">Virtual Tour</a>
+                <a href="{{ route('calendar.index') }}" class="btn-primary">Book an Appointment</a>
+                <a href="{{ route('frontend.events') }}" class="btn-secondary">Virtual Tour</a>
               </div>
             </div>
             <div class="col-lg-6 hero-media" data-aos="zoom-in" data-aos-delay="200">
-              <img src="{{ asset('front-assets/img/home/header.jpg') }}" alt="Education" class="img-fluid main-image">
+              {{-- <img src="{{ asset('front-assets/img/home/header.jpg') }}" alt="Education" class="img-fluid main-image"> --}}
               <div class="image-overlay">
-                <div class="badge-accredited">
+                {{-- <div class="badge-accredited">
                   <i class="bi bi-patch-check-fill"></i>
                   <span>Accredited Excellence</span>
-                </div>
+                </div> --}}
               </div>
             </div>
           </div>
@@ -48,8 +48,8 @@
               <p>Join us to explore campus facilities, meet our faculty, and learn about scholarship opportunities.</p>
             </div>
             <div class="event-action">
-              <a href="#" class="btn-event">RSVP Now</a> 
-               <span class="countdown">Starts in 3 weeks</span> 
+              <a href="{{ route('frontend.events') }}" class="btn-event">Event Details</a> 
+               {{-- <span class="countdown">Starts in 3 weeks</span>  --}}
             </div>
           </div>
         </div>

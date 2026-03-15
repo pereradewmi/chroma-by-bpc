@@ -143,7 +143,7 @@
               <!-- End Search Form -->
 
               <!-- Categories -->
-              <div class="sidebar-item categories" data-aos="fade-up" data-aos-delay="100">
+              {{-- <div class="sidebar-item categories" data-aos="fade-up" data-aos-delay="100">
                 <h4>Event Categories</h4>
                 <ul class="list-unstyled">
                   <li><a href="#">Academic <span>(12)</span></a></li>
@@ -153,7 +153,8 @@
                   <li><a href="#">Seminars <span>(8)</span></a></li>
                   <li><a href="#">Competitions <span>(6)</span></a></li>
                 </ul>
-              </div><!-- End Categories -->
+              </div> --}}
+              <!-- End Categories -->
 
               <!-- Upcoming Events -->
               <div class="sidebar-item upcoming-events" data-aos="fade-up" data-aos-delay="200">
