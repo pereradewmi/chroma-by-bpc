@@ -167,7 +167,5 @@
                 </div>
             </div>
         </div>
-        
-        @include('backend.layouts.footers.auth')
     </div>
 @endsection

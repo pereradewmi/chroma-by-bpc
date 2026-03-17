@@ -83,18 +83,10 @@
     </div>
 </div>
 @else
-<div class="header bg-gradient-primary pt-5 pt-md-8">
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <!-- Logo header for non-dashboard pages -->
-            <div class="row align-items-center py-4">
-                <div class="col-lg-6 col-7">
-                    <h6 class="h2 text-white d-inline-block mb-0">{{ ucfirst(str_replace('.', ' ', Route::currentRouteName() ?? 'Page')) }}</h6>
-                </div>
-                <!-- <div class="col-lg-6 col-5 text-right">
-                    <img src="{{ asset('front-assets') }}/img/logo.png" class="img-fluid" alt="CROMA" style="max-height: 50px;">
-                </div> -->
-            </div>
+            <!-- empty space for other pages, so the content mt--7 plays nicely -->
         </div>
     </div>
 </div>
