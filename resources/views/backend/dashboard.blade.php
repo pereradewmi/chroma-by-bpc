@@ -4,7 +4,7 @@
     @include('backend.layouts.headers.cards')
     
     <!-- Page content -->
-    <div class="container-fluid ">
+    <div class="container-fluid mb-4">
         <!-- Calendar Section -->
         <div class="row justify-content-center">
             <div class="col-xl-12 col-lg-12">
@@ -15,8 +15,6 @@
                 </div>
             </div>
         </div>
-        
-        @include('backend.layouts.footers.auth')
     </div>
 
 <!-- View Booking Modal -->
