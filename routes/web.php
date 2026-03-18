@@ -38,9 +38,7 @@ Route::middleware('check.login')->group(function () {
 });
 
 // Frontend routes
-Route::get('/Events', function () {
-    return view('frontend.events');
-})->name('frontend.events');
+Route::get('/Events', [EventController::class, 'frontendIndex'])->name('frontend.events');
 
 Route::get('/Classes', function () {
     return view('frontend.classes');
@@ -50,9 +48,7 @@ Route::get('/Sessions', function () {
     return view('frontend.sessions');
 })->name('frontend.sessions');
 
-Route::get('/EventDetails', function () {
-    return view('frontend.event-details');
-})->name('frontend.event-details');
+Route::get('/EventDetails/{id}', [EventController::class, 'frontendShow'])->name('frontend.event-details');
 
 Route::get('/Gallery', [ImageController::class, 'frontendIndex'])->name('frontend.gallery');
 

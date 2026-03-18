@@ -1,7 +1,7 @@
 @extends("frontend.components.layout")
 @section("title", "Event Details | Chroma By BPC")
-@section("description", "Discover our modern campus facilities at Chroma By BPC. Explore academic buildings, student services, and recreational spaces.")
-@section("keywords", "Chroma By BPC, campus facilities, academic buildings, student services, recreational spaces")
+@section("description", "{{ $event->eDescription }}")
+@section("keywords", "Chroma By BPC, events, {{ $event->eName }}, event details, workshops, community gatherings, activities")
 @section("main")
 
   <main class="main">
@@ -14,195 +14,165 @@
         <div class="row">
           <div class="col-lg-8">
             <div class="event-image mb-4" data-aos="fade-up">
-              <img src="{{ asset('front-assets/img/education/events-9.webp') }}" alt="Event" class="img-fluid rounded">
+              <img src="{{ $event->getEventImage() }}" alt="Event" class="img-fluid rounded">
             </div>
 
             <div class="event-meta mb-4" data-aos="fade-up" data-aos-delay="100">
               <div class="row g-3">
-                <div class="col-md-4">
+                @if($event->dateFrom)
+                <div class="col-md-6">
                   <div class="meta-item">
                     <i class="bi bi-calendar-date"></i>
-                    <span>10/24/2023</span>
+                    <span>
+                      {{ $event->dateFrom->format('m/d/Y') }}
+                      @if($event->dateTo)
+                        - {{ $event->dateTo->format('m/d/Y') }}
+                      @endif
+                    </span>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="meta-item">
-                    <i class="bi bi-clock"></i>
-                    <span>3:00 PM - 6:00 PM</span>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="meta-item">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>Main Auditorium</span>
-                  </div>
-                </div>
+                @endif
               </div>
             </div>
 
             <div class="event-content" data-aos="fade-up" data-aos-delay="200">
-              <h2>Annual Science Exhibition</h2>
+              <h2>{{ $event->eName }}</h2>
+              @if($event->eDescription)
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non mauris maximus, finibus dui eget, rhoncus diam. Suspendisse blandit diam at nisi rutrum, non blandit magna molestie. Cras dapibus finibus diam, eu varius purus eleifend eu. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
+                {{ $event->eDescription }}
               </p>
-              <p>
-                Donec cursus, sapien vel convallis lobortis, dolor nisl pharetra est, ac facilisis ligula sapien vel justo. Curabitur sed semper risus, non tempus lorem. Nulla sodales feugiat tempus. Cras tincidunt dapibus ante, ut rutrum sapien finibus at. Mauris consequat tellus eu nunc pharetra, eu convallis elit tempor.
-              </p>
+              @endif
 
-              <h3 class="mt-4">Event Highlights</h3>
-              <ul class="event-highlights">
-                <li>
-                  <i class="bi bi-check-circle"></i>
-                  <span>Interactive student presentations of scientific experiments</span>
-                </li>
-                <li>
-                  <i class="bi bi-check-circle"></i>
-                  <span>Special lecture by renowned physicist Dr. Robert Jenkins</span>
-                </li>
-                <li>
-                  <i class="bi bi-check-circle"></i>
-                  <span>Robotics competition with prizes for top three teams</span>
-                </li>
-                <li>
-                  <i class="bi bi-check-circle"></i>
-                  <span>Science demonstrations by faculty members</span>
-                </li>
-                <li>
-                  <i class="bi bi-check-circle"></i>
-                  <span>Exhibition of innovative student projects</span>
-                </li>
-              </ul>
-
-              <h3 class="mt-4">Event Schedule</h3>
-              <div class="schedule-table">
-                <div class="schedule-row">
-                  <div class="schedule-time">3:00 PM - 3:30 PM</div>
-                  <div class="schedule-activity">
-                    <h4>Opening Ceremony</h4>
-                    <p>Welcome address by Principal and introduction to the event</p>
-                  </div>
-                </div>
-                <div class="schedule-row">
-                  <div class="schedule-time">3:30 PM - 4:30 PM</div>
-                  <div class="schedule-activity">
-                    <h4>Student Project Presentations</h4>
-                    <p>Selected students showcase their scientific innovations</p>
-                  </div>
-                </div>
-                <div class="schedule-row">
-                  <div class="schedule-time">4:30 PM - 5:15 PM</div>
-                  <div class="schedule-activity">
-                    <h4>Guest Lecture</h4>
-                    <p>Special lecture on "Future of Quantum Computing" by Dr. Robert Jenkins</p>
-                  </div>
-                </div>
-                <div class="schedule-row">
-                  <div class="schedule-time">5:15 PM - 5:45 PM</div>
-                  <div class="schedule-activity">
-                    <h4>Robotics Demonstration</h4>
-                    <p>Live demonstration of student-built robots and automation projects</p>
-                  </div>
-                </div>
-                <div class="schedule-row">
-                  <div class="schedule-time">5:45 PM - 6:00 PM</div>
-                  <div class="schedule-activity">
-                    <h4>Award Ceremony &amp; Closing</h4>
-                    <p>Distribution of certificates and recognition of outstanding projects</p>
-                  </div>
-                </div>
-              </div>
-
-              {{-- <div class="event-gallery mt-5" data-aos="fade-up" data-aos-delay="300">
-                <h3>Event Gallery</h3>
-                <p>Images from previous year's science exhibition:</p>
-                <div class="row g-4 mt-2">
-                  <div class="col-md-4">
-                    <a href="assets/img/education/events-1.webp" class="glightbox">
-                      <img src="assets/img/education/events-1.webp" alt="Event Gallery" class="img-fluid rounded">
-                    </a>
-                  </div>
-                  <div class="col-md-4">
-                    <a href="assets/img/education/events-2.webp" class="glightbox">
-                      <img src="assets/img/education/events-2.webp" alt="Event Gallery" class="img-fluid rounded">
-                    </a>
-                  </div>
-                  <div class="col-md-4">
-                    <a href="assets/img/education/events-3.webp" class="glightbox">
-                      <img src="assets/img/education/events-3.webp" alt="Event Gallery" class="img-fluid rounded">
-                    </a>
-                  </div>
-                </div>
-              </div> --}}
+              <!-- End event content -->
             </div>
           </div>
 
           <div class="col-lg-4">
-            <div class="event-sidebar">
-              {{-- <div class="sidebar-widget registration-form" data-aos="fade-left" data-aos-delay="200">
-                <h3>Register for this Event</h3>
-                <form>
-                  <div class="mb-3">
-                    <label for="name" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="name" required="">
-                  </div>
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" required="">
-                  </div>
-                  <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="phone">
-                  </div>
-                  <div class="mb-3">
-                    <label for="student-type" class="form-label">You are a</label>
-                    <select class="form-select" id="student-type">
-                      <option selected="">Select an option</option>
-                      <option value="student">Student</option>
-                      <option value="parent">Parent</option>
-                      <option value="teacher">Teacher</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                  <div class="d-grid">
-                    <button type="submit" class="btn btn-register">Register Now</button>
+            <!-- Sidebar -->
+            <div class="events-sidebar">
+              <!-- Search Form -->
+              {{-- <div class="sidebar-item search-form" data-aos="fade-up">
+                <h4>Search Events</h4>
+                <form action="">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search Events...">
+                    <button class="btn" type="submit"><i class="bi bi-search"></i></button>
                   </div>
                 </form>
               </div> --}}
+              <!-- End Search Form -->
 
-              <div class="sidebar-widget related-events" data-aos="fade-left" data-aos-delay="400">
-                <h3>Related Events</h3>
-                <div class="related-event-item">
-                  <div class="related-event-date">
-                    <span class="day">15</span>
-                    <span class="month">Nov</span>
+              <!-- Categories -->
+              {{-- <div class="sidebar-item categories" data-aos="fade-up" data-aos-delay="100">
+                <h4>Event Categories</h4>
+                <ul class="list-unstyled">
+                  <li><a href="#">Academic <span>(12)</span></a></li>
+                  <li><a href="#">Sports <span>(7)</span></a></li>
+                  <li><a href="#">Arts &amp; Culture <span>(9)</span></a></li>
+                  <li><a href="#">Workshops <span>(5)</span></a></li>
+                  <li><a href="#">Seminars <span>(8)</span></a></li>
+                  <li><a href="#">Competitions <span>(6)</span></a></li>
+                </ul>
+              </div> --}}
+              <!-- End Categories -->
+
+              <!-- Upcoming Events -->
+              <div class="sidebar-item upcoming-events" data-aos="fade-up" data-aos-delay="200">
+                <h4 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; color: #000d23; border-bottom: 3px solid #002f64; padding-bottom: 0.8rem;">Upcoming Featured Events</h4>
+                @if($latestEvent)
+                <div class="featured-event" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 1px solid #e9ecef; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;">
+                  <div style="position: relative; overflow: hidden; max-height: 200px;">
+                    <img src="{{ $latestEvent->getEventImage() }}" alt="Event" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover; transition: transform 0.3s ease;">
                   </div>
-                  <div class="related-event-info">
-                    <h4>Mathematics Olympiad</h4>
-                    <p><i class="bi bi-geo-alt"></i> Room 203, East Wing</p>
+                  <div class="featured-event-details" style="padding: 1.5rem; position: relative; z-index: 1;">
+                    <h5 style="font-size: 1.1rem; font-weight: 600; color: #1f4788; margin-bottom: 0.8rem; line-height: 1.4;">{{ $latestEvent->eName }}</h5>
+                    @if($latestEvent->dateFrom && $latestEvent->dateTo)
+                      <span class="event-date" style="display: flex; align-items: center; gap: 0.5rem; color: #0d66cc; font-size: 0.9rem; margin-bottom: 1.2rem;">
+                        <i class="bi bi-calendar" style="font-size: 1rem; color: #0d66cc;"></i> 
+                        <span>{{ $latestEvent->dateFrom->format('M d, Y') }} - {{ $latestEvent->dateTo->format('M d, Y') }}</span>
+                      </span>
+                    @endif
+                    <a href="{{ route('frontend.event-details', $latestEvent->eID) }}" class="btn-sm btn-register" style="display: inline-block; background: linear-gradient(135deg, #01152b 0%, #0b3d6e 100%); color: white; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 2px 8px rgba(13, 102, 204, 0.3);">Learn More</a>
                   </div>
                 </div>
-                <div class="related-event-item">
-                  <div class="related-event-date">
-                    <span class="day">05</span>
-                    <span class="month">Dec</span>
+                @endif
+              </div><!-- End Upcoming Events -->
+
+              <!-- Event Calendar -->
+              {{-- <div class="sidebar-item event-calendar" data-aos="fade-up" data-aos-delay="300">
+                <h4>Event Calendar</h4>
+                <div class="calendar-widget">
+                  <div class="calendar-header">
+                    <h5>May 2023</h5>
+                    <div class="calendar-nav">
+                      <a href="#" class="prev-month"><i class="bi bi-chevron-left"></i></a>
+                      <a href="#" class="next-month"><i class="bi bi-chevron-right"></i></a>
+                    </div>
                   </div>
-                  <div class="related-event-info">
-                    <h4>Literature Festival</h4>
-                    <p><i class="bi bi-geo-alt"></i> Central Library</p>
-                  </div>
+                  <table class="calendar-table">
+                    <thead>
+                      <tr>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>T</th>
+                        <th>W</th>
+                        <th>T</th>
+                        <th>F</th>
+                        <th>S</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                      </tr>
+                      <tr>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td>13</td>
+                      </tr>
+                      <tr>
+                        <td>14</td>
+                        <td class="has-event">15</td>
+                        <td>16</td>
+                        <td>17</td>
+                        <td>18</td>
+                        <td>19</td>
+                        <td>20</td>
+                      </tr>
+                      <tr>
+                        <td>21</td>
+                        <td class="has-event">22</td>
+                        <td>23</td>
+                        <td>24</td>
+                        <td>25</td>
+                        <td>26</td>
+                        <td>27</td>
+                      </tr>
+                      <tr>
+                        <td>28</td>
+                        <td>29</td>
+                        <td>30</td>
+                        <td>31</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div class="related-event-item">
-                  <div class="related-event-date">
-                    <span class="day">18</span>
-                    <span class="month">Dec</span>
-                  </div>
-                  <div class="related-event-info">
-                    <h4>Annual Sports Meet</h4>
-                    <p><i class="bi bi-geo-alt"></i> School Ground</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </div> --}}
+              <!-- End Event Calendar -->
+            </div><!-- End Sidebar -->
           </div>
         </div>
 
