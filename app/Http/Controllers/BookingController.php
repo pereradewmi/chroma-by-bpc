@@ -150,7 +150,7 @@ class BookingController extends Controller
                 'bTitle' => $request->bTitle,
                 'bDescription' => $request->bDescription ?? '',
                 'bEvent_type' => $request->bEvent_type,
-                'bEvent_Category' => 0,
+                // 'bEvent_Category' => 0,
                 'bStatus' => $request->bStatus ?? 'pending',
                 'bPrice' => $request->bPrice ?? 0,
                 'bPayment_status' => $request->bPayment_status ?? 'pending',

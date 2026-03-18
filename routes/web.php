@@ -8,6 +8,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ImageCategoryController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentDetailController;
@@ -147,10 +148,18 @@ Route::middleware('check.login')->prefix('admin/bookings')->name('admin.bookings
 
 Route::middleware('check.login')->prefix('admin/images')->name('admin.images.')->group(function () {
     Route::get('/', [ImageController::class, 'index'])->name('index');
-    Route::post('/', [ImageController::class, 'store'])->name('store');
+    Route::get('/form/{id?}', [ImageController::class, 'form'])->name('form');
+    Route::post('/store', [ImageController::class, 'store'])->name('store');
     Route::get('/{id}', [ImageController::class, 'show'])->name('show');
     Route::put('/{id}', [ImageController::class, 'update'])->name('update');
     Route::delete('/{id}', [ImageController::class, 'destroy'])->name('destroy');
+});
+
+Route::middleware('check.login')->prefix('admin/image-categories')->name('admin.image-categories.')->group(function () {
+    Route::get('/', [ImageCategoryController::class, 'index'])->name('index');
+    Route::get('/form/{id?}', [ImageCategoryController::class, 'form'])->name('form');
+    Route::post('/store', [ImageCategoryController::class, 'store'])->name('store');
+    Route::delete('/{id}', [ImageCategoryController::class, 'destroy'])->name('destroy');
 });
 
 // Reports routes
