@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\ImageCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -12,14 +13,24 @@ class ImageController extends Controller
     /**
      * Display frontend gallery images
      */
-    public function frontendIndex()
+    public function frontendIndex(Request $request)
     {
-        $images = Image::where('status', 1)
-            // ->orderBy('sort_order')
-            ->latest()
+        $selectedCategoryId = $request->query('category');
+
+        $categories = ImageCategory::where('status', 1)
+            ->orderBy('name')
             ->get();
 
-        return view('frontend.gallery', compact('images'));
+        $imagesQuery = Image::where('status', 1)
+            ->with('category');
+
+        if (!empty($selectedCategoryId)) {
+            $imagesQuery->where('c_id', (int) $selectedCategoryId);
+        }
+
+        $images = $imagesQuery->latest()->get();
+
+        return view('frontend.gallery', compact('images', 'categories', 'selectedCategoryId'));
     }
 
     /**
@@ -27,10 +38,21 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $images = Image::latest()->paginate(12);
-        // return response()->json($images);
+        $images = Image::with('category')->latest()->paginate(12);
 
-         return view('backend.gallery.index', compact('images'));
+        return view('backend.gallery.index', compact('images'));
+    }
+
+    /**
+     * Show create/edit form for image
+     */
+    public function form($id = null)
+    {
+        $image = $id ? Image::findOrFail($id) : new Image();
+        $isEdit = !is_null($id);
+        $categories = ImageCategory::where('status', 1)->orderBy('name')->get();
+
+        return view('backend.gallery.form', compact('image', 'isEdit', 'categories'));
     }
 
     /**
@@ -58,36 +80,45 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
+        $isUpdate = (bool) $request->get('is_update');
+
         $validator = Validator::make($request->all(), [
-            // 'title' => 'nullable|string|max:255',
-            // 'description' => 'nullable|string|max:1000',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
-            // 'sort_order' => 'nullable|integer|min:0',
+            'c_id' => 'required|exists:imagecategories,id',
+            'status' => 'required|in:0,1',
+            'image' => ($isUpdate ? 'nullable' : 'required') . '|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'is_update' => 'nullable|boolean',
+            'image_id' => 'nullable|exists:images,id',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $path = $request->file('image')->store('images', 'public');
+        if ($isUpdate && $request->get('image_id')) {
+            $image = Image::findOrFail($request->get('image_id'));
+        } else {
+            $image = new Image();
+        }
 
-        $image = Image::create([
-            // 'title' => $request->title,
-            // 'description' => $request->description,
-            'image_path' => $path,
-            'status' => 1,
-            // 'sort_order' => (int) $request->get('sort_order', 0),
-        ]);
-        
-         return redirect()->route('admin.images.index')->with('success', 'Image uploaded successfully');
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Image uploaded successfully',
-        //     'data' => $image,
-        // ], 201);
+        $data = [
+            'c_id' => (int) $request->c_id,
+            'status' => (int) $request->status,
+        ];
+
+        if ($request->hasFile('image')) {
+            if ($isUpdate && $image->image_path && Storage::disk('public')->exists($image->image_path)) {
+                Storage::disk('public')->delete($image->image_path);
+            }
+
+            $data['image_path'] = $request->file('image')->store('images', 'public');
+        }
+
+        $image->fill($data);
+        $image->save();
+
+        return redirect()->route('admin.images.index')->with('success', $isUpdate ? 'Image updated successfully' : 'Image uploaded successfully');
     }
 
     /**
@@ -146,17 +177,13 @@ class ImageController extends Controller
         $image = Image::find($id);
 
         if (!$image) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Image not found'
-            ], 404);
+            return redirect()->route('admin.images.index')
+                ->with('error', 'Image not found');
         }
 
         $image->update(['status' => 0]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Image status updated to inactive successfully'
-        ]);
+        return redirect()->route('admin.images.index')
+            ->with('success', 'Image status updated to inactive successfully');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Image extends Model
 {
@@ -14,6 +15,7 @@ class Image extends Model
     protected $fillable = [
         'title',
         'description',
+        'c_id',
         'image_path',
         'status',
         'sort_order',
@@ -22,5 +24,11 @@ class Image extends Model
     protected $casts = [
         'status' => 'boolean',
         'sort_order' => 'integer',
+        'c_id' => 'integer',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ImageCategory::class, 'c_id', 'id');
+    }
 }

@@ -70,6 +70,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.image-categories') ? 'active' : '' }}" href="{{ route('admin.image-categories.index') }}">
+                        <i class="fas fa-tags text-info"></i>
+                        {{ __('Category') }}
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'reports') ? 'active' : '' }}" href="{{ route('reports.index') }}">
                         <i class="fas fa-chart-bar text-primary"></i>
                         {{ __('Reports') }}

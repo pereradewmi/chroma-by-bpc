@@ -10,10 +10,10 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h3 class="mb-0">Gallery Images</h3>
+                                <h3 class="mb-0">Image Categories</h3>
                             </div>
                             <div class="col text-right">
-                                <a href="{{ route('admin.images.form') }}" class="btn btn-sm btn-primary">Add New Image</a>
+                                <a href="{{ route('admin.image-categories.form') }}" class="btn btn-sm btn-primary">Add Category</a>
                             </div>
                         </div>
                     </div>
@@ -32,34 +32,30 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Category</th>
+                                    <th scope="col">Name</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Created Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($images as $image)
+                                @forelse($categories as $category)
                                     <tr>
-                                        <td>{{ $image->id }}</td>
+                                        <td>{{ $category->id }}</td>
+                                        <td><strong>{{ $category->name }}</strong></td>
                                         <td>
-                                            <img src="{{ Storage::url($image->image_path) }}" alt="Gallery Image" class="img-fluid" style="max-height: 50px;">
-                                        </td>
-                                        <td>{{ optional($image->category)->name ?? '-' }}</td>
-                                        <td>
-                                            @if($image->status)
+                                            @if($category->status == 1)
                                                 <span class="badge badge-success">Active</span>
+                                            @elseif($category->status == 0)
+                                                <span class="badge badge-warning">Inactive</span>
                                             @else
-                                                <span class="badge badge-danger">Inactive</span>
+                                                <span class="badge badge-danger">Deleted</span>
                                             @endif
                                         </td>
-                                        <td>{{ $image->created_at->format('M d, Y') }}</td>
                                         <td>
-                                            <a href="{{ route('admin.images.form', $image->id) }}" class="btn btn-sm btn-primary" title="Edit" aria-label="Edit">
+                                            <a href="{{ route('admin.image-categories.form', $category->id) }}" class="btn btn-sm btn-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
                                             </a>
-                                            <form action="{{ route('admin.images.destroy', $image->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this image?');">
+                                            <form action="{{ route('admin.image-categories.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this category?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" title="Delete" aria-label="Delete">
@@ -70,17 +66,17 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No gallery images found.</td>
+                                        <td colspan="4" class="text-center">No image categories found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
 
-                    @if($images->hasPages())
+                    @if($categories->hasPages())
                         <div class="card-footer py-4">
                             <nav class="d-flex justify-content-end" aria-label="...">
-                                {{ $images->links() }}
+                                {{ $categories->links() }}
                             </nav>
                         </div>
                     @endif
