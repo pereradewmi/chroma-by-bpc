@@ -28,90 +28,31 @@
           <div class="col-lg-8">
             <!-- Events List -->
             <div class="events-list">
-              <!-- Event Item 1 -->
-              <div class="event-item" data-aos="fade-up">
+              @forelse($events as $index => $event)
+              <!-- Event Item -->
+              <div class="event-item" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                @if($event->dateFrom)
                 <div class="event-date">
-                  <span class="day">15</span>
-                  <span class="month">May</span>
+                  <span class="day">{{ $event->dateFrom->format('d') }}</span>
+                  <span class="month">{{ $event->dateFrom->format('M') }}</span>
                 </div>
+                @endif
                 <div class="event-content">
-                  <h3 class="event-title">Annual Science Exhibition</h3>
+                  <h3 class="event-title">{{ $event->eName }}</h3>
                   <div class="event-meta">
-                    <span><i class="bi bi-clock"></i> 09:00 AM - 04:00 PM</span>
-                    <span><i class="bi bi-geo-alt"></i> Main Campus Auditorium</span>
+                    @if($event->dateFrom && $event->dateTo)
+                      <span><i class="bi bi-calendar"></i> {{ $event->dateFrom->format('M d, Y') }} - {{ $event->dateTo->format('M d, Y') }}</span>
+                    @endif
                   </div>
-                  <p class="event-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+                  <p class="event-description">{{ $event->eDescription }}</p>
+                  <a href="{{ route('frontend.event-details', $event->eID) }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
                 </div>
               </div><!-- End Event Item -->
-
-              <!-- Event Item 2 -->
-              <div class="event-item" data-aos="fade-up" data-aos-delay="100">
-                <div class="event-date">
-                  <span class="day">22</span>
-                  <span class="month">May</span>
-                </div>
-                <div class="event-content">
-                  <h3 class="event-title">Parent-Teacher Conference</h3>
-                  <div class="event-meta">
-                    <span><i class="bi bi-clock"></i> 02:00 PM - 06:00 PM</span>
-                    <span><i class="bi bi-geo-alt"></i> School Conference Center</span>
-                  </div>
-                  <p class="event-description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Event Item -->
-
-              <!-- Event Item 3 -->
-              <div class="event-item" data-aos="fade-up" data-aos-delay="200">
-                <div class="event-date">
-                  <span class="day">05</span>
-                  <span class="month">Jun</span>
-                </div>
-                <div class="event-content">
-                  <h3 class="event-title">Annual Sports Tournament</h3>
-                  <div class="event-meta">
-                    <span><i class="bi bi-clock"></i> 10:00 AM - 05:00 PM</span>
-                    <span><i class="bi bi-geo-alt"></i> Campus Sports Ground</span>
-                  </div>
-                  <p class="event-description">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Event Item -->
-
-              <!-- Event Item 4 -->
-              <div class="event-item" data-aos="fade-up" data-aos-delay="300">
-                <div class="event-date">
-                  <span class="day">12</span>
-                  <span class="month">Jun</span>
-                </div>
-                <div class="event-content">
-                  <h3 class="event-title">Graduation Ceremony 2023</h3>
-                  <div class="event-meta">
-                    <span><i class="bi bi-clock"></i> 04:00 PM - 07:00 PM</span>
-                    <span><i class="bi bi-geo-alt"></i> University Grand Hall</span>
-                  </div>
-                  <p class="event-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi.</p>
-                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Event Item -->
-
-              <!-- Event Item 5 -->
-              <div class="event-item" data-aos="fade-up" data-aos-delay="400">
-                <div class="event-date">
-                  <span class="day">20</span>
-                  <span class="month">Jun</span>
-                </div>
-                <div class="event-content">
-                  <h3 class="event-title">Summer Arts Festival</h3>
-                  <div class="event-meta">
-                    <span><i class="bi bi-clock"></i> 11:00 AM - 08:00 PM</span>
-                    <span><i class="bi bi-geo-alt"></i> Arts Center</span>
-                  </div>
-                  <p class="event-description">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam.</p>
-                  <a href="{{ route('frontend.event-details') }}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Event Item -->
+              @empty
+              <div class="alert alert-info">
+                <p>No events found.</p>
+              </div>
+              @endforelse
 
               <!-- Pagination -->
               {{-- <div class="events-pagination" data-aos="fade-up" data-aos-delay="100">
@@ -159,14 +100,18 @@
               <!-- Upcoming Events -->
               <div class="sidebar-item upcoming-events" data-aos="fade-up" data-aos-delay="200">
                 <h4>Upcoming Featured Events</h4>
+                @if($latestEvent)
                 <div class="featured-event">
-                  <img src="{{ asset('front-assets/img/education/events-5.webp') }}" alt="Event" class="img-fluid">
+                  <img src="{{ $latestEvent->getEventImage() }}" alt="Event" class="img-fluid">
                   <div class="featured-event-details">
-                    <h5>Summer Leadership Camp</h5>
-                    <span class="event-date"><i class="bi bi-calendar"></i> July 10-15, 2023</span>
-                    <a href="#" class="btn-sm btn-register">Register Now</a>
+                    <h5>{{ $latestEvent->eName }}</h5>
+                    @if($latestEvent->dateFrom && $latestEvent->dateTo)
+                      <span class="event-date"><i class="bi bi-calendar"></i> {{ $latestEvent->dateFrom->format('M d, Y') }} - {{ $latestEvent->dateTo->format('M d, Y') }}</span>
+                    @endif
+                    <a href="{{ route('frontend.event-details', $latestEvent->eID) }}" class="btn-sm btn-register">Learn More</a>
                   </div>
                 </div>
+                @endif
               </div><!-- End Upcoming Events -->
 
               <!-- Event Calendar -->

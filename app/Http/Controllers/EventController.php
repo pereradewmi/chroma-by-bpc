@@ -10,12 +10,22 @@ use Illuminate\Support\Facades\Storage;
 class EventController extends Controller
 {
     /**
-     * Display the events list
+     * Display the events list for backend
      */
     public function index()
     {
         $events = Event::latest()->paginate(10);
         return view('backend.events.index', compact('events'));
+    }
+
+    /**
+     * Display the events list for frontend
+     */
+    public function frontendIndex()
+    {
+        $events = Event::where('status', 1)->latest('dateFrom')->get();
+        $latestEvent = Event::where('status', 1)->latest('dateFrom')->first();
+        return view('frontend.events', compact('events', 'latestEvent'));
     }
 
     /**
@@ -38,6 +48,9 @@ class EventController extends Controller
             'eName' => 'required|string|max:255',
             'eDescription' => 'nullable|string',
             'eImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
+            'dateFrom' => 'required|date',
+            'dateTo' => 'required|date|after_or_equal:dateFrom',
+            'status' => 'nullable|in:0,1',
             'is_update' => 'boolean',
             'event_id' => 'nullable|exists:eventdetails,eID'
         ]);
@@ -48,7 +61,8 @@ class EventController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['eName', 'eDescription']);
+        $data = $request->only(['eName', 'eDescription', 'dateFrom', 'dateTo']);
+        $data['status'] = $request->get('status', 1); // Default to 1 if not provided
 
         // Handle image upload
         if ($request->hasFile('eImage')) {
@@ -87,6 +101,16 @@ class EventController extends Controller
 
         return redirect()->route('events.index')
             ->with('success', $message);
+    }
+
+    /**
+     * Show event details for frontend
+     */
+    public function frontendShow($id)
+    {
+        $event = Event::where('status', 1)->findOrFail($id);
+        $latestEvent = Event::where('status', 1)->latest('dateFrom')->first();
+        return view('frontend.event-details', compact('event', 'latestEvent'));
     }
 
     /**

@@ -15,7 +15,16 @@ class Event extends Model
     protected $fillable = [
         'eName',
         'eDescription',
-        'eImage'
+        'eImage',
+        'status',
+        'dateFrom',
+        'dateTo'
+    ];
+
+    protected $casts = [
+        'dateFrom' => 'datetime',
+        'dateTo' => 'datetime',
+        'status' => 'integer',
     ];
 
     /**
