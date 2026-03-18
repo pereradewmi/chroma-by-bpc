@@ -10,12 +10,21 @@ use Illuminate\Support\Facades\Storage;
 class ClassRoomController extends Controller
 {
     /**
-     * Display the classes list
+     * Display the classes list for backend
      */
     public function index()
     {
         $classes = ClassRoom::latest()->paginate(10);
         return view('backend.classes.index', compact('classes'));
+    }
+
+    /**
+     * Display the classes list for frontend
+     */
+    public function frontendIndex()
+    {
+        $classes = ClassRoom::latest()->get();
+        return view('frontend.classes', compact('classes'));
     }
 
     /**

@@ -82,11 +82,23 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label class="form-control-label" for="cDescription">Description</label>
+                                            <!-- Rich Text Editor -->
+                                            <div id="editor-toolbar" style="background-color: #f7f8fc; border: 1px solid #ddd; border-bottom: none; border-radius: 4px 4px 0 0; padding: 8px;">
+                                                <button type="button" class="btn btn-sm" id="bold-btn" title="Bold" style="background: none; border: 1px solid #ddd; padding: 4px 8px; margin: 2px; cursor: pointer; font-weight: bold;">B</button>
+                                                <button type="button" class="btn btn-sm" id="underline-btn" title="Underline" style="background: none; border: 1px solid #ddd; padding: 4px 8px; margin: 2px; cursor: pointer; text-decoration: underline;">U</button>
+                                                <button type="button" class="btn btn-sm" id="bullet-btn" title="Bullet List" style="background: none; border: 1px solid #ddd; padding: 4px 8px; margin: 2px; cursor: pointer;">• List</button>
+                                                <button type="button" class="btn btn-sm" id="italic-btn" title="Italic" style="background: none; border: 1px solid #ddd; padding: 4px 8px; margin: 2px; cursor: pointer; font-style: italic;">I</button>
+                                            </div>
+                                            <!-- Editor Container -->
+                                            <div id="editor" style="background-color: white; border: 1px solid #ddd; border-radius: 0 0 4px 4px; min-height: 200px; padding: 12px; font-family: Arial, sans-serif;">
+                                                {!! old('cDescription', $class->cDescription ?? '') !!}
+                                            </div>
+                                            <!-- Hidden textarea to store the content -->
                                             <textarea id="cDescription" name="cDescription"
                                                 class="form-control form-control-alternative @error('cDescription') is-invalid @enderror"
-                                                placeholder="Enter class description..." rows="6">{{ old('cDescription', $class->cDescription) }}</textarea>
+                                                style="display: none;">{{ old('cDescription', $class->cDescription) }}</textarea>
                                             @error('cDescription')
-                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                <div class="invalid-feedback" style="display: block;">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
@@ -126,6 +138,75 @@
         document.getElementById('cImage').addEventListener('change', function(e) {
             const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose image...';
             document.querySelector('.custom-file-label').textContent = fileName;
+        });
+
+        // Rich Text Editor functionality
+        const editor = document.getElementById('editor');
+        const descriptionField = document.getElementById('cDescription');
+        let isEditing = false;
+
+        // Make editor contenteditable
+        editor.contentEditable = true;
+        editor.spellcheck = true;
+
+        // Sync editor content to hidden textarea on input
+        editor.addEventListener('input', function() {
+            descriptionField.value = editor.innerHTML;
+        });
+
+        // Sync on form submit
+        document.querySelector('form').addEventListener('submit', function() {
+            descriptionField.value = editor.innerHTML;
+        });
+
+        // Bold button
+        document.getElementById('bold-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.execCommand('bold', false, null);
+            editor.focus();
+        });
+
+        // Italic button
+        document.getElementById('italic-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.execCommand('italic', false, null);
+            editor.focus();
+        });
+
+        // Underline button
+        document.getElementById('underline-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.execCommand('underline', false, null);
+            editor.focus();
+        });
+
+        // Bullet list button
+        document.getElementById('bullet-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.execCommand('insertUnorderedList', false, null);
+            editor.focus();
+        });
+
+        // Update button states based on selection
+        document.addEventListener('mouseup', function() {
+            updateButtonStates();
+        });
+
+        function updateButtonStates() {
+            document.getElementById('bold-btn').style.backgroundColor = document.queryCommandState('bold') ? '#e9ecef' : 'transparent';
+            document.getElementById('italic-btn').style.backgroundColor = document.queryCommandState('italic') ? '#e9ecef' : 'transparent';
+            document.getElementById('underline-btn').style.backgroundColor = document.queryCommandState('underline') ? '#e9ecef' : 'transparent';
+            document.getElementById('bullet-btn').style.backgroundColor = document.queryCommandState('insertUnorderedList') ? '#e9ecef' : 'transparent';
+        }
+
+        // Initialize button states
+        updateButtonStates();
+
+        // Prevent default paste behavior and clean up pasted content
+        editor.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const text = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
+            document.execCommand('insertHTML', false, text);
         });
     </script>
 @endsection
