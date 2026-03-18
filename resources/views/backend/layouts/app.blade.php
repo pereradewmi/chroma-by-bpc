@@ -53,10 +53,18 @@
             .main-content {
                 transition: margin-left 0.3s ease-in-out;
                 margin-left: 250px;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
             }
             
             .main-content.sidebar-collapsed {
                 margin-left: 80px;
+            }
+            
+            /* Add flex-grow so footer stays at bottom */
+            .content-wrapper {
+                flex-grow: 1;
             }
             
             /* Toggle button styles */
@@ -170,6 +178,8 @@
             /* Top navbar styling */
             .navbar.navbar-top {
                 background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;
+                z-index: 1050 !important;
+                position: relative !important;
             }
 
             .navbar.navbar-top .navbar-brand {
@@ -387,11 +397,15 @@
         @include('backend.layouts.navbars.sidebar')
         
         <div class="main-content">
-            @include('backend.layouts.navbars.navbar')
-            @yield('content')
+            <div class="content-wrapper">
+                @include('backend.layouts.navbars.navbar')
+                @yield('content')
+            </div>
+            
+            <div class="container-fluid mt-auto mb-3">
+                @include('backend.layouts.footers.auth')
+            </div>
         </div>
-
-        @include('backend.layouts.footers.auth')
 
         <script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
