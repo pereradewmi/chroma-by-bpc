@@ -48,7 +48,7 @@
                                         </td>
                                         <td><strong>{{ $class->cName }}</strong></td>
                                         <td>
-                                            <small>{{ Str::limit($class->cDescription, 50) }}</small>
+                                            <small>{{ Str::limit(strip_tags($class->cDescription), 50) }}</small>
                                         </td>
                                         <td>{{ $class->created_at->format('M d, Y') }}</td>
                                         <td>

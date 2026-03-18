@@ -60,112 +60,40 @@
 
         <!-- Facilities Categories Grid -->
         <div class="facilities-grid" data-aos="fade-up" data-aos-delay="200">
-          <div class="category-card academic" data-aos="zoom-in" data-aos-delay="100">
+          @forelse($classes as $index => $class)
+          <div class="category-card academic" data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}">
             <div class="card-header">
-              {{-- <div class="icon-wrapper">
-                <i class="bi bi-book"></i>
-              </div> --}}
-              <h3>Art Class</h3>
+              <h3>{{ strtoupper($class->cName) }}</h3>
             </div>
             <div class="card-content">
               <div class="facility-image">
-                <img src="{{ asset('front-assets/img/home/art.jpg') }}" alt="Academic Building" class="img-fluid">
+                <img src="{{ $class->getClassImage() }}" alt="Class Image" class="img-fluid">
               </div>
               <div class="facility-list">
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>KIDS (Monthly fee 3000/-)</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Tuesday (Time 4:30 pm – 6:00 pm) <br>
-                    Friday (Time 4:00 pm – 5:30 pm)
-                  </span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>ADULTS (Below 18 – 3000/-) (Above 18 – 4000/-)</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Saturday (Time 3:30 pm – 5:00 pm)</span>
-                </div>
+                @if($class->cDescription)
+                  <div class="facility-item">
+                    {{-- <i class="bi bi-check2-circle"></i> --}}
+                    <span>{!! $class->cDescription !!}</span>
+                  </div>
+                @else
+                  <div class="facility-item">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>{{ $class->cName }} - Fee: Rs. {{ number_format($class->classfee, 2) }}</span>
+                  </div>
+                @endif
               </div>
             </div>
             <div class="card-footer">
-              {{-- <a href="#" class="explore-btn">Explore Academic <i class="bi bi-arrow-right"></i></a> --}}
+              {{-- <a href="#" class="explore-btn">Explore <i class="bi bi-arrow-right"></i></a> --}}
             </div>
           </div>
-
-          <div class="category-card sports" data-aos="zoom-in" data-aos-delay="200">
-            <div class="card-header">
-                {{-- <div class="icon-wrapper">
-                  <i class="bi bi-trophy"></i>
-                </div> --}}
-              <h3>Karate Class</h3>
-            </div>
-            <div class="card-content">
-              <div class="facility-image">
-                <img src="{{ asset('front-assets/img/education/campus-8.webp') }}" alt="Sports Complex" class="img-fluid">
-              </div>
-              <div class="facility-list">
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Olympic Pool</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Gymnasium</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Tennis Courts</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Fitness Center</span>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="explore-btn">Explore Sports <i class="bi bi-arrow-right"></i></a>
+          @empty
+          <div class="col-12">
+            <div class="alert alert-info" role="alert">
+              <p>No classes available at the moment.</p>
             </div>
           </div>
-
-          <div class="category-card residence" data-aos="zoom-in" data-aos-delay="300">
-            <div class="card-header">
-              {{-- <div class="icon-wrapper">
-                <i class="bi bi-house-heart"></i>
-              </div> --}}
-              <h3>Vocal Training Class</h3>
-            </div>
-            <div class="card-content">
-              <div class="facility-image">
-                <img src="{{ asset('front-assets/img/education/campus-9.webp') }}" alt="Student Housing" class="img-fluid">
-              </div>
-              <div class="facility-list">
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Modern Dormitories</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Common Areas</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Dining Halls</span>
-                </div>
-                <div class="facility-item">
-                  <i class="bi bi-check2-circle"></i>
-                  <span>Recreation Rooms</span>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="explore-btn">Explore Housing <i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
+          @endforelse
         </div>
 
         <!-- Interactive Campus Tour -->

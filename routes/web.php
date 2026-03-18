@@ -40,9 +40,7 @@ Route::middleware('check.login')->group(function () {
 // Frontend routes
 Route::get('/Events', [EventController::class, 'frontendIndex'])->name('frontend.events');
 
-Route::get('/Classes', function () {
-    return view('frontend.classes');
-})->name('frontend.classes');
+Route::get('/Classes', [ClassRoomController::class, 'frontendIndex'])->name('frontend.classes');
 
 Route::get('/Sessions', function () {
     return view('frontend.sessions');
