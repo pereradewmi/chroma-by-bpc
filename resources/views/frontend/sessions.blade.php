@@ -15,28 +15,44 @@
           <!-- Main Content Area -->
           <div class="col-lg-8">
             <!-- Featured Article -->
-            <article class="featured-post position-relative mb-4" data-aos="fade-up">
-              <img src="{{ asset('front-assets/img/blog/blog-hero-9.webp') }}" alt="Featured post" class="img-fluid">
-              <div class="post-overlay">
-                <div class="post-content">
-                  <div class="post-meta">
-                    <span class="category">Politics</span>
-                    <span class="date">02/15/2024</span>
-                  </div>
-                  <h2 class="post-title">
-                    <a href="#">Optimizing Strategic Initiatives Through Cross-Functional Collaboration</a>
-                  </h2>
-                  <p class="post-excerpt">Leveraging core competencies to drive sustainable growth and maximize stakeholder value through innovative solutions and market-driven approaches.</p>
-                  <div class="post-author">
-                    <span>by</span>
-                    <a href="#">Jennifer Mitchell</a>
+            @if(!empty($featuredSession))
+              <article class="featured-post position-relative mb-4" data-aos="fade-up">
+                <img src="{{ $featuredSession->getSessionImage() }}" alt="{{ $featuredSession->sName }}" class="img-fluid">
+                <div class="post-overlay">
+                  <div class="post-content">
+                    <div class="post-meta">
+                      <span class="category">Session</span>
+                      {{-- <span class="date">{{ optional($featuredSession->created_at)->format('m/d/Y') ?? now()->format('m/d/Y') }}</span> --}}
+                    </div>
+                    <h2 class="post-title">
+                      <a href="#">{{ $featuredSession->sName }}</a>
+                    </h2>
+                    <p class="post-excerpt">{{ \Illuminate\Support\Str::limit($featuredSession->sDescription, 180) }}</p>
+                    <div class="post-author">
+                      <span>by</span>
+                      <a href="#">Chroma By BPC</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            @else
+              <article class="featured-post position-relative mb-4" data-aos="fade-up">
+                <img src="{{ asset('front-assets/img/logo.png') }}" alt="No session available" class="img-fluid">
+                <div class="post-overlay">
+                  <div class="post-content">
+                    <div class="post-meta">
+                      <span class="category">Session</span>
+                    </div>
+                    <h2 class="post-title">
+                      <a href="#">No sessions available yet</a>
+                    </h2>
+                  </div>
+                </div>
+              </article>
+            @endif
 
             <!-- Secondary Articles -->
-            <div class="row g-4">
+            {{-- <div class="row g-4">
               <div class="col-md-6">
                 <article class="secondary-post" data-aos="fade-up">
                   <div class="post-image">
@@ -77,13 +93,13 @@
                   </div>
                 </article>
               </div>
-            </div>
+            </div> --}}
           </div><!-- End Main Content Area -->
 
           <!-- Sidebar with Tabs -->
           <div class="col-lg-4">
             <div class="news-tabs" data-aos="fade-up" data-aos-delay="200">
-              <ul class="nav nav-tabs" role="tablist">
+              {{-- <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#top-stories" type="button">Top stories</button>
                 </li>
@@ -93,57 +109,47 @@
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#latest" type="button">Latest News</button>
                 </li>
-              </ul>
+              </ul> --}}
 
               <div class="tab-content">
                 <!-- Top Stories Tab -->
                 <div class="tab-pane fade show active" id="top-stories">
-                  <article class="tab-post">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-4">
-                        <img src="{{ asset('front-assets/img/blog/blog-post-square-1.webp') }}" alt="Post" class="img-fluid">
-                      </div>
-                      <div class="col-8">
-                        <div class="post-content">
-                          <span class="category">Science</span>
-                          <h4 class="post-title"><a href="#">Maximizing ROI Through Strategic Resource Allocation</a></h4>
-                          <div class="post-author">by <a href="#">Michael Davidson</a></div>
+                  @forelse(($topStoriesSessions ?? collect()) as $topStorySession)
+                    <article class="tab-post">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-4">
+                          <img src="{{ $topStorySession->getSessionImage() }}" alt="{{ $topStorySession->sName }}" class="img-fluid">
+                        </div>
+                        <div class="col-8">
+                          <div class="post-content">
+                            <span class="category">Session</span>
+                            <h4 class="post-title">
+                              <a href="#">{{ \Illuminate\Support\Str::limit($topStorySession->sName, 65) }}</a><br><br>
+                               <p class="post-date">{{ \Illuminate\Support\Str::limit($topStorySession->sDescription, 180) }}</p>
+                            </h4>
+                            <div class="post-author">by <a href="#">Chroma By BPC</a></div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </article>
-
-                  <article class="tab-post">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-4">
-                        <img src="{{ asset('front-assets/img/blog/blog-post-square-2.webp') }}" alt="Post" class="img-fluid">
-                      </div>
-                      <div class="col-8">
-                        <div class="post-content">
-                          <span class="category">Travel</span>
-                          <h4 class="post-title"><a href="#">Leveraging Big Data Analytics for Market Intelligence</a></h4>
-                          <div class="post-author">by <a href="#">Emily Richardson</a></div>
+                    </article>
+                  @empty
+                    <article class="tab-post">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-4">
+                          <img src="{{ asset('front-assets/img/logo.png') }}" alt="No session available" class="img-fluid">
+                        </div>
+                        <div class="col-8">
+                          <div class="post-content">
+                            <span class="category">Session</span>
+                            <h4 class="post-title"><a href="#">No top stories available</a></h4>
+                            <div class="post-author">by <a href="#">Chroma By BPC</a></div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </article>
+                    </article>
+                  @endforelse
 
-                  <article class="tab-post">
-                    <div class="row g-0 align-items-center">
-                      <div class="col-4">
-                        <img src="{{ asset('front-assets/img/blog/blog-post-square-3.webp') }}" alt="Post" class="img-fluid">
-                      </div>
-                      <div class="col-8">
-                        <div class="post-content">
-                          <span class="category">Politics</span>
-                          <h4 class="post-title"><a href="#">Enhancing Customer Experience Through Digital Innovation</a></h4>
-                          <div class="post-author">by <a href="#">Daniel Cooper</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-
-                  <article class="tab-post">
+                  {{-- <article class="tab-post">
                     <div class="row g-0 align-items-center">
                       <div class="col-4">
                         <img src="{{ asset('front-assets/img/blog/blog-post-square-4.webp') }}" alt="Post" class="img-fluid">
@@ -156,9 +162,9 @@
                         </div>
                       </div>
                     </div>
-                  </article>
+                  </article> --}}
 
-                  <article class="tab-post">
+                  {{-- <article class="tab-post">
                     <div class="row g-0 align-items-center">
                       <div class="col-4">
                         <img src="{{ asset('front-assets/img/blog/blog-post-square-5.webp') }}" alt="Post" class="img-fluid">
@@ -171,11 +177,11 @@
                         </div>
                       </div>
                     </div>
-                  </article>
+                  </article> --}}
                 </div>
 
                 <!-- Trending News Tab -->
-                <div class="tab-pane fade" id="trending">
+                {{-- <div class="tab-pane fade" id="trending">
                   <article class="tab-post">
                     <div class="row g-0 align-items-center">
                       <div class="col-4">
@@ -250,10 +256,10 @@
                       </div>
                     </div>
                   </article>
-                </div>
+                </div> --}}
 
                 <!-- Latest News Tab -->
-                <div class="tab-pane fade" id="latest">
+                {{-- <div class="tab-pane fade" id="latest">
                   <article class="tab-post">
                     <div class="row g-0 align-items-center">
                       <div class="col-4">
@@ -328,7 +334,7 @@
                       </div>
                     </div>
                   </article>
-                </div>
+                </div> --}}
               </div>
             </div>
           </div>
@@ -342,84 +348,42 @@
       <div class="container">
 
         <div class="row gy-4">
+          @forelse(($newsPostSessions ?? collect()) as $newsPostSession)
+            <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->iteration % 3 + 1) * 100 }}">
+              <article>
 
-          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ asset('front-assets/img/blog/blog-post-1.webp') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Politics</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Dolorum optio tempore voluptas dignissimos</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ asset('front-assets/img/person/person-f-12.webp') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Maria Doe</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jan 1, 2022</time>
-                  </p>
+                <div class="post-img">
+                  <img src="{{ $newsPostSession->getSessionImage() }}" alt="{{ $newsPostSession->sName }}" class="img-fluid">
                 </div>
-              </div>
 
-            </article>
-          </div><!-- End post list item -->
+                <p class="post-category">Session</p>
 
-          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <article>
+                <h2 class="title">
+                  <a href="#">{{ \Illuminate\Support\Str::limit($newsPostSession->sName, 70) }}</a> <br><br>
+                   <p class="post-date">{{ \Illuminate\Support\Str::limit($newsPostSession->sDescription, 180) }}</p>
+                </h2>
 
-              <div class="post-img">
-                <img src="{{ asset('front-assets/img/blog/blog-post-2.webp') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Sports</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Nisi magni odit consequatur autem nulla dolorem</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ asset('front-assets/img/person/person-f-13.webp') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Allisa Mayer</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 5, 2022</time>
-                  </p>
+                <div class="d-flex align-items-center">
+                  <img src="{{ asset('front-assets/img/logo.png') }}" alt="Author" class="img-fluid post-author-img flex-shrink-0">
+                  <div class="post-meta">
+                    <p class="post-author">Chroma By BPC</p>
+                    <p class="post-date">
+                      <time datetime="{{ optional($newsPostSession->created_at)->format('Y-m-d') ?? now()->format('Y-m-d') }}">{{ optional($newsPostSession->created_at)->format('M j, Y') ?? now()->format('M j, Y') }}</time>
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <article>
-
-              <div class="post-img">
-                <img src="{{ asset('front-assets/img/blog/blog-post-3.webp') }}" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Entertainment</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Possimus soluta ut id suscipit ea ut in quo quia et soluta</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="{{ asset('front-assets/img/person/person-m-10.webp') }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Mark Dower</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 22, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
+              </article>
+            </div><!-- End post list item -->
+          @empty
+            <div class="col-12" data-aos="fade-up" data-aos-delay="100">
+              <article>
+                <h2 class="title mb-0">
+                  <a href="#">No sessions available yet</a>
+                </h2>
+              </article>
+            </div>
+          @endforelse
 
         </div><!-- End recent posts list -->
 

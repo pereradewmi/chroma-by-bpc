@@ -12,6 +12,7 @@ use App\Http\Controllers\ImageCategoryController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentDetailController;
+use App\Models\Session;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -44,7 +45,18 @@ Route::get('/Events', [EventController::class, 'frontendIndex'])->name('frontend
 Route::get('/Classes', [ClassRoomController::class, 'frontendIndex'])->name('frontend.classes');
 
 Route::get('/Sessions', function () {
-    return view('frontend.sessions');
+    $featuredSession = Session::inRandomOrder()->first();
+
+    $topStoriesSessions = Session::inRandomOrder()
+        ->when($featuredSession, function ($query) use ($featuredSession) {
+            $query->where('sID', '!=', $featuredSession->sID);
+        })
+        ->take(3)
+        ->get();
+
+    $newsPostSessions = Session::inRandomOrder()->get();
+
+    return view('frontend.sessions', compact('featuredSession', 'topStoriesSessions', 'newsPostSessions'));
 })->name('frontend.sessions');
 
 Route::get('/EventDetails/{id}', [EventController::class, 'frontendShow'])->name('frontend.event-details');
