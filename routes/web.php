@@ -29,12 +29,12 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 // Protected routes (require authentication)
 Route::middleware('check.login')->group(function () {
     // Dashboard route
-    Route::get('/dashboard', function () {
+    Route::get('/admin/dashboard', function () {
         return view('backend.dashboard');
     })->name('dashboard');
 
     // Profile routes
-    Route::get('/profile', function () {
+    Route::get('/admin/profile', function () {
         return redirect()->route('dashboard');
     })->name('profile.edit');
 });
@@ -82,7 +82,7 @@ Route::prefix('calendar')->name('calendar.')->group(function () {
 });
 
 // Student routes
-Route::middleware('check.login')->prefix('students')->name('students.')->group(function () {
+Route::middleware('check.login')->prefix('admin/students')->name('students.')->group(function () {
     Route::get('/', [StudentController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [StudentController::class, 'form'])->name('form');
     Route::post('/store', [StudentController::class, 'store'])->name('store');
@@ -90,7 +90,7 @@ Route::middleware('check.login')->prefix('students')->name('students.')->group(f
 });
 
 // Teacher routes
-Route::middleware('check.login')->prefix('teachers')->name('teachers.')->group(function () {
+Route::middleware('check.login')->prefix('admin/teachers')->name('teachers.')->group(function () {
     Route::get('/', [TeacherController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [TeacherController::class, 'form'])->name('form');
     Route::post('/store', [TeacherController::class, 'store'])->name('store');
@@ -99,7 +99,7 @@ Route::middleware('check.login')->prefix('teachers')->name('teachers.')->group(f
 });
 
 // Class routes
-Route::middleware('check.login')->prefix('classes')->name('classes.')->group(function () {
+Route::middleware('check.login')->prefix('admin/classes')->name('classes.')->group(function () {
     Route::get('/', [ClassRoomController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [ClassRoomController::class, 'form'])->name('form');
     Route::post('/store', [ClassRoomController::class, 'store'])->name('store');
@@ -107,7 +107,7 @@ Route::middleware('check.login')->prefix('classes')->name('classes.')->group(fun
 });
 
 // Session routes
-Route::middleware('check.login')->prefix('sessions')->name('sessions.')->group(function () {
+Route::middleware('check.login')->prefix('admin/sessions')->name('sessions.')->group(function () {
     Route::get('/', [SessionController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [SessionController::class, 'form'])->name('form');
     Route::post('/store', [SessionController::class, 'store'])->name('store');
@@ -115,7 +115,7 @@ Route::middleware('check.login')->prefix('sessions')->name('sessions.')->group(f
 });
 
 // Event routes
-Route::middleware('check.login')->prefix('events')->name('events.')->group(function () {
+Route::middleware('check.login')->prefix('admin/events')->name('events.')->group(function () {
     Route::get('/', [EventController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [EventController::class, 'form'])->name('form');
     Route::post('/store', [EventController::class, 'store'])->name('store');
@@ -123,7 +123,7 @@ Route::middleware('check.login')->prefix('events')->name('events.')->group(funct
 });
 
 // Payment routes
-Route::middleware('check.login')->prefix('backend/payments')->name('payments.')->group(function () {
+Route::middleware('check.login')->prefix('admin/payments')->name('payments.')->group(function () {
     Route::get('/', [PaymentDetailController::class, 'index'])->name('index');
     Route::get('/form', [PaymentDetailController::class, 'form'])->name('form');
     Route::get('/search-student', [PaymentDetailController::class, 'searchStudent'])->name('search-student');
@@ -175,8 +175,9 @@ Route::middleware('check.login')->prefix('admin/image-categories')->name('admin.
 });
 
 // Reports routes
-Route::middleware('check.login')->prefix('reports')->name('reports.')->group(function () {
+Route::middleware('check.login')->prefix('admin/reports')->name('reports.')->group(function () {
     Route::get('/', [ReportsController::class, 'index'])->name('index');
     Route::get('/download', [ReportsController::class, 'download'])->name('download');
     Route::get('/filter-options', [ReportsController::class, 'getFilterOptions'])->name('filter-options');
 });
+

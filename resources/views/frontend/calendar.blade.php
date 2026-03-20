@@ -253,15 +253,12 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing calendar...');
     const calendarEl = document.getElementById('calendar');
     
     if (!calendarEl) {
         console.error('Calendar element not found!');
         return;
     }
-    
-    console.log('Calendar element found, creating calendar...');
     
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -285,13 +282,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Handle date selection
         select: function(info) {
-            console.log('Date selected:', info.startStr);
             showBookingModal(info.startStr);
         },
         
         // Handle event click
         eventClick: function(info) {
-            console.log('Event clicked:', info.event.id);
             showBookingDetails(info.event.id);
         },
         
@@ -302,13 +297,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add success callback for events loading
         eventSourceSuccess: function(events) {
-            console.log('Events loaded:', events);
         }
     });
     
-    console.log('Rendering calendar...');
     calendar.render();
-    console.log('Calendar rendered successfully');
     
     // Make calendar globally accessible for refreshing
     window.calendarInstance = calendar;
@@ -364,7 +356,6 @@ function showBookingModal(selectedDate) {
 }
 
 function submitBooking() {
-    console.log('Submitting booking...');
     
     // Validate dates before submitting
     const bookingDate = document.getElementById('booking_date').value;
@@ -413,8 +404,6 @@ function submitBooking() {
         data[key] = value;
     });
     
-    console.log('Form data:', data);
-    
     // Show loading state
     const submitButton = document.getElementById('submitBooking');
     const originalText = submitButton.innerHTML;
@@ -430,18 +419,15 @@ function submitBooking() {
         body: JSON.stringify(data)
     })
     .then(response => {
-        console.log('Response status:', response.status);
         return response.json();
     })
     .then(data => {
-        console.log('Response data:', data);
         
         if (data.success) {
             Swal.fire({
                 icon: 'success',
                 title: 'Booking Submitted Successfully!',
                 text: 'Thank you for your booking request. Our admin or support person will contact you shortly to confirm your appointment.',
-                timer: 4000,
                 showConfirmButton: true,
                 confirmButtonText: 'Okay'
             });
@@ -452,7 +438,6 @@ function submitBooking() {
             // Refresh calendar events instead of full page reload
             if (window.calendarInstance) {
                 window.calendarInstance.refetchEvents();
-                console.log('Calendar events refreshed');
             }
             
             // Also refresh statistics
