@@ -186,7 +186,7 @@
                 color: #ffffff !important;
             }
 
-            .navbar.navbar-top a {
+            .navbar.navbar-top .nav-link {
                 color: #ffffff !important;
             }
 

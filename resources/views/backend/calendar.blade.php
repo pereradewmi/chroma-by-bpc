@@ -3,9 +3,80 @@
 @section('content')
     @include('backend.layouts.headers.cards')
     
-    <div class="container-fluid mt--7">
+    <div class="container-fluid mt-4 mb-4">
         
         <!-- Calendar Section -->
+            <div class="row mb-4">
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-primary shadow-sm" style="border-left: 4px solid #04415f !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total Bookings</h5>
+                            <span class="h2 font-weight-bold mb-0" id="totalBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-primary text-white rounded-circle shadow">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-warning shadow-sm" style="border-left: 4px solid #fb6340 !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Pending</h5>
+                            <span class="h2 font-weight-bold mb-0 text-warning" id="pendingBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-success shadow-sm" style="border-left: 4px solid #2dce89 !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Approved</h5>
+                            <span class="h2 font-weight-bold mb-0 text-success" id="approvedBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-info shadow-sm" style="border-left: 4px solid #11cdef !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Today</h5>
+                            <span class="h2 font-weight-bold mb-0 text-info" id="todayBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <div class="row">
             <div class="col-lg-9">
                 <div class="card shadow">
@@ -24,66 +95,7 @@
                     </div>
                 </div>
             </div>
-            
             <div class="col-lg-3">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-gradient-info">
-                        <h6 class="mb-0 text-white">
-                            <i class="fas fa-info-circle mr-2"></i>Legend
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <span class="badge badge-warning">■</span>
-                            <small class="ml-2">Pending Approval</small>
-                        </div>
-                        <div class="mb-2">
-                            <span class="badge badge-success">■</span>
-                            <small class="ml-2">Approved</small>
-                        </div>
-                        <div class="mb-2">
-                            <span class="badge badge-danger">■</span>
-                            <small class="ml-2">Rejected</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-gradient-success">
-                        <h6 class="mb-0 text-white">
-                            <i class="fas fa-chart-bar mr-2"></i>Statistics
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-primary mb-1" id="totalBookings">-</h4>
-                                    <small class="text-muted">Total</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-warning mb-1" id="pendingBookings">-</h4>
-                                    <small class="text-muted">Pending</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-success mb-1" id="approvedBookings">-</h4>
-                                    <small class="text-muted">Approved</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-0">
-                                    <h4 class="text-info mb-1" id="todayBookings">-</h4>
-                                    <small class="text-muted">Today</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="card shadow mb-4">
                     <div class="card-header bg-gradient-warning">
                         <h6 class="mb-0 text-white">
@@ -1322,3 +1334,6 @@ function viewBookingLogs() {
 </style>
 @endpush
 @endsection
+
+
+

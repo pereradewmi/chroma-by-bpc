@@ -1,13 +1,13 @@
 @if(request()->routeIs('dashboard'))
-@php
-    $studentsCount = \App\Models\Student::count();
-    $teachersCount = \App\Models\Teacher::count();
-    $classesCount = \App\Models\ClassRoom::count();
-    $sessionsCount = \App\Models\Session::count();
-@endphp
-<div class="header bg-gradient-primary pb-4  pt-md-2">
+<div class="header pb-5 pt-3 pt-md-4">
     <div class="container-fluid">
         <div class="header-body">
+            @php
+                $studentsCount = \App\Models\Student::count();
+                $teachersCount = \App\Models\Teacher::count();
+                $classesCount = \App\Models\ClassRoom::count();
+                $sessionsCount = \App\Models\Session::count();
+            @endphp
             <!-- Card stats -->
             <div class="row">
                 <div class="col-xl-3 col-lg-6">
@@ -79,14 +79,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-@else
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-    <div class="container-fluid">
-        <div class="header-body">
-            <!-- empty space for other pages, so the content mt--7 plays nicely -->
         </div>
     </div>
 </div>

@@ -35,44 +35,50 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'teachers') ? 'active' : '' }}" href="{{ route('teachers.index') }}">
-                        <i class="fas fa-chalkboard-teacher text-warning"></i>
+                        <i class="fas fa-chalkboard-teacher text-primary"></i>
                         {{ __('Teachers') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'classes') ? 'active' : '' }}" href="{{ route('classes.index') }}">
-                        <i class="fas fa-school text-info"></i>
+                        <i class="fas fa-school text-primary"></i>
                         {{ __('Classes') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'sessions') ? 'active' : '' }}" href="{{ route('sessions.index') }}">
-                        <i class="fas fa-calendar-alt text-danger"></i>
+                        <i class="fas fa-calendar-alt text-primary"></i>
                         {{ __('Sessions') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'events') ? 'active' : '' }}" href="{{ route('events.index') }}">
-                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-primary"></i>
                         {{ __('Events') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.calendar') ? 'active' : '' }}" href="{{ route('admin.calendar.index') }}">
-                        <i class="fas fa-calendar text-success"></i>
+                        <i class="fas fa-calendar text-primary"></i>
                         {{ __('Calendar') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.images') ? 'active' : '' }}" href="{{ route('admin.images.index') }}">
-                        <i class="fas fa-images text-info"></i>
+                        <i class="fas fa-images text-primary"></i>
                         {{ __('Gallery') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'admin.image-categories') ? 'active' : '' }}" href="{{ route('admin.image-categories.index') }}">
-                        <i class="fas fa-tags text-info"></i>
+                        <i class="fas fa-tags text-primary"></i>
                         {{ __('Category') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'payments') ? 'active' : '' }}" href="{{ route('payments.index') }}">
+                        <i class="fas fa-money-bill-wave text-primary"></i>
+                        {{ __('Payments') }}
                     </a>
                 </li>
                 <li class="nav-item">
@@ -90,7 +96,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="return confirmLogout();">
-                            <i class="fas fa-sign-out-alt text-danger"></i>
+                            <i class="fas fa-sign-out-alt text-primary"></i>
                             <span>{{ __('Logout') }}</span>
                         </a>
                     </li>
