@@ -19,9 +19,10 @@ class RedirectIfAuthenticated
     {
         // Check if user is logged in via session
         if (session('user_id')) {
-            return redirect('/dashboard');
+            return redirect('/admin/dashboard');
         }
 
         return $next($request);
     }
 }
+

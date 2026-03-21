@@ -15,7 +15,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/admin/dashboard';
 
     /**
      * Create a new controller instance.
@@ -81,3 +81,4 @@ class LoginController extends Controller
         return redirect()->route('login')->with('message', 'You have been successfully logged out.');
     }
 }
+
