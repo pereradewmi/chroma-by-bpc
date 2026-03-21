@@ -3,13 +3,84 @@
 @section('content')
     @include('backend.layouts.headers.cards')
     
-    <div class="container-fluid mt--7">
+    <div class="container-fluid mt-4 mb-4">
         
         <!-- Calendar Section -->
+            <div class="row mb-4">
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-primary shadow-sm" style="border-left: 4px solid #04415f !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total Bookings</h5>
+                            <span class="h2 font-weight-bold mb-0" id="totalBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-primary text-white rounded-circle shadow">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-warning shadow-sm" style="border-left: 4px solid #fb6340 !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Pending</h5>
+                            <span class="h2 font-weight-bold mb-0 text-warning" id="pendingBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-success shadow-sm" style="border-left: 4px solid #2dce89 !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Approved</h5>
+                            <span class="h2 font-weight-bold mb-0 text-success" id="approvedBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <div class="card card-stats mb-4 mb-xl-0 border-left-info shadow-sm" style="border-left: 4px solid #11cdef !important;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Today</h5>
+                            <span class="h2 font-weight-bold mb-0 text-info" id="todayBookings">-</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <div class="row">
             <div class="col-lg-9">
                 <div class="card shadow">
-                    <!-- <div class="card-header bg-gradient-primary">
+                    <!-- <div class="card-header bg-primary">
                         <div class="row align-items-center">
                             <div class="col">
                                 <h3 class="mb-0 text-white">
@@ -24,66 +95,7 @@
                     </div>
                 </div>
             </div>
-            
             <div class="col-lg-3">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-gradient-info">
-                        <h6 class="mb-0 text-white">
-                            <i class="fas fa-info-circle mr-2"></i>Legend
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <span class="badge badge-warning">■</span>
-                            <small class="ml-2">Pending Approval</small>
-                        </div>
-                        <div class="mb-2">
-                            <span class="badge badge-success">■</span>
-                            <small class="ml-2">Approved</small>
-                        </div>
-                        <div class="mb-2">
-                            <span class="badge badge-danger">■</span>
-                            <small class="ml-2">Rejected</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-gradient-success">
-                        <h6 class="mb-0 text-white">
-                            <i class="fas fa-chart-bar mr-2"></i>Statistics
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-primary mb-1" id="totalBookings">-</h4>
-                                    <small class="text-muted">Total</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-warning mb-1" id="pendingBookings">-</h4>
-                                    <small class="text-muted">Pending</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <h4 class="text-success mb-1" id="approvedBookings">-</h4>
-                                    <small class="text-muted">Approved</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-0">
-                                    <h4 class="text-info mb-1" id="todayBookings">-</h4>
-                                    <small class="text-muted">Today</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="card shadow mb-4">
                     <div class="card-header bg-gradient-warning">
                         <h6 class="mb-0 text-white">
@@ -125,11 +137,11 @@
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gradient-primary text-white">
-                <h5 class="modal-title" id="bookingModalLabel">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="bookingModalLabel">
                     <i class="fas fa-plus-circle mr-2"></i>Book Appointment
                 </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 1;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -149,55 +161,22 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-4 mb-3 d-none">
                             <label for="booking_date" class="form-label">Date*</label>
-                            <input type="date" class="form-control" id="booking_date" name="booking_date" 
-                                   min="{{ date('Y-m-d') }}" required>
+                            <input type="date" class="form-control" id="booking_date" name="booking_date" min="{{ date('Y-m-d') }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="bStart_datetime" class="form-label">Start Date & Time*</label>
-                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" 
-                                   min="{{ date('Y-m-d\TH:i') }}" required>
+                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" min="{{ date('Y-m-d\TH:i') }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="bEnd_datetime" class="form-label">End Date & Time</label>
-                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime"
-                                   min="{{ date('Y-m-d\TH:i') }}">
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bStatus" class="form-label">Status</label>
-                            <select class="form-control" id="bStatus" name="bStatus">
-                                <option value="pending" selected>Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bPayment_status" class="form-label">Payment Status</label>
-                            <select class="form-control" id="bPayment_status" name="bPayment_status">
-                                <option value="pending" selected>Pending</option>
-                                <option value="paid">Paid</option>
-                                <option value="refunded">Refunded</option>
-                            </select>
+                            <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime" min="{{ date('Y-m-d\TH:i') }}">
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="pubprievent" class="form-label">Event Visibility</label>
-                            <select class="form-control" id="pubprievent" name="pubprievent">
-                                <option value="PRI" selected>Private (Admin Only)</option>
-                                <option value="PUB">Public (Visible to All)</option>
-                            </select>
-                            <small class="form-text text-muted">Private events are only visible in admin calendar. Public events are visible to everyone.</small>
-                        </div>
-                    </div>
-                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="bName" class="form-label">Customer Name*</label>
@@ -208,26 +187,55 @@
                             <input type="tel" class="form-control" id="bPhone" name="bPhone" required>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="bEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="bEmail" name="bEmail">
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="bDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="bDescription" name="bDescription" rows="1" placeholder="Additional details about your booking..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pubprievent" class="form-label">Event Visibility</label>
+                            <select class="form-control" id="pubprievent" name="pubprievent">
+                                <option value="PRI" selected>Private (Admin Only)</option>
+                                <option value="PUB">Public (Visible to All)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="bStatus" class="form-label">Status</label>
+                            <select class="form-control" id="bStatus" name="bStatus">
+                                <option value="pending" selected>Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bPayment_status" class="form-label">Payment Status</label>
+                            <select class="form-control" id="bPayment_status" name="bPayment_status">
+                                <option value="pending" selected>Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="refunded">Refunded</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="bPrice" class="form-label">Price ($)</label>
                             <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
-                    
+
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="bDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="bDescription" name="bDescription" rows="3" placeholder="Additional details about your booking..."></textarea>
-                        </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="bRejection_reason" class="form-label">Rejection Reason</label>
-                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="3" placeholder="Reason for rejection (if applicable)..."></textarea>
+                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="2" placeholder="Reason for rejection (if applicable)..."></textarea>
                         </div>
                     </div>
                 </form>
@@ -248,8 +256,8 @@
 <div class="modal fade" id="viewBookingModal" tabindex="-1" aria-labelledby="viewBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gradient-info text-white">
-                <h5 class="modal-title" id="viewBookingModalLabel">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="viewBookingModalLabel">
                     <i class="fas fa-eye mr-2"></i>Booking Details
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -289,8 +297,8 @@
 <div class="modal fade" id="editBookingModal" tabindex="-1" aria-labelledby="editBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gradient-warning text-white">
-                <h5 class="modal-title" id="editBookingModalLabel">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="editBookingModalLabel">
                     <i class="fas fa-edit mr-2"></i>Edit Booking
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -299,7 +307,7 @@
             </div>
             <div class="modal-body">
                 <form id="editBookingForm">
-                    <input type="hidden" id="editBookingId" name="booking_id">
+                    <input type="hidden" id="editBookingId" name="booking_id">  
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="editTitle" class="form-label">Title*</label>
@@ -314,25 +322,47 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="editBooking_date" class="form-label">Date*</label>
-                            <input type="date" class="form-control" id="editBooking_date" name="booking_date" 
-                                   min="{{ date('Y-m-d') }}" required>
+                            <input type="date" class="form-control" id="editBooking_date" name="booking_date"
+                                min="{{ date('Y-m-d') }}" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="editStart_datetime" class="form-label">Start DateTime*</label>
-                            <input type="datetime-local" class="form-control" id="editStart_datetime" name="bStart_datetime" 
-                                   min="{{ date('Y-m-d\TH:i') }}" required>
+                            <input type="datetime-local" class="form-control" id="editStart_datetime" name="bStart_datetime"
+                                min="{{ date('Y-m-d\TH:i') }}" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="editEnd_datetime" class="form-label">End DateTime</label>
                             <input type="datetime-local" class="form-control" id="editEnd_datetime" name="bEnd_datetime"
-                                   min="{{ date('Y-m-d\TH:i') }}">
+                                min="{{ date('Y-m-d\TH:i') }}">
                         </div>
                     </div>
-                    
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="editName" class="form-label">Customer Name*</label>
+                            <input type="text" class="form-control" id="editName" name="bName" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="editPhone" class="form-label">Phone Number*</label>
+                            <input type="tel" class="form-control" id="editPhone" name="bPhone" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" name="bEmail">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" name="bDescription" rows="3"></textarea>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="editStatus" class="form-label">Status</label>
@@ -355,28 +385,6 @@
                             <input type="number" class="form-control" id="editPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="editName" class="form-label">Customer Name*</label>
-                            <input type="text" class="form-control" id="editName" name="bName" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editPhone" class="form-label">Phone Number*</label>
-                            <input type="tel" class="form-control" id="editPhone" name="bPhone" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editEmail" name="bEmail">
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="editDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editDescription" name="bDescription" rows="3"></textarea>
-                        </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -393,7 +401,7 @@
 <div class="modal fade" id="rejectBookingModal" tabindex="-1" aria-labelledby="rejectBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-gradient-danger text-white">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="rejectBookingModalLabel">
                     <i class="fas fa-times-circle mr-2"></i>Reject Booking
                 </h5>
@@ -428,8 +436,8 @@
 <div class="modal fade" id="bookingLogsModal" tabindex="-1" aria-labelledby="bookingLogsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-gradient-info text-white">
-                <h5 class="modal-title" id="bookingLogsModalLabel">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="bookingLogsModalLabel">
                     <i class="fas fa-history mr-2"></i>Booking History
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -735,9 +743,6 @@ function showBookingDetails(bookingId) {
                             <i class="fas fa-eye-slash mr-1"></i>Make Private
                         </button>
                     </div>
-                    <small class="form-text text-muted d-block mt-2">
-                        Public events are visible to all users on the frontend calendar. Private events are only visible to admins.
-                    </small>
                 </div>
             </div>
             ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
@@ -1322,3 +1327,10 @@ function viewBookingLogs() {
 </style>
 @endpush
 @endsection
+
+
+
+
+
+
+
