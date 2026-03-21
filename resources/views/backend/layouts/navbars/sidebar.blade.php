@@ -7,10 +7,7 @@
                 <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="Chroma Logo" style="max-height: 40px;">
                 <span class="ms-2 text-white font-weight-bold" style="font-size: 0.9rem;">Chroma</span>
             </a>
-            <!-- Sidebar Toggle Button -->
-            <button class="btn btn-sm btn-outline-primary d-none d-md-block" type="button" id="sidebar-toggle" title="Toggle Sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
+            
         </div>
         
         <!-- Mobile Toggler -->
@@ -105,3 +102,4 @@
         </div>
     </div>
 </nav>
+
