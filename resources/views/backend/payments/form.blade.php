@@ -16,7 +16,7 @@
                         <!-- Single Form (Simplified) -->
                         <form id="payment_form">
                             <h6 class="heading-small text-muted mb-3">
-                                <i class="fas fa-dollar-sign"></i> Payment Information
+                                Payment Information
                             </h6>
 
                             <!-- Step 1: Student Search -->
@@ -32,7 +32,7 @@
                                 </div>
 
                                 <!-- Selected Student Info -->
-                                <div class="alert alert-info mt-3 p-3" id="selected_student_info" style="display: none; border-radius: 8px;">
+                                <div class="alert alert-secondary mt-3 p-3" id="selected_student_info" style="display: none; border-radius: 8px;">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h6 class="alert-heading mb-2">
@@ -40,7 +40,7 @@
                                             </h6>
                                             <div id="student_details_content" class="small"></div>
                                         </div>
-                                        <button type="button" class="btn btn-sm btn-outline-info ms-3" onclick="changeStudent()">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-3" onclick="changeStudent()">
                                             <i class="fas fa-edit"></i> Change
                                         </button>
                                     </div>
@@ -80,23 +80,13 @@
                                     </div>
                                 </div>
 
-                                <!-- Amount Display -->
-                                <div class="alert alert-light border p-3 mb-3" style="border-radius: 8px;">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <small class="text-muted">Class Fee</small>
-                                            <h5 id="display_fee" class="font-weight-bold">-</h5>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- Submit Buttons -->
-                                <div class="mt-4">
+                                <div class="mt-4 d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-lg btn-light" onclick="resetForm()" style="border-radius: 8px; padding: 0.7rem 2rem;">
+                                        <i class="fas fa-redo"></i> Reset
+                                    </button>
                                     <button type="button" id="submit_payment_btn" class="btn btn-lg btn-primary" onclick="submitPayment()" style="border-radius: 8px; padding: 0.7rem 2rem;">
                                         <i class="fas fa-check-circle"></i> Record Payment
-                                    </button>
-                                    <button type="button" class="btn btn-lg btn-light ms-2" onclick="resetForm()" style="border-radius: 8px; padding: 0.7rem 2rem;">
-                                        <i class="fas fa-redo"></i> Reset
                                     </button>
                                 </div>
 
@@ -230,13 +220,6 @@
             document.getElementById('payment_form').reset();
             document.getElementById('student_search').focus();
         }
-
-        // Update fee display when class changes
-        document.getElementById('classID')?.addEventListener('change', function() {
-            const option = this.options[this.selectedIndex];
-            const fee = option.getAttribute('data-fee') || '0';
-            document.getElementById('display_fee').textContent = 'Rs. ' + parseFloat(fee).toFixed(2);
-        });
 
         function submitPayment() {
             const studentID = document.getElementById('selected_student_id').value;

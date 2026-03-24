@@ -52,13 +52,37 @@
                                                 <label class="custom-file-label" for="eImage">Choose image...</label>
                                             </div>
                                             <small class="form-text text-muted d-block mt-2">
-                                                <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
                                                 @if($isEdit && $event->eImage)
                                                     <br><strong>Current Image:</strong> {{ $event->eImage }}
                                                 @endif
-                                                <br><strong>Note:</strong> If no image is uploaded, the Chroma logo will be used as default.
+                                              
                                             </small>
                                             @error('eImage')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="dateFrom">Event Start Date</label>
+                                            <input type="datetime-local" id="dateFrom" name="dateFrom"
+                                                class="form-control form-control-alternative @error('dateFrom') is-invalid @enderror"
+                                                value="{{ old('dateFrom', $event->dateFrom ? $event->dateFrom->format('Y-m-d\TH:i') : '') }}" required>
+                                            @error('dateFrom')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="dateTo">Event End Date</label>
+                                            <input type="datetime-local" id="dateTo" name="dateTo"
+                                                class="form-control form-control-alternative @error('dateTo') is-invalid @enderror"
+                                                value="{{ old('dateTo', $event->dateTo ? $event->dateTo->format('Y-m-d\TH:i') : '') }}" required>
+                                            @error('dateTo')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -91,6 +115,24 @@
                                         </div>
                                     </div>
                                 @endif
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Status</label>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="hidden" name="status" value="0">
+                                                <input type="checkbox" id="status" name="status" value="1"
+                                                    class="custom-control-input"
+                                                    {{ old('status', $event->status) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="status">Active </label>
+                                            </div>
+                                            @error('status')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="row">
                                     <div class="col-lg-12">

@@ -6,19 +6,6 @@
 
   <main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title light-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Events</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="{{ route('home') }}">Home</a></li>
-            <li class="current">Events</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
-
     <!-- Events Extended Section -->
     <section id="events-extended" class="events-extended section">
 

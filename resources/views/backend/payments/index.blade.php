@@ -38,7 +38,6 @@
                                     <th scope="col">Month</th>
                                     <th scope="col">Class Fee</th>
                                     <th scope="col">Payment Date</th>
-                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,22 +73,6 @@
                                         </td>
                                         <td>Rs. {{ number_format($payment->classRoom->classfee ?? 0, 2) }}</td>
                                         <td>{{ $payment->created_at->format('M d, Y') }}</td>
-                                        <td class="text-right">
-                                            <div class="dropdown">
-                                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                    <form action="{{ route('payments.destroy', $payment->paymentID) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this payment record?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger" title="Delete" aria-label="Delete">
-                                                            <i class="fas fa-trash" aria-hidden="true"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

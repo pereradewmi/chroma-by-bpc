@@ -25,6 +25,6 @@ class Student extends Model
 
     protected $casts = [
         'Age' => 'integer',
-        'Active' => 'boolean'
+        'Active' => 'integer'
     ];
 }
