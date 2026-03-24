@@ -81,29 +81,16 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 d-flex align-items-end justify-content-md-end">
-                                <div class="form-group mb-0 d-flex flex-wrap justify-content-md-end" style="gap: 8px;">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-filter"></i> {{ __('Apply Filters') }}
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" onclick="exportFilteredData()">
-                                        <i class="fas fa-download"></i> {{ __('Export Filtered') }}
-                                    </button>
-
-                                    <div class="dropdown">
-                                        <button class="btn btn-neutral dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-download"></i> {{ __('Download') }}
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" onclick="downloadReport('csv'); return false;">
-                                                <i class="fas fa-file-csv"></i> {{ __('Download as CSV') }}
-                                            </a>
-                                            <a class="dropdown-item" href="#" onclick="downloadReport('excel'); return false;">
-                                                <i class="fas fa-file-excel"></i> {{ __('Download as Excel') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-md-6 d-flex align-items-end gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-filter mr-1"></i>{{ __('Apply Filters') }}
+                                </button>
+                                <button type="button" class="btn btn-info" onclick="exportFilteredData()">
+                                    <i class="fas fa-download mr-1"></i>{{ __('Export') }}
+                                </button>
+                                <button type="button" class="btn btn-success" onclick="downloadReport('excel')">
+                                    <i class="fas fa-file-excel mr-1"></i>{{ __('Download') }}
+                                </button>
                             </div>
                         </div>
                     </form>

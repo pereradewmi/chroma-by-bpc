@@ -4,77 +4,123 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 
 class BookingLog extends Model
 {
     use HasFactory;
 
     protected $table = 'bookingdetailsdeleted';
-    public $incrementing = false; 
-    protected $primaryKey = null; 
+    public $incrementing = false;
+    protected $primaryKey = null;
 
     protected $fillable = [
-        'booking_ID',
-        'bName',
-        'bEmail', 
-        'bPhone',
-        'booking_date',
-        'bStart_datetime',
-        'bEnd_datetime',
-        'bTitle',
-        'bDescription',
-        'bEvent_type',
-        'bStatus',
-        'bPrice',
-        'bPayment_status',
-        'bApproved_by',
-        'bApproved_at',
-        'bReject_by',
-        'bReject_at',
-        'bRejection_reason'
+        'booking_id',
+        'action',
+        'old_data',
+        'new_data',
+        'description',
+        'user_id',
+        'logged_at'
     ];
 
     protected $casts = [
-        'booking_date' => 'datetime',
-        'bStart_datetime' => 'datetime',
-        'bEnd_datetime' => 'datetime',
-        'bApproved_at' => 'datetime',
-        'bReject_at' => 'datetime',
-        'bPrice' => 'decimal:2'
+        'logged_at' => 'datetime'
     ];
 
     /**
-     * Relationship to the booking
+     * Get the booking relationship
      */
     public function booking()
     {
-        return $this->belongsTo(Booking::class, 'booking_ID', 'booking_ID');
+        return $this->belongsTo(Booking::class, 'booking_id', 'booking_ID');
     }
 
     /**
-     * Create a log entry by copying booking data
+     * Get the user who made the change
      */
-    public static function logBookingChange($booking)
+    public function user()
     {
-        return self::create([
-            'booking_ID' => $booking->booking_ID,
-            'bName' => $booking->bName,
-            'bEmail' => $booking->bEmail,
-            'bPhone' => $booking->bPhone,
-            'booking_date' => $booking->booking_date,
-            'bStart_datetime' => $booking->bStart_datetime,
-            'bEnd_datetime' => $booking->bEnd_datetime,
-            'bTitle' => $booking->bTitle,
-            'bDescription' => $booking->bDescription,
-            'bEvent_type' => $booking->bEvent_type,
-            'bStatus' => $booking->bStatus,
-            'bPrice' => $booking->bPrice,
-            'bPayment_status' => $booking->bPayment_status,
-            'bApproved_by' => $booking->bApproved_by,
-            'bApproved_at' => $booking->bApproved_at,
-            'bReject_by' => $booking->bReject_by,
-            'bReject_at' => $booking->bReject_at,
-            'bRejection_reason' => $booking->bRejection_reason,
-        ]);
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
+    /**
+     * Get formatted action label
+     */
+    public function getFormattedActionAttribute()
+    {
+        $action = $this->attributes['action'] ?? '';
+        $labels = [
+            'created' => 'CREATED',
+            'updated' => 'UPDATED',
+            'approved' => 'APPROVED',
+            'rejected' => 'REJECTED',
+            'deleted' => 'DELETED',
+            'visibility_updated' => 'VISIBILITY_UPDATED'
+        ];
+        return $labels[strtolower($action)] ?? strtoupper($action);
+    }
+
+    /**
+     * Get user name
+     */
+    public function getUserNameAttribute()
+    {
+        if ($this->user) {
+            return $this->user->name ?? 'System';
+        }
+        return 'System';
+    }
+
+    /**
+     * Get user role
+     */
+    public function getUserRoleAttribute()
+    {
+        if ($this->user && method_exists($this->user, 'getRoleAttribute')) {
+            return $this->user->getRoleAttribute();
+        }
+        return 'Admin';
+    }
+
+    /**
+     * Get changes description
+     */
+    public function getChangesDescriptionAttribute()
+    {
+        return $this->attributes['description'] ?? $this->attributes['action'] ?? '';
+    }
+
+    /**
+     * Get changes summary
+     */
+    public function getChangesSummaryAttribute()
+    {
+        return 'Action: ' . ($this->formatted_action ?? 'UPDATED');
+    }
+
+    /**
+     * Log a booking change
+     */
+    public static function logBookingChange($booking, $action, $oldData = null, $newData = null, $description = null)
+    {
+        try {
+            // Store as JSON if it's an array
+            $oldDataJson = is_array($oldData) ? json_encode($oldData) : $oldData;
+            $newDataJson = is_array($newData) ? json_encode($newData) : $newData;
+
+            return self::create([
+                'booking_id' => $booking->booking_ID,
+                'action' => $action,
+                'old_data' => $oldDataJson,
+                'new_data' => $newDataJson,
+                'description' => $description,
+                'user_id' => Auth::id(),
+                'logged_at' => now()
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to log booking change: ' . $e->getMessage());
+            return null;
+        }
     }
 }

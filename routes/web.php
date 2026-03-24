@@ -73,7 +73,7 @@ Route::get('/Registration', function () {
 })->name('frontend.register');
 
 // Frontend Calendar routes (public access - no authentication required)
-Route::prefix('calendar')->name('calendar.')->group(function () {
+Route::prefix('Appointment')->name('Appointment.')->group(function () {
     Route::get('/', [BookingController::class, 'frontendIndex'])->name('index');
     Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');

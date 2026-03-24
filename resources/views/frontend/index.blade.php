@@ -17,7 +17,7 @@
               <p>Discover a wide range of exciting classes and events. Browse schedules, book your sessions, and manage your activities easily through Chroma</p>
               <p>Explore a variety of engaging sessions designed to help you learn new skills, meet new people, and enjoy meaningful experiences.</p>
               <div class="action-buttons">
-                <a href="{{ route('calendar.index') }}" class="btn-primary">Book an Appointment</a>
+                <a href="{{ route('Appointment.index') }}" class="btn-primary">Book an Appointment</a>
                 <a href="{{ route('frontend.events') }}" class="btn-secondary">Virtual Tour</a>
               </div>
             </div>

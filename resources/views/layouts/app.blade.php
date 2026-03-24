@@ -7,9 +7,9 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'CHROMA') }}</title>
+        <title>{{ 'Chroma by BPC'}}</title>
         <!-- Favicon -->
-        <link href="{{ asset('front-assets') }}/img/favicon.png" rel="icon" type="image/png">
+        <link href="{{ asset('front-assets/img/logo.png') }}" rel="icon" type="image/png">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
         <!-- Extra details for Live View on GitHub Pages -->
