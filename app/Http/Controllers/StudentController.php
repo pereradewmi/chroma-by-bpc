@@ -52,7 +52,8 @@ class StudentController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'Active', 'studentemail']);
+        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'studentemail']);
+        $data['Active'] = $request->has('Active') ? 1 : 0;
 
         // Handle image upload
         if ($request->hasFile('studentpic')) {
