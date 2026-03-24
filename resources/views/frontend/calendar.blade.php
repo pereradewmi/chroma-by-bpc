@@ -172,18 +172,18 @@
                     <div class="row">
                         <div class="col-md-4 mb-3  d-none" >
                             <label for="booking_date" class="form-label">Date*</label>
-                            <input type="date" class="form-control" id="booking_date" name="booking_date" 
-                                   min="{{ date('Y-m-d') }}" required>
+                            <input type="date" class="form-control" id="booking_date" name="booking_date"
+                                   min="{{ date('Y-m-d', strtotime('+1 day')) }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="bStart_datetime" class="form-label">Start Date & Time*</label>
-                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime" 
-                                   min="{{ date('Y-m-d\TH:i') }}" required>
+                            <input type="datetime-local" class="form-control" id="bStart_datetime" name="bStart_datetime"
+                                   min="{{ date('Y-m-d\TH:i', strtotime('+1 day')) }}" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="bEnd_datetime" class="form-label">End Date & Time</label>
                             <input type="datetime-local" class="form-control" id="bEnd_datetime" name="bEnd_datetime"
-                                   min="{{ date('Y-m-d\TH:i') }}">
+                                   min="{{ date('Y-m-d\TH:i', strtotime('+1 day')) }}">
                         </div>
                     </div>
                     
@@ -316,13 +316,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showBookingModal(selectedDate) {
-    // Check if selected date is in the past
+    // Check if selected date is in the past or today
     const today = new Date().toISOString().split('T')[0];
-    if (selectedDate < today) {
+    const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    if (selectedDate < tomorrow) {
         Swal.fire({
             icon: 'error',
             title: 'Invalid Date',
-            text: 'You cannot book appointments for past dates. Please select today or a future date.'
+            text: 'You cannot book appointments for today or past dates. Please select a future date.'
         });
         return;
     }
@@ -356,31 +357,32 @@ function showBookingModal(selectedDate) {
 }
 
 function submitBooking() {
-    
+
     // Validate dates before submitting
     const bookingDate = document.getElementById('booking_date').value;
     const startDateTime = document.getElementById('bStart_datetime').value;
     const endDateTime = document.getElementById('bEnd_datetime').value;
-    
+
     const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const now = new Date().toISOString();
-    
-    // Check booking date
-    if (bookingDate && bookingDate < today) {
+
+    // Check booking date - must be in the future (tomorrow or later)
+    if (bookingDate && bookingDate <= today) {
         Swal.fire({
             icon: 'error',
             title: 'Invalid Date',
-            text: 'Booking date cannot be in the past.'
+            text: 'Booking date must be a future date (tomorrow or later).'
         });
         return;
     }
-    
-    // Check start datetime
-    if (startDateTime && startDateTime < now.substring(0, 16)) {
+
+    // Check start datetime - must be in the future (tomorrow or later)
+    if (startDateTime && startDateTime.split('T')[0] <= today) {
         Swal.fire({
             icon: 'error',
             title: 'Invalid Date/Time',
-            text: 'Start date and time cannot be in the past.'
+            text: 'Start date must be a future date (tomorrow or later).'
         });
         return;
     }

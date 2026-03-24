@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\PaymentDetail;
 use App\Models\Student;
 use App\Models\ClassRoom;
+use App\Mail\PaymentNotificationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentDetailController extends Controller
 {
@@ -193,6 +195,22 @@ class PaymentDetailController extends Controller
             'classID' => $request->classID,
             'month' => $request->month
         ]);
+
+        // Get student and class information for email
+        $student = Student::findOrFail($request->studentID);
+        $classRoom = ClassRoom::findOrFail($request->classID);
+
+        // Send payment notification email if student has email
+        if ($student->studentemail) {
+            try {
+                Mail::to($student->studentemail)->send(
+                    new PaymentNotificationMail($student, $classRoom, $request->month)
+                );
+            } catch (\Exception $e) {
+                // Log the error but don't fail the payment creation
+                \Log::error('Failed to send payment notification email: ' . $e->getMessage());
+            }
+        }
 
         return response()->json([
             'success' => true,

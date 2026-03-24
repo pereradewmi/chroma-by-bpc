@@ -1,7 +1,7 @@
-  <footer id="footer" class="footer position-relative light-background">
+  <footer id="footer" class="footer position-relative light-background" style="padding: 30px 0;">
 
-    <div class="container footer-top">
-      <div class="row gy-4">
+    <div class="container footer-top" style="padding-bottom: 15px;">
+      <div class="row gy-3">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="{{ route('home') }}" class="logo d-flex align-items-center">
             <img src="{{ asset('front-assets/img/logo.png') }}" alt="">
@@ -47,8 +47,8 @@
       </div>
     </div>
 
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Chroma By BPC</strong> <span>All Rights Reserved</span></p>
+    <div class="container copyright text-center mt-3">
+      <p style="margin: 0; padding: 10px 0;">© <span>Copyright</span> <strong class="px-1 sitename">Chroma By BPC</strong> <span>All Rights Reserved</span></p>
     </div>
 
   </footer>
