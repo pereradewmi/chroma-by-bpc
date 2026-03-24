@@ -80,18 +80,17 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="col-md-6 d-flex align-items-end gap-2">
+                             <div class="col-md-3 col-sm-6"></div>
+                            <div class="col-md-3 col-sm-6 pt-4">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-filter mr-1"></i>{{ __('Apply Filters') }}
-                                </button>
-                                <button type="button" class="btn btn-info" onclick="exportFilteredData()">
-                                    <i class="fas fa-download mr-1"></i>{{ __('Export') }}
                                 </button>
                                 <button type="button" class="btn btn-success" onclick="downloadReport('excel')">
                                     <i class="fas fa-file-excel mr-1"></i>{{ __('Download') }}
                                 </button>
                             </div>
+
+                            
                         </div>
                     </form>
                 </div>
