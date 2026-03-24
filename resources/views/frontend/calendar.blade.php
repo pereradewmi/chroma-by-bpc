@@ -19,7 +19,7 @@
     }
 
     .calendar-page .calendar-wrapper .card-header {
-        background: linear-gradient(135deg, #04415f 0%, #086190 100%);
+        background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);
         border-bottom: 0;
         padding: 1rem 1.25rem;
     }
@@ -42,22 +42,22 @@
     }
 
     .calendar-page .fc-toolbar-title {
-        color: #04415f;
+        color: #001f3f;
         font-size: 1.15rem;
         font-weight: 700;
     }
 
     .calendar-page .fc-button-primary {
-        background: #04415f;
-        border-color: #04415f;
-        box-shadow: 0 4px 12px rgba(4, 65, 95, 0.2);
+        background: #001f3f;
+        border-color: #001f3f;
+        box-shadow: 0 4px 12px rgba(0, 31, 63, 0.2);
     }
 
     .calendar-page .fc-button-primary:hover,
     .calendar-page .fc-button-primary:focus,
     .calendar-page .fc-button-primary:active {
-        background: #03344d;
-        border-color: #03344d;
+        background: #000a1f;
+        border-color: #000a1f;
     }
 
     .calendar-page .fc-daygrid-event,
@@ -116,10 +116,67 @@
             font-size: 1rem;
         }
     }
+
+    /* Navy Blue Button Styling */
+    .calendar-page .btn-primary {
+        background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);
+        border: none;
+        color: #ffffff;
+    }
+
+    .calendar-page .btn-primary:hover,
+    .calendar-page .btn-primary:focus,
+    .calendar-page .btn-primary:active {
+        background: linear-gradient(135deg, #000a1f 0%, #002855 100%);
+        border: none;
+        color: #ffffff;
+    }
+
+    /* Modal Styling */
+    .calendar-page .modal-header {
+        background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);
+        border: none;
+    }
+
+    .calendar-page .modal-content {
+        border: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 16px 36px rgba(0, 31, 63, 0.18);
+    }
+
+    .calendar-page .modal-body {
+        background: #ffffff;
+        color: #333333;
+    }
+
+    .calendar-page .modal-body .form-label {
+        color: #333333;
+        font-weight: 600;
+    }
+
+    .calendar-page .modal-body .form-control,
+    .calendar-page .modal-body .form-select {
+        border-color: #ddd;
+        color: #333333;
+        background-color: #ffffff;
+    }
+
+    .calendar-page .modal-body .form-control:focus,
+    .calendar-page .modal-body .form-select:focus {
+        border-color: #001f3f;
+        box-shadow: 0 0 0 0.2rem rgba(0, 31, 63, 0.25);
+        color: #333333;
+    }
+
+    .calendar-page .modal-body p,
+    .calendar-page .modal-body label {
+        color: #333333;
+    }
 </style>
 @endpush
 
-@section('title', 'Book Appointment | Chroma By BPC')
+@section('title', 'Chroma By BPC')
 
 @section('main')
 
@@ -146,8 +203,8 @@
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="bookingModalLabel">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);">
+                <h5 class="modal-title text-white" id="bookingModalLabel">
                     <i class="fas fa-plus-circle me-2"></i>Book Appointment
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -217,7 +274,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>Cancel
                 </button>
-                <button type="button" class="btn btn-primary" id="submitBooking" onclick="submitBooking()">
+                <button type="button" class="btn text-white" id="submitBooking" onclick="submitBooking()" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%); border: none;">
                     <i class="fas fa-check me-2"></i>Book Appointment
                 </button>
             </div>
@@ -229,7 +286,7 @@
 <div class="modal fade" id="viewBookingModal" tabindex="-1" aria-labelledby="viewBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-info text-white">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);">
                 <h5 class="modal-title" id="viewBookingModalLabel">
                     <i class="fas fa-eye me-2"></i>Booking Details
                 </h5>
@@ -269,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         height: 'auto',
         events: {
-            url: '{{ route("calendar.bookings") }}',
+            url: '{{ route("Appointment.bookings") }}',
             failure: function(error) {
                 console.error('Error loading events:', error);
                 alert('Failed to load calendar events');
@@ -412,7 +469,7 @@ function submitBooking() {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Booking...';
     submitButton.disabled = true;
     
-    fetch('{{ route("calendar.bookings.store") }}', {
+    fetch('{{ route("Appointment.bookings.store") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -429,7 +486,7 @@ function submitBooking() {
             Swal.fire({
                 icon: 'success',
                 title: 'Booking Submitted Successfully!',
-                text: 'Thank you for your booking request. Our admin or support person will contact you shortly to confirm your appointment.',
+                text: 'Thank you for your booking request. Our admin or support person will contact you shortly to confirm your Appointment.',
                 showConfirmButton: true,
                 confirmButtonText: 'Okay'
             });
@@ -473,7 +530,7 @@ function submitBooking() {
 }
 
 function showBookingDetails(bookingId) {
-    fetch(`{{ route("calendar.bookings.show", ":id") }}`.replace(':id', bookingId))
+    fetch(`{{ route("Appointment.bookings.show", ":id") }}`.replace(':id', bookingId))
     .then(response => response.json())
     .then(booking => {
         const statusBadge = getStatusBadge(booking.status);
@@ -525,7 +582,7 @@ function getStatusBadge(status) {
 }
 
 function loadStats() {
-    fetch('{{ route("calendar.stats") }}')
+    fetch('{{ route("Appointment.stats") }}')
     .then(response => response.json())
     .then(stats => {
         document.getElementById('totalBookings').textContent = stats.total;

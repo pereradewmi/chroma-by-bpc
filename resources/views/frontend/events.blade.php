@@ -1,5 +1,5 @@
 @extends("frontend.components.layout")
-@section("title", "Events | Chroma By BPC")
+@section("title", "Chroma By BPC")
 @section("description", "Discover upcoming events at Chroma By BPC. Join us for exciting activities, workshops, and community gatherings.")
 @section("keywords", "Chroma By BPC, events, workshops, community gatherings, activities")
 @section("main")

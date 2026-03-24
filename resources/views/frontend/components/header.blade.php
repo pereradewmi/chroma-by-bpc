@@ -3,7 +3,6 @@
 
       <a href="{{ route('home') }}" class="logo d-flex align-items-center me-auto">
         <img src="{{ asset('front-assets/img/logo.png') }}" alt="Chroma Logo">
-        <!-- <h1 class="sitename ms-2 mb-0">Chroma By BPC</h1> -->
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -13,7 +12,7 @@
           <li><a href="{{ route('frontend.sessions') }}">Sessions</a></li>
           <li><a href="{{ route('frontend.events') }}">Events</a></li>
           <li><a href="{{ route('frontend.gallery') }}">Gallery</a></li>
-          <li><a href="{{ route('calendar.index') }}">Appointment</a></li>
+          <li><a href="{{ route('Appointment.index') }}">Appointment</a></li>
           <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

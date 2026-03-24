@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Chroma By BPC Dashboard') }}</title>
+        <title>{{ 'Chroma By BPC ' }}</title>
         <!-- Favicon -->
         <link href="{{ asset('front-assets/img/logo.png') }}" rel="icon" type="image/png">
         <!-- Fonts -->
@@ -371,7 +371,27 @@
         
         <!-- Argon JS -->
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
-        
+
+        <script>
+            function confirmLogout() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You will be logged out of your account.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#04415f',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, logout',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('logout-form').submit();
+                    }
+                });
+                return false;
+            }
+        </script>
+
         </body>
 </html>
 

@@ -227,7 +227,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="bPrice" class="form-label">Price ($)</label>
+                            <label for="bPrice" class="form-label">Price (Rs.)</label>
                             <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
@@ -719,7 +719,7 @@ function showBookingDetails(bookingId) {
             </div>
             ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
             ${booking.rejection_reason ? `<div class="mt-3"><strong>Rejection Reason:</strong><br>${booking.rejection_reason}</div>` : ''}
-            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> $${booking.price}</div>` : ''}
+            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> (Rs.) ${booking.price}</div>` : ''}
         `;
         
         $('#viewBookingModal').modal('show');
