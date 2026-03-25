@@ -99,12 +99,17 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="studentpic">Student Picture</label>
-                                            <input type="file" id="studentpic" name="studentpic"
-                                                class="form-control form-control-alternative @error('studentpic') is-invalid @enderror"
-                                                accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
-                                            @if($isEdit && $student->studentpic)
-                                                <small class="text-muted">Current picture: {{ $student->studentpic }}</small>
-                                            @endif
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input @error('studentpic') is-invalid @enderror"
+                                                    id="studentpic" name="studentpic" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
+                                                <label class="custom-file-label" for="studentpic">Choose image...</label>
+                                            </div>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
+                                                @if($isEdit && $student->studentpic)
+                                                    <br><strong>Current Picture:</strong> {{ $student->studentpic }}
+                                                @endif
+                                            </small>
                                             @error('studentpic')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -159,4 +164,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Handle file input label update
+        document.getElementById('studentpic')?.addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose image...';
+            document.querySelector('.custom-file-label').textContent = fileName;
+        });
+    </script>
 @endsection

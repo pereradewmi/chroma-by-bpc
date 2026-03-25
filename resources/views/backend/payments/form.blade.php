@@ -5,137 +5,122 @@
 
     <div class="container-fluid mt-4">
         <div class="row">
-            <div class="col-xl-12 order-xl-1">
-                <div class="card bg-secondary shadow">
-                    <div class="card-header bg-white border-0">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Record Payment Details</h3>
-                            </div>
-                            <div class="col-4 text-right">
-                                <a href="{{ route('payments.index') }}" class="btn btn-sm btn-primary">Back to List</a>
-                            </div>
-                        </div>
+            <div class="col-xl-10 offset-xl-1 order-xl-1">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white border-0 d-flex justify-content-between align-items-center" style="padding: 1.5rem;">
+                        <h3 class="mb-0">Record Payment Details</h3>
+                        <a href="{{ route('payments.index') }}" class="btn btn-sm btn-light">Back to List</a>
                     </div>
 
-                    <div class="card-body">
-                        <!-- Step 1: Student Search -->
-                        <div id="step1" class="payment-step">
-                            <h6 class="heading-small text-muted mb-4">Step 1: Search Student</h6>
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="student_search">Search Student by Name or ID</label>
-                                            <input type="text" id="student_search" name="student_search"
-                                                class="form-control form-control-alternative"
-                                                placeholder="Enter student name or ID..."
-                                                autocomplete="off">
-                                            <div id="search_results" class="mt-2"></div>
+                    <div class="card-body p-4">
+                        <!-- Single Form (Simplified) -->
+                        <form id="payment_form">
+                            <h6 class="heading-small text-muted mb-3">
+                                Payment Information
+                            </h6>
+
+                            <!-- Step 1: Student Search -->
+                            <div id="step1" class="payment-step mb-4 pb-4 border-bottom">
+                                <div class="form-group">
+                                    <label class="form-control-label font-weight-600">Search Student</label>
+                                    <input type="text" id="student_search" name="student_search"
+                                        class="form-control form-control-lg"
+                                        placeholder="Type student name or ID..."
+                                        autocomplete="off" style="border-radius: 8px;">
+                                    <div id="search_results" class="mt-2"></div>
+                                    <input type="hidden" id="selected_student_id" name="studentID" value="">
+                                </div>
+
+                                <!-- Selected Student Info -->
+                                <div class="alert alert-secondary mt-3 p-3" id="selected_student_info" style="display: none; border-radius: 8px;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="alert-heading mb-2">
+                                                <i class="fas fa-check-circle"></i> Student Selected
+                                            </h6>
+                                            <div id="student_details_content" class="small"></div>
                                         </div>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-3" onclick="changeStudent()">
+                                            <i class="fas fa-edit"></i> Change
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Step 2: Student Details & Payment Info -->
-                        <div id="step2" class="payment-step" style="display: none;">
-                            <h6 class="heading-small text-muted mb-4">Step 2: Payment Details</h6>
+                            <!-- Step 2: Payment Details (Only shows after student selection) -->
+                            <div id="step2" style="display: none;">
+                                <h6 class="heading-small text-muted mb-3">
+                                    <i class="fas fa-file-invoice"></i> Payment Details
+                                </h6>
 
-                            <!-- Selected Student Details -->
-                            <div class="pl-lg-4">
-                                <div class="alert alert-info" id="selected_student_info" style="display: none;">
-                                    <h5 class="alert-heading">
-                                        <i class="fas fa-user"></i> Selected Student
-                                    </h5>
-                                    <div id="student_details_content"></div>
-                                    <hr>
-                                    <button type="button" class="btn btn-sm btn-outline-info" onclick="changeStudent()">
-                                        <i class="fas fa-edit"></i> Change Student
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label class="form-control-label font-weight-600" for="classID">Select Class</label>
+                                            <select id="classID" name="classID" class="form-control form-control-lg" required style="border-radius: 8px;">
+                                                <option value="">Choose a class...</option>
+                                                @foreach($classes as $class)
+                                                    <option value="{{ $class->cID }}" data-fee="{{ $class->classfee ?? 0 }}">
+                                                        {{ $class->cName }} - Rs. {{ number_format($class->classfee ?? 0, 2) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label class="form-control-label font-weight-600" for="month">Select Month</label>
+                                            <select id="month" name="month" class="form-control form-control-lg" required style="border-radius: 8px;">
+                                                <option value="">Choose a month...</option>
+                                                @foreach($months as $code => $name)
+                                                    <option value="{{ $code }}">{{ $name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Buttons -->
+                                <div class="mt-4 d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-lg btn-light" onclick="resetForm()" style="border-radius: 8px; padding: 0.7rem 2rem;">
+                                        <i class="fas fa-redo"></i> Reset
+                                    </button>
+                                    <button type="button" id="submit_payment_btn" class="btn btn-lg btn-primary" onclick="submitPayment()" style="border-radius: 8px; padding: 0.7rem 2rem;">
+                                        <i class="fas fa-check-circle"></i> Record Payment
                                     </button>
                                 </div>
 
-                                <form id="payment_form">
-                                    <input type="hidden" id="selected_student_id" name="studentID" value="">
-
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label class="form-control-label" for="classID">Select Class</label>
-                                                <select id="classID" name="classID" class="form-control form-control-alternative" required>
-                                                    <option value="">Choose a class...</option>
-                                                    @foreach($classes as $class)
-                                                        <option value="{{ $class->cID }}" data-fee="{{ $class->classfee ?? 0 }}">
-                                                            {{ $class->cName }} - Rs. {{ number_format($class->classfee ?? 0, 2) }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label class="form-control-label" for="month">Select Month</label>
-                                                <select id="month" name="month" class="form-control form-control-alternative" required>
-                                                    <option value="">Choose a month...</option>
-                                                    @foreach($months as $code => $name)
-                                                        <option value="{{ $code }}">{{ $name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
+                                <!-- Loading Spinner -->
+                                <div id="loading" style="display: none;" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <button type="button" id="confirm_payment_btn" class="btn btn-warning" onclick="confirmPayment()">
-                                                <i class="fas fa-check"></i> Confirm Payment Details
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Final Confirmation -->
-                        <div id="step3" class="payment-step" style="display: none;">
-                            <h6 class="heading-small text-muted mb-4">Step 3: Final Confirmation</h6>
-
-            <div class="pl-lg-4">
-                                <div class="alert alert-warning">
-                                    <h5 class="alert-heading">
-                                        <i class="fas fa-exclamation-triangle"></i> Confirm Payment
-                                    </h5>
-                                    <p>Please review the payment details below and confirm to record the payment:</p>
-                                    <div id="final_confirmation_details"></div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="button" class="btn btn-success" onclick="finalizePayment()">
-                                            <i class="fas fa-credit-card"></i> Record Payment
-                                        </button>
-                                        <button type="button" class="btn btn-secondary ml-2" onclick="goBackToStep2()">
-                                            <i class="fas fa-arrow-left"></i> Back
-                                        </button>
-                                    </div>
+                                    <p class="mt-2">Processing payment...</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Loading Spinner -->
-                        <div id="loading" style="display: none;">
-                            <div class="text-center py-4">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                                <p class="mt-2">Processing...</p>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .form-control-lg {
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+        }
+        .btn-lg {
+            font-size: 1rem;
+        }
+        .list-group-item {
+            border-radius: 8px !important;
+            margin-bottom: 0.5rem;
+        }
+        #search_results .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
 
     <script>
         let searchTimeout;
@@ -157,7 +142,7 @@
         });
 
         function searchStudents(query) {
-            fetch(`/backend/payments/search-student?query=${encodeURIComponent(query)}`)
+            fetch(`{{ route('payments.search-student') }}?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(students => {
                     displaySearchResults(students);
@@ -165,7 +150,7 @@
                 .catch(error => {
                     console.error('Search error:', error);
                     document.getElementById('search_results').innerHTML =
-                        '<div class="alert alert-danger">Search failed. Please try again.</div>';
+                        '<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> Search failed. Please try again.</div>';
                 });
         }
 
@@ -173,21 +158,22 @@
             const resultsDiv = document.getElementById('search_results');
 
             if (students.length === 0) {
-                resultsDiv.innerHTML = '<div class="alert alert-warning">No students found.</div>';
+                resultsDiv.innerHTML = '<div class="alert alert-warning"><i class="fas fa-search"></i> No students found.</div>';
                 return;
             }
 
             let html = '<div class="list-group">';
             students.forEach(student => {
                 html += `
-                    <a href="#" class="list-group-item list-group-item-action" onclick="selectStudent(${student.id})">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">${student.name}</h6>
-                            <small>ID: ${student.id}</small>
+                    <button type="button" class="list-group-item list-group-item-action text-start" onclick="selectStudent(${student.id}); return false;">
+                        <div class="d-flex w-100 justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-1 font-weight-600">${student.name}</h6>
+                                <small class="text-muted">${student.mobile} | ${student.email}</small>
+                            </div>
+                            <span class="badge bg-primary">ID: ${student.id}</span>
                         </div>
-                        <p class="mb-1">${student.mobile} | ${student.email}</p>
-                        <small>Age: ${student.age} | ${student.address}</small>
-                    </a>
+                    </button>
                 `;
             });
             html += '</div>';
@@ -198,25 +184,21 @@
         function selectStudent(studentId) {
             selectedStudent = studentId;
 
-            fetch(`/backend/payments/student-details/${studentId}`)
+            fetch(`{{ route('payments.student-details', ':id') }}`.replace(':id', studentId))
                 .then(response => response.json())
                 .then(student => {
                     document.getElementById('selected_student_id').value = student.id;
 
                     const detailsHtml = `
-                        <strong>Name:</strong> ${student.name}<br>
-                        <strong>ID:</strong> ${student.id}<br>
-                        <strong>Mobile:</strong> ${student.mobile}<br>
-                        <strong>Email:</strong> ${student.email}<br>
-                        <strong>Age:</strong> ${student.age}<br>
-                        <strong>Address:</strong> ${student.address}
+                        <p class="mb-1"><strong>${student.name}</strong></p>
+                        <p class="mb-0 small text-muted">${student.mobile} | ${student.email}</p>
                     `;
 
                     document.getElementById('student_details_content').innerHTML = detailsHtml;
                     document.getElementById('selected_student_info').style.display = 'block';
+                    document.getElementById('search_results').innerHTML = '';
 
-                    // Move to step 2
-                    document.getElementById('step1').style.display = 'none';
+                    // Show step 2
                     document.getElementById('step2').style.display = 'block';
                 })
                 .catch(error => {
@@ -226,52 +208,53 @@
         }
 
         function changeStudent() {
-            document.getElementById('step1').style.display = 'block';
-            document.getElementById('step2').style.display = 'none';
-            document.getElementById('step3').style.display = 'none';
             document.getElementById('student_search').value = '';
             document.getElementById('search_results').innerHTML = '';
+            document.getElementById('selected_student_info').style.display = 'none';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('selected_student_id').value = '';
             document.getElementById('payment_form').reset();
         }
 
-        function confirmPayment() {
-            const form = document.getElementById('payment_form');
-            const formData = new FormData(form);
+        function resetForm() {
+            document.getElementById('payment_form').reset();
+            document.getElementById('student_search').focus();
+        }
 
-            if (!formData.get('studentID') || !formData.get('classID') || !formData.get('month')) {
+        function submitPayment() {
+            const studentID = document.getElementById('selected_student_id').value;
+            const classID = document.getElementById('classID').value;
+            const month = document.getElementById('month').value;
+
+            if (!studentID || !classID || !month) {
                 alert('Please fill in all required fields.');
                 return;
             }
 
             document.getElementById('loading').style.display = 'block';
-            document.getElementById('step2').style.display = 'none';
+            document.getElementById('submit_payment_btn').disabled = true;
 
-            fetch('/backend/payments/confirm', {
+            fetch('{{ route("payments.store") }}', {
                 method: 'POST',
-                body: formData,
                 headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
+                },
+                body: JSON.stringify({
+                    studentID: studentID,
+                    classID: classID,
+                    month: month
+                })
             })
             .then(response => response.json())
             .then(data => {
                 document.getElementById('loading').style.display = 'none';
+                document.getElementById('submit_payment_btn').disabled = false;
 
                 if (data.success) {
-                    const confirmationHtml = `
-                        <strong>Student:</strong> ${data.data.student.name} (ID: ${data.data.student.id})<br>
-                        <strong>Mobile:</strong> ${data.data.student.mobile}<br>
-                        <strong>Email:</strong> ${data.data.student.email}<br>
-                        <strong>Class:</strong> ${data.data.class.name}<br>
-                        <strong>Class Fee:</strong> Rs. ${parseFloat(data.data.class.fee).toFixed(2)}<br>
-                        <strong>Month:</strong> ${data.data.month.name}
-                    `;
-
-                    document.getElementById('final_confirmation_details').innerHTML = confirmationHtml;
-                    document.getElementById('step3').style.display = 'block';
+                    alert('Payment recorded successfully!');
+                    changeStudent();
                 } else {
-                    document.getElementById('step2').style.display = 'block';
-
                     if (data.errors) {
                         let errorMsg = 'Validation errors:\n';
                         Object.keys(data.errors).forEach(key => {
@@ -285,59 +268,11 @@
             })
             .catch(error => {
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('step2').style.display = 'block';
-                console.error('Confirmation error:', error);
-                alert('Failed to confirm payment. Please try again.');
-            });
-        }
-
-        function goBackToStep2() {
-            document.getElementById('step2').style.display = 'block';
-            document.getElementById('step3').style.display = 'none';
-        }
-
-        function finalizePayment() {
-            const form = document.getElementById('payment_form');
-            const formData = new FormData(form);
-
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('step3').style.display = 'none';
-
-            fetch('/backend/payments/store', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('loading').style.display = 'none';
-
-                if (data.success) {
-                    alert(data.message);
-                    // Redirect to payments index
-                    window.location.href = '{{ route("payments.index") }}';
-                } else {
-                    document.getElementById('step3').style.display = 'block';
-
-                    if (data.errors) {
-                        let errorMsg = 'Validation errors:\n';
-                        Object.keys(data.errors).forEach(key => {
-                            errorMsg += '- ' + data.errors[key].join(', ') + '\n';
-                        });
-                        alert(errorMsg);
-                    } else {
-                        alert(data.message || 'Failed to record payment. Please try again.');
-                    }
-                }
-            })
-            .catch(error => {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('step3').style.display = 'block';
+                document.getElementById('submit_payment_btn').disabled = false;
                 console.error('Payment error:', error);
                 alert('Failed to record payment. Please try again.');
             });
         }
     </script>
+
 @endsection

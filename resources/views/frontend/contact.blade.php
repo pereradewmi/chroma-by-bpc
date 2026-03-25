@@ -1,5 +1,5 @@
 @extends("frontend.components.layout")
-@section("title", "Contact Us | Chroma By BPC")
+@section("title", "Chroma By BPC")
 @section("description", "Discover our modern campus facilities at Chroma By BPC. Explore academic buildings, student services, and recreational spaces.")
 @section("keywords", "Chroma By BPC, campus facilities, academic buildings, student services, recreational spaces")
 @section("main")
@@ -42,7 +42,7 @@
                 </div>
                 <div class="contact-text">
                   <h4>Call</h4>
-                  <p>+1 (212) 555-7890</p>
+                  <p>+94 76 661 3376</p>
                 </div>
               </div>
 
@@ -101,7 +101,9 @@
                 </div>
 
                 <div class="form-submit">
-                  <button type="submit">Send Message</button>
+                  <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%); border: none; padding: 12px 40px; font-size: 1rem; font-weight: 600; border-radius: 8px; transition: all 0.3s ease;">
+                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                  </button>
                   {{-- <div class="social-links">
                     <a href="#"><i class="bi bi-twitter"></i></a>
                     <a href="#"><i class="bi bi-facebook"></i></a>

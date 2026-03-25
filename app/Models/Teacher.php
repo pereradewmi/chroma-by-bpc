@@ -21,7 +21,7 @@ class Teacher extends Model
     ];
 
     protected $casts = [
-        'Active' => 'boolean',
+        'Active' => 'integer',
     ];
 
     // Relationship with classes

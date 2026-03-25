@@ -56,16 +56,9 @@
                                         </td>
                                         <td>{{ $image->created_at->format('M d, Y') }}</td>
                                         <td>
-                                            <a href="{{ route('admin.images.form', $image->id) }}" class="btn btn-sm btn-primary" title="Edit" aria-label="Edit">
+                                            <a href="{{ route('admin.images.form', $image->id) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
                                             </a>
-                                            <form action="{{ route('admin.images.destroy', $image->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this image?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete" aria-label="Delete">
-                                                    <i class="fas fa-trash" aria-hidden="true"></i>
-                                                </button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @empty
