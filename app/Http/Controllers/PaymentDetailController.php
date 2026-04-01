@@ -44,8 +44,12 @@ class PaymentDetailController extends Controller
             '11' => 'November',
             '12' => 'December'
         ];
+        $paymentTypes = [
+            'class_fee' => 'Class Fee',
+            'admission' => 'Admission'
+        ];
 
-        return view('backend.payments.form', compact('classes', 'months'));
+        return view('backend.payments.form', compact('classes', 'months', 'paymentTypes'));
     }
 
     /**
@@ -166,7 +170,8 @@ class PaymentDetailController extends Controller
         $validator = Validator::make($request->all(), [
             'studentID' => 'required|exists:studentdetails,AutoID',
             'classID' => 'required|exists:classdetails,cID',
-            'month' => 'required|string|size:2'
+            'month' => 'required|string|size:2',
+            'payment_type' => 'nullable|in:class_fee,admission'
         ]);
 
         if ($validator->fails()) {
@@ -180,6 +185,7 @@ class PaymentDetailController extends Controller
         $existingPayment = PaymentDetail::where('studentID', $request->studentID)
             ->where('classID', $request->classID)
             ->where('month', $request->month)
+            ->where('payment_type', $request->payment_type ?? 'class_fee')
             ->first();
 
         if ($existingPayment) {
@@ -193,7 +199,8 @@ class PaymentDetailController extends Controller
         $payment = PaymentDetail::create([
             'studentID' => $request->studentID,
             'classID' => $request->classID,
-            'month' => $request->month
+            'month' => $request->month,
+            'payment_type' => $request->payment_type ?? 'class_fee'
         ]);
 
         // Get student and class information for email

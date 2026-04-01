@@ -58,7 +58,16 @@
 
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="cImage">Class Image</label>
+                                            <label class="form-control-label" for="admission_amount">Admission Amount (Rs.)</label>
+                                            <input type="number" id="admission_amount" name="admission_amount" step="0.01" min="0"
+                                                class="form-control form-control-alternative @error('admission_amount') is-invalid @enderror"
+                                                placeholder="Enter admission amount"
+                                                value="{{ old('admission_amount', $class->admission_amount) }}">
+                                            @error('admission_amount')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input @error('cImage') is-invalid @enderror"
                                                     id="cImage" name="cImage" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">

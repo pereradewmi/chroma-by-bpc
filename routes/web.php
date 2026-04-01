@@ -133,6 +133,22 @@ Route::middleware('check.login')->prefix('admin/payments')->name('payments.')->g
     Route::delete('/{id}', [PaymentDetailController::class, 'destroy'])->name('destroy');
 });
 
+// Teacher Payment routes
+Route::middleware('check.login')->prefix('admin/teacher-payments')->name('teacher-payments.')->group(function () {
+    Route::get('/', [App\Http\Controllers\TeacherPaymentController::class, 'index'])->name('index');
+    Route::get('/form', [App\Http\Controllers\TeacherPaymentController::class, 'form'])->name('form');
+    Route::post('/store', [App\Http\Controllers\TeacherPaymentController::class, 'store'])->name('store');
+    Route::delete('/{id}', [App\Http\Controllers\TeacherPaymentController::class, 'destroy'])->name('destroy');
+});
+
+// Instructor Payment routes
+Route::middleware('check.login')->prefix('admin/instructor-payments')->name('instructor-payments.')->group(function () {
+    Route::get('/', [App\Http\Controllers\InstructorPaymentController::class, 'index'])->name('index');
+    Route::get('/form', [App\Http\Controllers\InstructorPaymentController::class, 'form'])->name('form');
+    Route::post('/store', [App\Http\Controllers\InstructorPaymentController::class, 'store'])->name('store');
+    Route::delete('/{id}', [App\Http\Controllers\InstructorPaymentController::class, 'destroy'])->name('destroy');
+});
+
 // Backend Calendar routes
 Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar.')->group(function () {
     Route::get('/', [BookingController::class, 'backendIndex'])->name('index');

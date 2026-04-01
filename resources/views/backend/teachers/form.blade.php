@@ -59,20 +59,28 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="tMobileNo">Mobile Number</label>
-                                            <input type="text" id="tMobileNo" name="tMobileNo" 
-                                                class="form-control form-control-alternative @error('tMobileNo') is-invalid @enderror" 
-                                                placeholder="Mobile Number" 
-                                                value="{{ old('tMobileNo', $teacher->tMobileNo) }}" required>
-                                            @error('tMobileNo')
-                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            <label class="form-control-label">Teacher Type</label>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="teacher_type_class" name="teacher_type" value="class_teacher"
+                                                    class="custom-control-input"
+                                                    {{ old('teacher_type', $teacher->teacher_type ?? 'class_teacher') === 'class_teacher' ? 'checked' : '' }} required>
+                                                <label class="custom-control-label" for="teacher_type_class">Class Teacher</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="teacher_type_instructor" name="teacher_type" value="instructor"
+                                                    class="custom-control-input"
+                                                    {{ old('teacher_type', $teacher->teacher_type ?? '') === 'instructor' ? 'checked' : '' }} required>
+                                                <label class="custom-control-label" for="teacher_type_instructor">Instructor (Sessions)</label>
+                                            </div>
+                                            @error('teacher_type')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <div class="custom-control custom-switch mt-4">
-                                                <input type="checkbox" class="custom-control-input" id="Active" name="Active" value="1" 
+                                                <input type="checkbox" class="custom-control-input" id="Active" name="Active" value="1"
                                                     {{ old('Active', $teacher->Active) ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="Active">Active Status</label>
                                             </div>

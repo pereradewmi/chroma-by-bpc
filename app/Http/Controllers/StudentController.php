@@ -41,6 +41,10 @@ class StudentController extends Controller
             'Age' => 'required|integer|min:1|max:100',
             'studentemail' => 'required|email|max:255',
             'studentpic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'guardian_name' => 'nullable|string|max:255',
+            'guardian_phone' => 'nullable|string|max:20',
+            'class_ids' => 'nullable|array',
+            'class_ids.*' => 'exists:classdetails,cID',
             'Active' => 'boolean',
             'is_update' => 'boolean',
             'student_id' => 'nullable|exists:studentdetails,AutoID'
@@ -52,8 +56,9 @@ class StudentController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'studentemail']);
+        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'studentemail', 'guardian_name', 'guardian_phone']);
         $data['Active'] = $request->has('Active') ? 1 : 0;
+        $data['class_ids'] = json_encode($request->get('class_ids', []));
 
         // Handle image upload
         if ($request->hasFile('studentpic')) {

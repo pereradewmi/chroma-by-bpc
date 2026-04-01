@@ -17,7 +17,8 @@ class Teacher extends Model
         'tLName',
         'tMobileNo',
         'tAddress',
-        'Active'
+        'Active',
+        'teacher_type'
     ];
 
     protected $casts = [
