@@ -20,7 +20,10 @@ class Student extends Model
         'Address',
         'Active',
         'studentemail',
-        'studentpic'
+        'studentpic',
+        'guardian_name',
+        'guardian_phone',
+        'class_ids'
     ];
 
     protected $casts = [

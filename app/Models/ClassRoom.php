@@ -16,7 +16,8 @@ class ClassRoom extends Model
         'cName',
         'cDescription',
         'cImage',
-        'classfee'
+        'classfee',
+        'admission_amount'
     ];
 
     /**

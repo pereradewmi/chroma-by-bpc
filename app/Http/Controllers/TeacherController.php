@@ -38,6 +38,7 @@ class TeacherController extends Controller
             'tLName' => 'required|string|max:255',
             'tAddress' => 'required|string',
             'tMobileNo' => 'required|string|max:20',
+            'teacher_type' => 'required|in:class_teacher,instructor',
             'Active' => 'boolean',
             'is_update' => 'boolean',
             'teacher_id' => 'nullable|exists:teacherdetails,T_ID'
@@ -49,7 +50,7 @@ class TeacherController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['tFName', 'tLName', 'tAddress', 'tMobileNo']);
+        $data = $request->only(['tFName', 'tLName', 'tAddress', 'tMobileNo', 'teacher_type']);
         $data['Active'] = $request->has('Active') ? 1 : 0;
 
         if ($request->get('is_update') && $request->get('teacher_id')) {

@@ -15,7 +15,8 @@ class PaymentDetail extends Model
     protected $fillable = [
         'studentID',
         'classID',
-        'month'
+        'month',
+        'payment_type'
     ];
 
     /**
