@@ -56,17 +56,29 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <div class="form-group">
+                                            <label class="form-control-label font-weight-600" for="paymentTypeDropdown">Payment Type</label>
+                                            <select id="paymentTypeDropdown" name="payment_type" class="form-control form-control-lg" style="border-radius: 8px;">
+                                                <option value="class_fee">Class Fee</option>
+                                                <option value="admission">Admission</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
                                             <label class="form-control-label font-weight-600" for="classID">Select Class</label>
                                             <select id="classID" name="classID" class="form-control form-control-lg" required style="border-radius: 8px;">
                                                 <option value="">Choose a class...</option>
                                                 @foreach($classes as $class)
-                                                    <option value="{{ $class->cID }}" data-fee="{{ $class->classfee ?? 0 }}">
+                                                    <option value="{{ $class->cID }}" data-fee="{{ $class->classfee ?? 0 }}" data-admission="{{ $class->admission_amount ?? 0 }}">
                                                         {{ $class->cName }} - Rs. {{ number_format($class->classfee ?? 0, 2) }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <div class="form-group">
                                             <label class="form-control-label font-weight-600" for="month">Select Month</label>
@@ -79,8 +91,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Submit Buttons -->
                                 <div class="mt-4 d-flex justify-content-end gap-2">
                                     <button type="button" class="btn btn-lg btn-light" onclick="resetForm()" style="border-radius: 8px; padding: 0.7rem 2rem;">
                                         <i class="fas fa-redo"></i> Reset
@@ -225,6 +235,7 @@
             const studentID = document.getElementById('selected_student_id').value;
             const classID = document.getElementById('classID').value;
             const month = document.getElementById('month').value;
+            const paymentType = document.getElementById('paymentTypeDropdown').value;
 
             if (!studentID || !classID || !month) {
                 alert('Please fill in all required fields.');
@@ -243,7 +254,8 @@
                 body: JSON.stringify({
                     studentID: studentID,
                     classID: classID,
-                    month: month
+                    month: month,
+                    payment_type: paymentType
                 })
             })
             .then(response => response.json())

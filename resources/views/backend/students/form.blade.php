@@ -137,13 +137,72 @@
                                             <label class="form-control-label">Status</label>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="hidden" name="Active" value="0">
-                                                <input type="checkbox" id="Active" name="Active" value="1" 
-                                                    class="custom-control-input" 
+                                                <input type="checkbox" id="Active" name="Active" value="1"
+                                                    class="custom-control-input"
                                                     {{ old('Active', $student->Active) ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="Active">Active Student</label>
                                             </div>
                                             @error('Active')
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h6 class="heading-small text-muted mb-4 mt-5">Guardian Information</h6>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="guardian_name">Guardian Name</label>
+                                            <input type="text" id="guardian_name" name="guardian_name"
+                                                class="form-control form-control-alternative @error('guardian_name') is-invalid @enderror"
+                                                placeholder="Guardian's Full Name"
+                                                value="{{ old('guardian_name', $student->guardian_name) }}">
+                                            @error('guardian_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="guardian_phone">Guardian Phone</label>
+                                            <input type="text" id="guardian_phone" name="guardian_phone"
+                                                class="form-control form-control-alternative @error('guardian_phone') is-invalid @enderror"
+                                                placeholder="Guardian's Phone Number"
+                                                value="{{ old('guardian_phone', $student->guardian_phone) }}">
+                                            @error('guardian_phone')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h6 class="heading-small text-muted mb-4 mt-5">Class Assignment</h6>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="class_ids">Assign Classes</label>
+                                            <select id="class_ids" name="class_ids[]" multiple
+                                                class="form-control form-control-alternative @error('class_ids') is-invalid @enderror">
+                                                @php
+                                                    use App\Models\ClassRoom;
+                                                    $classes = ClassRoom::orderBy('cName')->get();
+                                                    $selectedClasses = $isEdit ? json_decode($student->class_ids ?? '[]', true) : [];
+                                                @endphp
+                                                @foreach($classes as $class)
+                                                    <option value="{{ $class->cID }}"
+                                                        {{ in_array($class->cID, $selectedClasses) ? 'selected' : '' }}>
+                                                        {{ $class->cName }} - Rs. {{ number_format($class->classfee ?? 0, 2) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                <i class="fas fa-info-circle"></i> Hold Ctrl/Cmd key and click to select multiple classes
+                                            </small>
+                                            @error('class_ids')
+                                                <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
