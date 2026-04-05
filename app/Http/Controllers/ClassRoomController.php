@@ -14,7 +14,7 @@ class ClassRoomController extends Controller
      */
     public function index()
     {
-        $classes = ClassRoom::latest()->paginate(10);
+        $classes = ClassRoom::orderBy('cID', 'asc')->paginate(10);
         return view('backend.classes.index', compact('classes'));
     }
 
@@ -23,7 +23,7 @@ class ClassRoomController extends Controller
      */
     public function frontendIndex()
     {
-        $classes = ClassRoom::latest()->get();
+        $classes = ClassRoom::orderBy('cID', 'asc')->get();
         return view('frontend.classes', compact('classes'));
     }
 
@@ -48,7 +48,7 @@ class ClassRoomController extends Controller
             'cDescription' => 'nullable|string',
             'classfee' => 'required|numeric|min:0',
             'admission_amount' => 'nullable|numeric|min:0',
-            'cImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
+            'cVideo' => 'nullable|file|mimetypes:video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska|max:51200',
             'is_update' => 'boolean',
             'class_id' => 'nullable|exists:classdetails,cID'
         ]);
@@ -61,31 +61,31 @@ class ClassRoomController extends Controller
 
         $data = $request->only(['cName', 'cDescription', 'classfee', 'admission_amount']);
 
-        // Handle image upload
-        if ($request->hasFile('cImage')) {
-            $image = $request->file('cImage');
+        // Handle video upload
+        if ($request->hasFile('cVideo')) {
+            $video = $request->file('cVideo');
 
             // Create storage directory if it doesn't exist
-            if (!Storage::exists('public/classes')) {
-                Storage::makeDirectory('public/classes');
+            if (!Storage::exists('public/class-videos')) {
+                Storage::makeDirectory('public/class-videos');
             }
 
             // Generate unique filename with timestamp
-            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $filename = time() . '_' . uniqid() . '.' . $video->getClientOriginalExtension();
 
-            // Store image in storage/app/public/classes/
-            $path = $image->storeAs('public/classes', $filename);
+            // Store video in storage/app/public/class-videos/
+            $video->storeAs('public/class-videos', $filename);
 
-            $data['cImage'] = $filename;
+            $data['cVideo'] = $filename;
         }
 
         if ($request->get('is_update') && $request->get('class_id')) {
             // Update existing class
             $class = ClassRoom::findOrFail($request->get('class_id'));
 
-            // Delete old image if new image is uploaded
-            if ($request->hasFile('cImage') && $class->cImage && Storage::exists('public/classes/' . $class->cImage)) {
-                Storage::delete('public/classes/' . $class->cImage);
+            // Delete old video if new video is uploaded
+            if ($request->hasFile('cVideo') && $class->cVideo && Storage::exists('public/class-videos/' . $class->cVideo)) {
+                Storage::delete('public/class-videos/' . $class->cVideo);
             }
 
             $class->update($data);
@@ -110,6 +110,11 @@ class ClassRoomController extends Controller
         // Delete image if it exists
         if ($class->cImage && Storage::exists('public/classes/' . $class->cImage)) {
             Storage::delete('public/classes/' . $class->cImage);
+        }
+
+        // Delete video if it exists
+        if ($class->cVideo && Storage::exists('public/class-videos/' . $class->cVideo)) {
+            Storage::delete('public/class-videos/' . $class->cVideo);
         }
 
         $class->delete();

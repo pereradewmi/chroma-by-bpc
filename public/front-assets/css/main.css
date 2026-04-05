@@ -1,7 +1,5 @@
 /**
-* Template Name: College
-* Template URL: https://bootstrapmade.com/college-bootstrap-education-template/
-* Updated: Jun 19 2025 with Bootstrap v5.3.6
+* Template Name: Chroma - v4.7.0
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
@@ -1199,7 +1197,7 @@ section,
 
 .about .about-image img {
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
 }
 
 .about .about-image .mission-vision {

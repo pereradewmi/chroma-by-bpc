@@ -68,20 +68,25 @@
                                             @enderror
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="cVideo">Class Video</label>
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input @error('cImage') is-invalid @enderror"
-                                                    id="cImage" name="cImage" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
-                                                <label class="custom-file-label" for="cImage">Choose image...</label>
+                                                <input type="file" class="custom-file-input @error('cVideo') is-invalid @enderror"
+                                                    id="cVideo" name="cVideo" accept="video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska">
+                                                <label class="custom-file-label" for="cVideo">Choose video...</label>
                                             </div>
                                             <small class="form-text text-muted d-block mt-2">
-                                                <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
-                                                @if($isEdit && $class->cImage)
-                                                    <br><strong>Current Image:</strong> {{ $class->cImage }}
+                                                <i class="fas fa-info-circle"></i> Supported formats: MP4, WebM, MOV, AVI, MKV (Max 50MB)
+                                                @if($isEdit && $class->cVideo)
+                                                    <br><strong>Current Video:</strong> {{ $class->cVideo }}
                                                 @endif
-                                                <br><strong>Note:</strong> If no image is uploaded, the Chroma logo will be used as default.
                                             </small>
-                                            @error('cImage')
-                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @error('cVideo')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
@@ -113,13 +118,16 @@
                                     </div>
                                 </div>
 
-                                @if($isEdit && $class->cImage && file_exists(storage_path('app/public/classes/' . $class->cImage)))
+                                @if($isEdit && $class->cVideo && file_exists(storage_path('app/public/class-videos/' . $class->cVideo)))
                                     <div class="row mb-4">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label">Current Image Preview</label>
+                                                <label class="form-control-label">Current Video Preview</label>
                                                 <div class="mt-2">
-                                                    <img src="{{ $class->getClassImage() }}" alt="Class Image" style="max-width: 200px; max-height: 150px; object-fit: cover; border-radius: 4px;">
+                                                    <video style="max-width: 320px; max-height: 180px; border-radius: 4px;" controls muted>
+                                                        <source src="{{ $class->getClassVideo() }}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,10 +152,13 @@
 
     <script>
         // Handle file input label update
-        document.getElementById('cImage').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose image...';
-            document.querySelector('.custom-file-label').textContent = fileName;
-        });
+        const classVideoInput = document.getElementById('cVideo');
+        if (classVideoInput) {
+            classVideoInput.addEventListener('change', function(e) {
+                const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose video...';
+                document.querySelector('label[for="cVideo"]').textContent = fileName;
+            });
+        }
 
         // Rich Text Editor functionality
         const editor = document.getElementById('editor');

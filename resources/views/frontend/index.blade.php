@@ -38,20 +38,35 @@
 
       <div class="upcoming-event" data-aos="fade-up" data-aos-delay="400">
         <div class="container">
-          <div class="event-content">
-            <div class="event-date">
-              <span class="day">15</span>
-              <span class="month">NOV</span>
+          @forelse(($latestEvents ?? collect()) as $latestEvent)
+            <div class="event-content">
+              <div class="event-date">
+                <span class="day">{{ optional($latestEvent->dateFrom)->format('d') ?? '--' }}</span>
+                <span class="month">{{ optional($latestEvent->dateFrom)->format('M') ?? '---' }}</span>
+              </div>
+              <div class="event-info">
+                <h3>{{ $latestEvent->eName }}</h3>
+                <p>{{ \Illuminate\Support\Str::limit(strip_tags($latestEvent->eDescription), 120) }}</p>
+              </div>
+              <div class="event-action">
+                <a href="{{ route('frontend.events') }}" class="btn-event">View More Events</a>
+              </div>
             </div>
-            <div class="event-info">
-              <h3>Annual Mega Sale</h3>
-              <p>Join us to explore campus facilities, meet our faculty, and learn about scholarship opportunities.</p>
+          @empty
+            <div class="event-content">
+              <div class="event-date">
+                <span class="day">--</span>
+                <span class="month">---</span>
+              </div>
+              <div class="event-info">
+                <h3>No Upcoming Events</h3>
+                <p>Stay tuned for our next exciting event.</p>
+              </div>
+              <div class="event-action">
+                <a href="{{ route('frontend.events') }}" class="btn-event">Event Details</a>
+              </div>
             </div>
-            <div class="event-action">
-              <a href="{{ route('frontend.events') }}" class="btn-event">Event Details</a> 
-               {{-- <span class="countdown">Starts in 3 weeks</span>  --}}
-            </div>
-          </div>
+          @endforelse
         </div>
       </div>
 
@@ -66,39 +81,43 @@
           <div class="col-lg-6">
             <div class="about-content" data-aos="fade-up" data-aos-delay="200">
               <h3>Our Story</h3>
-              <h2>Educating Minds, Inspiring Hearts</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae odio ac nisi tristique venenatis. Nullam feugiat ipsum vitae justo finibus, in sagittis dolor malesuada. Aenean vel fringilla est, a vulputate massa.</p>
+              <h2>At Chroma Lifestyle & Concept Store, </h2>
+              <p>creativity isn’t just something we offer, it’s something you experience.</p>
 
               <div class="timeline">
                 <div class="timeline-item">
                   <div class="timeline-dot"></div>
                   <div class="timeline-content">
-                    <h4>1965</h4>
-                    <p>Etiam at tincidunt arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                    {{-- <h4>1965</h4> --}}
+                    <p>We are a space where art, expression and learning come together for all ages. From calming pottery sessions to expressive sip & paint experiences, we create moments that allow you to unwind, explore and connect with your creative side. For those who want the best of both worlds our combined pottery + sip & paint sessions offer a unique, hands-on artistic journey.</p>
                   </div>
                 </div>
 
                 <div class="timeline-item">
                   <div class="timeline-dot"></div>
                   <div class="timeline-content">
-                    <h4>1982</h4>
-                    <p>Donec dignissim, odio ac imperdiet luctus, ante nisl accumsan justo, nec tempus augue mi in nulla.</p>
+                    {{-- <h4>1982</h4> --}}
+                    <p>Beyond experiences, Chroma is also a place to grow. We offer art, karate, vocal training and elocution classes for both kids and adults helping individuals build confidence, discipline and creativity in a fun and supportive environment.</p>
+                    {{-- <p>Donec dignissim, odio ac imperdiet luctus, ante nisl accumsan justo, nec tempus augue mi in nulla.</p> --}}
                   </div>
                 </div>
 
                 <div class="timeline-item">
                   <div class="timeline-dot"></div>
                   <div class="timeline-content">
-                    <h4>1998</h4>
-                    <p>Suspendisse potenti. Nullam lacinia dictum auctor. Phasellus euismod sem at dui imperdiet, ac tincidunt mi placerat.</p>
+                    {{-- <h4>1998</h4> --}}
+                    <p>We also bring people together through engaging workshops and events, designed to inspire, learn and create lasting memories.</p>
+                    {{-- <p>Suspendisse potenti. Nullam lacinia dictum auctor. Phasellus euismod sem at dui imperdiet, ac tincidunt mi placerat.</p> --}}
+                    {{-- <p>Nulla porttitor accumsan tincidunt. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum porta.</p> --}}
                   </div>
                 </div>
 
                 <div class="timeline-item">
                   <div class="timeline-dot"></div>
                   <div class="timeline-content">
-                    <h4>2010</h4>
-                    <p>Vestibulum ultrices magna ut faucibus sollicitudin. Sed eget venenatis enim, nec imperdiet ex.</p>
+                    {{-- <h4>2010</h4> --}}
+                    <p>At Chroma, it’s not just about creating art it’s about creating experiences, building skills and celebrating self-expression in every form.</p>
+                    {{-- <p>Vestibulum ultrices magna ut faucibus sollicitudin. Sed eget venenatis enim, nec imperdiet ex.</p> --}}
                   </div>
                 </div>
               </div>
@@ -107,9 +126,12 @@
 
           <div class="col-lg-6">
             <div class="about-image" data-aos="zoom-in" data-aos-delay="300">
-              <img src="{{ asset('front-assets/img/home/chroma.jpg') }}" alt="Campus" class="img-fluid rounded">
+              <video class="img-fluid rounded w-100" autoplay muted loop playsinline>
+                <source src="{{ asset('front-assets/img/home/about.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
 
-              <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
+              {{-- <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
                 <div class="mission">
                   <h3>Our Mission</h3>
                   <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.</p>
@@ -119,7 +141,7 @@
                   <h3>Our Vision</h3>
                   <p>Nulla porttitor accumsan tincidunt. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum porta.</p>
                 </div>
-              </div>
+              </div> --}}
             </div>
           </div>
         </div>

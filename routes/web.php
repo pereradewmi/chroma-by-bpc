@@ -12,13 +12,20 @@ use App\Http\Controllers\ImageCategoryController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentDetailController;
+use App\Models\Event;
 use App\Models\Session;
 
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
     }
-    return view('frontend.index');
+
+    $latestEvents = Event::where('status', 1)
+        ->orderBy('dateFrom', 'desc')
+        ->take(1)
+        ->get();
+
+    return view('frontend.index', compact('latestEvents'));
 })->name('home');
 
 // Authentication routes

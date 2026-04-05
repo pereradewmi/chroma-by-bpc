@@ -32,7 +32,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Class Image</th>
+                                    <th scope="col">Class Video</th>
                                     <th scope="col">Class Name</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Created Date</th>
@@ -44,7 +44,9 @@
                                     <tr>
                                         <td>{{ $class->cID }}</td>
                                         <td>
-                                            <img src="{{ $class->getClassImage() }}" alt="Class Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                            <video style="width: 90px; height: 50px; object-fit: cover; border-radius: 4px;" muted loop autoplay playsinline>
+                                                <source src="{{ $class->getClassVideo() }}" type="video/mp4">
+                                            </video>
                                         </td>
                                         <td><strong>{{ $class->cName }}</strong></td>
                                         <td>
