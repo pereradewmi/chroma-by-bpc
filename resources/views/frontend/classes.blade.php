@@ -67,7 +67,11 @@
             </div>
             <div class="card-content">
               <div class="facility-image">
-                <img src="{{ $class->getClassImage() }}" alt="Class Image" class="img-fluid">
+                <video class="img-fluid rounded w-100" style="height: 240px; object-fit: cover;" autoplay muted loop playsinline>
+                <source src="{{ $class->getClassVideo() }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+                {{-- <img src="{{ $class->getClassImage() }}" alt="Class Image" class="img-fluid"> --}}
               </div>
               <div class="facility-list">
                 @if($class->cDescription)

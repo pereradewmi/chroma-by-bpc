@@ -16,6 +16,7 @@ class ClassRoom extends Model
         'cName',
         'cDescription',
         'cImage',
+        'cVideo',
         'classfee',
         'admission_amount'
     ];
@@ -29,5 +30,14 @@ class ClassRoom extends Model
             return asset('storage/classes/' . $this->cImage);
         }
         return asset('front-assets/img/logo.png');
+    }
+
+    public function getClassVideo()
+    {
+        if ($this->cVideo && file_exists(storage_path('app/public/class-videos/' . $this->cVideo))) {
+            return asset('storage/class-videos/' . $this->cVideo);
+        }
+
+        return asset('front-assets/img/home/pottery.mp4');
     }
 }

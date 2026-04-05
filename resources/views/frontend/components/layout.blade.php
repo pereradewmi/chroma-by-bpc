@@ -36,6 +36,9 @@
     @include('frontend.components.header')
     @yield('main')
     @include('frontend.components.footer')
+    <a href="https://wa.me/94766613376" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+      <i class="bi bi-whatsapp"></i>
+    </a>
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -57,6 +60,31 @@
   
   @yield('scripts')
 
+    <style>
+    .whatsapp-float {
+      position: fixed;
+      right: 13px;
+      bottom: 67px; 
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #25D366;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+      z-index: 999;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .whatsapp-float:hover {
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(37, 211, 102, 0.45);
+    }
+  </style>
 </body>
 
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ImageCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ImageCategoryController extends Controller
 {
@@ -39,6 +40,7 @@ class ImageCategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'status' => 'required|in:0,1,2',
+            'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_update' => 'nullable|boolean',
             'category_id' => 'nullable|exists:imagecategories,id',
         ]);
@@ -54,8 +56,21 @@ class ImageCategoryController extends Controller
             'status' => (int) $request->status,
         ];
 
+        // Handle background image upload
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $path = $file->store('categories', 'public');
+            $data['background_image'] = $path;
+        }
+
         if ($request->get('is_update') && $request->get('category_id')) {
             $category = ImageCategory::findOrFail($request->get('category_id'));
+            
+            // Delete old image if new one is uploaded
+            if ($request->hasFile('background_image') && $category->background_image) {
+                Storage::disk('public')->delete($category->background_image);
+            }
+            
             $category->update($data);
             $message = 'Image category updated successfully!';
         } else {
