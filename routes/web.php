@@ -52,16 +52,16 @@ Route::get('/Events', [EventController::class, 'frontendIndex'])->name('frontend
 Route::get('/Classes', [ClassRoomController::class, 'frontendIndex'])->name('frontend.classes');
 
 Route::get('/Sessions', function () {
-    $featuredSession = Session::inRandomOrder()->first();
+    $featuredSession = Session::where('status', 1)->inRandomOrder()->first();
 
-    $topStoriesSessions = Session::inRandomOrder()
+    $topStoriesSessions = Session::where('status', 1)->inRandomOrder()
         ->when($featuredSession, function ($query) use ($featuredSession) {
             $query->where('sID', '!=', $featuredSession->sID);
         })
         ->take(3)
         ->get();
 
-    $newsPostSessions = Session::inRandomOrder()->get();
+    $newsPostSessions = Session::where('status', 1)->inRandomOrder()->get();
 
     return view('frontend.sessions', compact('featuredSession', 'topStoriesSessions', 'newsPostSessions'));
 })->name('frontend.sessions');
@@ -93,6 +93,7 @@ Route::middleware('check.login')->prefix('admin/students')->name('students.')->g
     Route::get('/', [StudentController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [StudentController::class, 'form'])->name('form');
     Route::post('/store', [StudentController::class, 'store'])->name('store');
+    Route::post('/{id}/status', [StudentController::class, 'updateStatus'])->name('status');
     Route::delete('/{id}', [StudentController::class, 'destroy'])->name('destroy');
 });
 
@@ -101,6 +102,7 @@ Route::middleware('check.login')->prefix('admin/teachers')->name('teachers.')->g
     Route::get('/', [TeacherController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [TeacherController::class, 'form'])->name('form');
     Route::post('/store', [TeacherController::class, 'store'])->name('store');
+    Route::post('/{id}/status', [TeacherController::class, 'updateStatus'])->name('status');
     Route::delete('/{id}', [TeacherController::class, 'destroy'])->name('destroy');
     Route::get('/dropdown', [TeacherController::class, 'getTeachersForDropdown'])->name('dropdown');
 });
@@ -110,6 +112,7 @@ Route::middleware('check.login')->prefix('admin/classes')->name('classes.')->gro
     Route::get('/', [ClassRoomController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [ClassRoomController::class, 'form'])->name('form');
     Route::post('/store', [ClassRoomController::class, 'store'])->name('store');
+    Route::post('/{id}/status', [ClassRoomController::class, 'updateStatus'])->name('status');
     Route::delete('/{id}', [ClassRoomController::class, 'destroy'])->name('destroy');
 });
 
@@ -118,6 +121,7 @@ Route::middleware('check.login')->prefix('admin/sessions')->name('sessions.')->g
     Route::get('/', [SessionController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [SessionController::class, 'form'])->name('form');
     Route::post('/store', [SessionController::class, 'store'])->name('store');
+    Route::post('/{id}/status', [SessionController::class, 'updateStatus'])->name('status');
     Route::delete('/{id}', [SessionController::class, 'destroy'])->name('destroy');
 });
 
@@ -126,6 +130,7 @@ Route::middleware('check.login')->prefix('admin/events')->name('events.')->group
     Route::get('/', [EventController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [EventController::class, 'form'])->name('form');
     Route::post('/store', [EventController::class, 'store'])->name('store');
+    Route::post('/{id}/status', [EventController::class, 'updateStatus'])->name('status');
     Route::delete('/{id}', [EventController::class, 'destroy'])->name('destroy');
 });
 

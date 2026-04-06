@@ -14,7 +14,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        $sessions = Session::latest()->paginate(10);
+        $sessions = Session::where('status', '!=', 2)->latest()->paginate(10);
         return view('backend.sessions.index', compact('sessions'));
     }
 
@@ -38,6 +38,7 @@ class SessionController extends Controller
             'sName' => 'required|string|max:255',
             'sDescription' => 'nullable|string',
             'sImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
+            'status' => 'nullable|in:0,1,2',
             'is_update' => 'boolean',
             'session_id' => 'nullable|exists:sessiondetails,sID'
         ]);
@@ -49,6 +50,7 @@ class SessionController extends Controller
         }
 
         $data = $request->only(['sName', 'sDescription']);
+        $data['status'] = (int) $request->get('status', 1);
 
         // Handle image upload
         if ($request->hasFile('sImage')) {
@@ -96,14 +98,28 @@ class SessionController extends Controller
     {
         $session = Session::findOrFail($id);
 
-        // Delete image if it exists
-        if ($session->sImage && Storage::exists('public/sessions/' . $session->sImage)) {
-            Storage::delete('public/sessions/' . $session->sImage);
-        }
-
-        $session->delete();
+        $session->update(['status' => 2]);
 
         return redirect()->route('sessions.index')
             ->with('success', 'Session deleted successfully!');
+    }
+
+    /**
+     * Update session status (1 = Active, 0 = Inactive, 2 = Deleted)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:0,1,2',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $session = Session::findOrFail($id);
+        $session->update(['status' => (int) $request->status]);
+
+        return redirect()->route('sessions.index')->with('success', 'Session status updated successfully!');
     }
 }

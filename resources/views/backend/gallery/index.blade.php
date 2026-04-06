@@ -31,7 +31,7 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">No</th>
                                     <th scope="col">Image</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Status</th>
@@ -42,7 +42,7 @@
                             <tbody>
                                 @forelse($images as $image)
                                     <tr>
-                                        <td>{{ $image->id }}</td>
+                                        <td>{{ ($images->firstItem() ?? 1) + $loop->index }}</td>
                                         <td>
                                             <img src="{{ Storage::url($image->image_path) }}" alt="Gallery Image" class="img-fluid" style="max-height: 50px;">
                                         </td>

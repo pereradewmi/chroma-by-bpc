@@ -14,7 +14,7 @@ class ClassRoomController extends Controller
      */
     public function index()
     {
-        $classes = ClassRoom::orderBy('cID', 'asc')->paginate(10);
+        $classes = ClassRoom::where('status', '!=', 2)->orderBy('cID', 'asc')->paginate(10);
         return view('backend.classes.index', compact('classes'));
     }
 
@@ -23,7 +23,7 @@ class ClassRoomController extends Controller
      */
     public function frontendIndex()
     {
-        $classes = ClassRoom::orderBy('cID', 'asc')->get();
+        $classes = ClassRoom::where('status', 1)->orderBy('cID', 'asc')->get();
         return view('frontend.classes', compact('classes'));
     }
 
@@ -48,6 +48,7 @@ class ClassRoomController extends Controller
             'cDescription' => 'nullable|string',
             'classfee' => 'required|numeric|min:0',
             'admission_amount' => 'nullable|numeric|min:0',
+            'status' => 'nullable|in:0,1,2',
             'cVideo' => 'nullable|file|mimetypes:video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska|max:51200',
             'is_update' => 'boolean',
             'class_id' => 'nullable|exists:classdetails,cID'
@@ -60,6 +61,7 @@ class ClassRoomController extends Controller
         }
 
         $data = $request->only(['cName', 'cDescription', 'classfee', 'admission_amount']);
+        $data['status'] = (int) $request->get('status', 1);
 
         // Handle video upload
         if ($request->hasFile('cVideo')) {
@@ -101,23 +103,32 @@ class ClassRoomController extends Controller
     }
 
     /**
+     * Update class status (1 = Active, 0 = Inactive, 2 = Deleted)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:0,1,2',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $class = ClassRoom::findOrFail($id);
+        $class->update(['status' => (int) $request->status]);
+
+        return redirect()->route('classes.index')->with('success', 'Class status updated successfully!');
+    }
+
+    /**
      * Delete a class
      */
     public function destroy($id)
     {
         $class = ClassRoom::findOrFail($id);
 
-        // Delete image if it exists
-        if ($class->cImage && Storage::exists('public/classes/' . $class->cImage)) {
-            Storage::delete('public/classes/' . $class->cImage);
-        }
-
-        // Delete video if it exists
-        if ($class->cVideo && Storage::exists('public/class-videos/' . $class->cVideo)) {
-            Storage::delete('public/class-videos/' . $class->cVideo);
-        }
-
-        $class->delete();
+        $class->update(['status' => 2]);
 
         return redirect()->route('classes.index')
             ->with('success', 'Class deleted successfully!');

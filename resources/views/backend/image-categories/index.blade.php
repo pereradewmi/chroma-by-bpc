@@ -31,7 +31,7 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">No</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Actions</th>
@@ -40,7 +40,7 @@
                             <tbody>
                                 @forelse($categories as $category)
                                     <tr>
-                                        <td>{{ $category->id }}</td>
+                                        <td>{{ ($categories->firstItem() ?? 1) + $loop->index }}</td>
                                         <td><strong>{{ $category->name }}</strong></td>
                                         <td>
                                             @if($category->status == 1)

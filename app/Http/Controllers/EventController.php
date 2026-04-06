@@ -130,4 +130,23 @@ class EventController extends Controller
         return redirect()->route('events.index')
             ->with('success', 'Event deleted successfully!');
     }
+
+    /**
+     * Update event status (1 = Active, 0 = Inactive, 2 = Deleted)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:0,1,2',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $event = Event::findOrFail($id);
+        $event->update(['status' => (int) $request->status]);
+
+        return redirect()->route('events.index')->with('success', 'Event status updated successfully!');
+    }
 }

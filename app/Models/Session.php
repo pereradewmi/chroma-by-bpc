@@ -15,7 +15,12 @@ class Session extends Model
     protected $fillable = [
         'sName',
         'sDescription',
-        'sImage'
+        'sImage',
+        'status'
+    ];
+
+    protected $casts = [
+        'status' => 'integer',
     ];
 
     /**
