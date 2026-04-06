@@ -17,8 +17,13 @@ class ClassRoom extends Model
         'cDescription',
         'cImage',
         'cVideo',
+        'status',
         'classfee',
         'admission_amount'
+    ];
+
+    protected $casts = [
+        'status' => 'integer',
     ];
 
     /**

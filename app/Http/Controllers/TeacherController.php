@@ -13,7 +13,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::latest()->paginate(10);
+        $teachers = Teacher::where('Active', '!=', 2)->latest()->paginate(10);
         return view('backend.teachers.index', compact('teachers'));
     }
 
@@ -74,10 +74,29 @@ class TeacherController extends Controller
     public function destroy($id)
     {
         $teacher = Teacher::findOrFail($id);
-        $teacher->delete();
+        $teacher->update(['Active' => 2]);
 
         return redirect()->route('teachers.index')
             ->with('success', 'Teacher deleted successfully!');
+    }
+
+    /**
+     * Update teacher status (1 = Active, 0 = Inactive, 2 = Deleted)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:0,1,2',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $teacher = Teacher::findOrFail($id);
+        $teacher->update(['Active' => (int) $request->status]);
+
+        return redirect()->route('teachers.index')->with('success', 'Teacher status updated successfully!');
     }
 
     /**
@@ -85,6 +104,6 @@ class TeacherController extends Controller
      */
     public function getTeachersForDropdown()
     {
-        return Teacher::active()->select('T_ID', 'tFName', 'tLName')->get();
+        return Teacher::where('Active', 1)->select('T_ID', 'tFName', 'tLName')->get();
     }
 }

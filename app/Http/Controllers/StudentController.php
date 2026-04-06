@@ -13,7 +13,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::latest()->paginate(10);
+        $students = Student::where('Active', '!=', 2)->latest()->paginate(10);
         return view('backend.students.index', compact('students'));
     }
 
@@ -102,9 +102,28 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = Student::findOrFail($id);
-        $student->delete();
+        $student->update(['Active' => 2]);
 
         return redirect()->route('students.index')
             ->with('success', 'Student deleted successfully!');
+    }
+
+    /**
+     * Update student status (1 = Active, 0 = Inactive, 2 = Deleted)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:0,1,2',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $student = Student::findOrFail($id);
+        $student->update(['Active' => (int) $request->status]);
+
+        return redirect()->route('students.index')->with('success', 'Student status updated successfully!');
     }
 }
