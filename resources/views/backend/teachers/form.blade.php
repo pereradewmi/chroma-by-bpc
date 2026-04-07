@@ -26,9 +26,9 @@
                                 <input type="hidden" name="teacher_id" value="{{ $teacher->T_ID }}">
                             @endif
                             
-                            <h6 class="heading-small text-muted mb-4">Teacher Information</h6>
+                            <h6 class="heading-small text-muted mb-3">Teacher Information</h6>
                             
-                            <div class="pl-lg-4">
+                            <div class="pl-lg-4 teacher-form-compact">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -57,29 +57,45 @@
                                 </div>
                                 
                                 <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-control-label" for="tAddress">Address</label>
+                                            <textarea id="tAddress" name="tAddress" rows="2"
+                                                class="form-control form-control-alternative @error('tAddress') is-invalid @enderror" 
+                                                placeholder="Address" required>{{ old('tAddress', $teacher->tAddress) }}</textarea>
+                                            @error('tAddress')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-2">
                                     <div class="col-lg-6">
-                                        <div class="form-group">
+                                        <div class="form-group mb-2">
                                             <label class="form-control-label">Teacher Type</label>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="teacher_type_class" name="teacher_type" value="class_teacher"
-                                                    class="custom-control-input"
-                                                    {{ old('teacher_type', $teacher->teacher_type ?? 'class_teacher') === 'class_teacher' ? 'checked' : '' }} required>
-                                                <label class="custom-control-label" for="teacher_type_class">Class Teacher</label>
-                                            </div>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" id="teacher_type_instructor" name="teacher_type" value="instructor"
-                                                    class="custom-control-input"
-                                                    {{ old('teacher_type', $teacher->teacher_type ?? '') === 'instructor' ? 'checked' : '' }} required>
-                                                <label class="custom-control-label" for="teacher_type_instructor">Instructor (Sessions)</label>
+                                            <div class="d-flex align-items-center">
+                                                <div class="custom-control custom-radio custom-control-inline mr-3">
+                                                    <input type="radio" id="teacher_type_class" name="teacher_type" value="class_teacher"
+                                                        class="custom-control-input"
+                                                        {{ old('teacher_type', $teacher->teacher_type ?? 'class_teacher') === 'class_teacher' ? 'checked' : '' }} required>
+                                                    <label class="custom-control-label" for="teacher_type_class">Class Teacher</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="teacher_type_instructor" name="teacher_type" value="instructor"
+                                                        class="custom-control-input"
+                                                        {{ old('teacher_type', $teacher->teacher_type ?? '') === 'instructor' ? 'checked' : '' }} required>
+                                                    <label class="custom-control-label" for="teacher_type_instructor">Instructor (Sessions)</label>
+                                                </div>
                                             </div>
                                             @error('teacher_type')
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <div class="custom-control custom-switch mt-4">
+                                    <div class="col-lg-6 d-flex align-items-end">
+                                        <div class="form-group mb-0">
+                                            <div class="custom-control custom-switch">
                                                 <input type="checkbox" class="custom-control-input" id="Active" name="Active" value="1"
                                                     {{ old('Active', $teacher->Active) ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="Active">Active Status</label>
@@ -91,26 +107,14 @@
                                     </div>
                                 </div>
                                 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="tAddress">Address</label>
-                                            <textarea id="tAddress" name="tAddress" rows="4"
-                                                class="form-control form-control-alternative @error('tAddress') is-invalid @enderror" 
-                                                placeholder="A few words about the address..." required>{{ old('tAddress', $teacher->tAddress) }}</textarea>
-                                            @error('tAddress')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary">
+                                <div class="row mt-3">
+                                    <div class="col-lg-12 text-right">
+                                        <a href="{{ route('teachers.index') }}" class="btn btn-secondary">
+                                            Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             {{ $isEdit ? 'Update Teacher' : 'Register Teacher' }}
                                         </button>
-                                        <a href="{{ route('teachers.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>
@@ -120,4 +124,14 @@
             </div>
         </div>
     </div>
+    
+    <style>
+        .teacher-form-compact .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .teacher-form-compact .heading-small {
+            margin-bottom: 1rem !important;
+        }
+    </style>
 @endsection
