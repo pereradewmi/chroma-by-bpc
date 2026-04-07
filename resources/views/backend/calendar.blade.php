@@ -134,8 +134,8 @@
     </div>
 
 <!-- Booking Modal -->
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="bookingModalLabel">
@@ -201,13 +201,6 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="pubprievent" class="form-label">Event Visibility</label>
-                            <select class="form-control" id="pubprievent" name="pubprievent">
-                                <option value="PRI" selected>Private (Admin Only)</option>
-                                <option value="PUB">Public (Visible to All)</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
                             <label for="bStatus" class="form-label">Status</label>
                             <select class="form-control" id="bStatus" name="bStatus">
                                 <option value="pending" selected>Pending</option>
@@ -229,13 +222,6 @@
                         <div class="col-md-6 mb-3">
                             <label for="bPrice" class="form-label">Price (Rs.)</label>
                             <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="bRejection_reason" class="form-label">Rejection Reason</label>
-                            <textarea class="form-control" id="bRejection_reason" name="bRejection_reason" rows="2" placeholder="Reason for rejection (if applicable)..."></textarea>
                         </div>
                     </div>
                 </form>
@@ -267,27 +253,29 @@
             <div class="modal-body" id="bookingDetails">
                 <!-- Booking details will be loaded here -->
             </div>
-            <div class="modal-footer" style="gap: 8px;">
-                <button type="button" class="btn btn-warning" id="viewLogsBtn" onclick="viewBookingLogs()" style="flex-shrink: 1;">
+            <div class="modal-footer justify-content-between flex-wrap">
+                <button type="button" class="btn btn-outline-secondary mb-2 mb-sm-0" id="viewLogsBtn" onclick="viewBookingLogs()">
                     <i class="fas fa-history mr-2"></i>View History
                 </button>
-                <button type="button" class="btn btn-danger" id="rejectBookingBtn" onclick="rejectCurrentBooking()" style="flex-shrink: 1;">
-                    <i class="fas fa-times mr-2"></i>Reject
-                </button>
-                <button type="button" class="btn btn-info" id="editBookingBtn" onclick="editCurrentBooking()" style="flex-shrink: 1; min-width: 120px;">
-                    <i class="fas fa-pencil-alt mr-2"></i>Edit
-                </button>
-                <button type="button" class="btn btn-success" id="approveBookingBtn" onclick="approveCurrentBooking()" style="flex-shrink: 1;">
-                    <i class="fas fa-check mr-2"></i>Approve
-                </button>
+                <div class="d-flex flex-wrap" style="gap: 8px;">
+                    <button type="button" class="btn btn-danger" id="rejectBookingBtn" onclick="rejectCurrentBooking()">
+                        <i class="fas fa-times mr-2"></i>Reject
+                    </button>
+                    <button type="button" class="btn btn-info" id="editBookingBtn" onclick="editCurrentBooking()">
+                        <i class="fas fa-pencil-alt mr-2"></i>Edit
+                    </button>
+                    <button type="button" class="btn btn-success" id="approveBookingBtn" onclick="approveCurrentBooking()">
+                        <i class="fas fa-check mr-2"></i>Approve
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Edit Booking Modal -->
-<div class="modal fade" id="editBookingModal" tabindex="-1" aria-labelledby="editBookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="editBookingModal" tabindex="-1" aria-labelledby="editBookingModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="editBookingModalLabel">
@@ -299,7 +287,8 @@
             </div>
             <div class="modal-body">
                 <form id="editBookingForm">
-                    <input type="hidden" id="editBookingId" name="booking_id">  
+                    <input type="hidden" id="editBookingId" name="booking_id">
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="editTitle" class="form-label">Title*</label>
@@ -316,53 +305,47 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3 d-none">
                             <label for="editBooking_date" class="form-label">Date*</label>
                             <input type="date" class="form-control" id="editBooking_date" name="booking_date"
-                                min="{{ date('Y-m-d') }}" required>
+                                   min="{{ date('Y-m-d') }}" required>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editStart_datetime" class="form-label">Start DateTime*</label>
+                        <div class="col-md-6 mb-3">
+                            <label for="editStart_datetime" class="form-label">Start Date & Time*</label>
                             <input type="datetime-local" class="form-control" id="editStart_datetime" name="bStart_datetime"
-                                min="{{ date('Y-m-d\TH:i') }}" required>
+                                   min="{{ date('Y-m-d\TH:i') }}" required>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editEnd_datetime" class="form-label">End DateTime</label>
+                        <div class="col-md-6 mb-3">
+                            <label for="editEnd_datetime" class="form-label">End Date & Time</label>
                             <input type="datetime-local" class="form-control" id="editEnd_datetime" name="bEnd_datetime"
-                                min="{{ date('Y-m-d\TH:i') }}">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="editName" class="form-label">Customer Name*</label>
-                            <input type="text" class="form-control" id="editName" name="bName" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editPhone" class="form-label">Phone Number*</label>
-                            <input type="tel" class="form-control" id="editPhone" name="bPhone" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editEmail" name="bEmail">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <label for="editDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editDescription" name="bDescription" rows="3"></textarea>
+                                   min="{{ date('Y-m-d\TH:i') }}">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="editPubprievent" class="form-label">Event Visibility</label>
-                            <select class="form-control" id="editPubprievent" name="pubprievent">
-                                <option value="PRI">Private (Admin Only)</option>
-                                <option value="PUB">Public (Visible to All)</option>
-                            </select>
+                            <label for="editName" class="form-label">Customer Name*</label>
+                            <input type="text" class="form-control" id="editName" name="bName" required>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editPhone" class="form-label">Phone Number*</label>
+                            <input type="tel" class="form-control" id="editPhone" name="bPhone" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" name="bEmail">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" name="bDescription" rows="1"
+                                      placeholder="Additional details about your booking..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="editStatus" class="form-label">Status</label>
                             <select class="form-control" id="editStatus" name="bStatus">
@@ -370,6 +353,21 @@
                                 <option value="approved">Approved</option>
                                 <option value="rejected">Rejected</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editPayment_status" class="form-label">Payment Status</label>
+                            <select class="form-control" id="editPayment_status" name="bPayment_status">
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="refunded">Refunded</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editPrice" class="form-label">Price (Rs.)</label>
+                            <input type="number" class="form-control" id="editPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
                 </form>
@@ -441,6 +439,40 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Ensure booking modals always fit the viewport and keep footer buttons visible */
+    #bookingModal .modal-dialog,
+    #editBookingModal .modal-dialog {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    #bookingModal .modal-content,
+    #editBookingModal .modal-content {
+        max-height: calc(100vh - 2rem);
+        display: flex;
+        flex-direction: column;
+    }
+
+    #bookingModal .modal-body,
+    #editBookingModal .modal-body {
+        flex: 1 1 auto;
+        overflow-y: auto;
+    }
+
+    /* View Booking modal styling */
+    #viewBookingModal .booking-summary {
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 0.75rem;
+    }
+
+    #viewBookingModal .booking-section + .booking-section {
+        border-top: 1px dashed #e9ecef;
+        padding-top: 0.75rem;
+    }
+</style>
+</style>
 
 @push('js')
 <!-- FullCalendar CSS & JS -->
@@ -692,34 +724,36 @@ function showBookingDetails(bookingId) {
     .then(booking => {
         const statusBadge = getStatusBadge(booking.status);
         const paymentBadge = getPaymentBadge(booking.payment_status);
-        const visibilityBadge = getVisibilityBadge(booking.pubprievent || 'PRI');
         const typeBadge = booking.type === 'event' ?
             '<span class="badge badge-primary">Event</span>' :
             '<span class="badge badge-info">Session</span>';
 
         document.getElementById('bookingDetails').innerHTML = `
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Title:</strong> ${booking.title}</p>
-                    <p><strong>Type:</strong> ${typeBadge}</p>
-                    <p><strong>Date:</strong> ${new Date(booking.booking_date).toLocaleDateString()}</p>
-                    <p><strong>Start Time:</strong> ${booking.start_time || 'N/A'}</p>
-                    <p><strong>End Time:</strong> ${booking.end_time || 'N/A'}</p>
-                    <p><strong>Duration:</strong> ${booking.duration_hours ? booking.duration_hours + ' hours' : 'Not specified'}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Customer:</strong> ${booking.customer_name}</p>
-                    <p><strong>Phone:</strong> ${booking.phone_number}</p>
-                    <p><strong>Email:</strong> ${booking.email || 'Not provided'}</p>
-                    <p><strong>People:</strong> ${booking.number_of_people || 'N/A'}</p>
-                    <p><strong>Status:</strong> ${statusBadge}</p>
-                    <p><strong>Payment:</strong> ${paymentBadge}</p>
-                    <p><strong>Visibility:</strong> ${visibilityBadge}</p>
+            <div class="booking-summary mb-3">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-muted text-uppercase mb-2">Booking Info</h6>
+                        <p class="mb-1"><span class="text-muted">Title:</span> <strong>${booking.title}</strong></p>
+                        <p class="mb-1"><span class="text-muted">Type:</span> ${typeBadge}</p>
+                        <p class="mb-1"><span class="text-muted">Date:</span> ${new Date(booking.booking_date).toLocaleDateString()}</p>
+                        <p class="mb-1"><span class="text-muted">Start Time:</span> ${booking.start_time || 'N/A'}</p>
+                        <p class="mb-1"><span class="text-muted">End Time:</span> ${booking.end_time || 'N/A'}</p>
+                        <p class="mb-0"><span class="text-muted">Duration:</span> ${booking.duration_hours ? booking.duration_hours + ' hours' : 'Not specified'}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h6 class="text-muted text-uppercase mb-2">Customer Info</h6>
+                        <p class="mb-1"><span class="text-muted">Name:</span> <strong>${booking.customer_name}</strong></p>
+                        <p class="mb-1"><span class="text-muted">Phone:</span> ${booking.phone_number}</p>
+                        <p class="mb-1"><span class="text-muted">Email:</span> ${booking.email || 'Not provided'}</p>
+                        <p class="mb-1"><span class="text-muted">People:</span> ${booking.number_of_people || 'N/A'}</p>
+                        <p class="mb-1"><span class="text-muted">Status:</span> ${statusBadge}</p>
+                        <p class="mb-0"><span class="text-muted">Payment:</span> ${paymentBadge}</p>
+                    </div>
                 </div>
             </div>
-            ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
-            ${booking.rejection_reason ? `<div class="mt-3"><strong>Rejection Reason:</strong><br>${booking.rejection_reason}</div>` : ''}
-            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> (Rs.) ${booking.price}</div>` : ''}
+            ${booking.description ? `<div class="booking-section mt-2"><h6 class="text-muted text-uppercase mb-2">Description</h6><p class="mb-0">${booking.description}</p></div>` : ''}
+            ${booking.rejection_reason ? `<div class="booking-section mt-3"><h6 class="text-muted text-uppercase mb-2">Rejection Reason</h6><p class="mb-0">${booking.rejection_reason}</p></div>` : ''}
+            ${booking.price ? `<div class="booking-section mt-3"><h6 class="text-muted text-uppercase mb-2">Price</h6><p class="mb-0">Rs. ${booking.price}</p></div>` : ''}
         `;
         
         $('#viewBookingModal').modal('show');
@@ -755,7 +789,6 @@ function editCurrentBooking() {
         document.getElementById('editPhone').value = booking.phone_number || '';
         document.getElementById('editEmail').value = booking.email || '';
         document.getElementById('editDescription').value = booking.description || '';
-        document.getElementById('editPubprievent').value = booking.pubprievent || 'PRI';
 
         // Hide view modal and show edit modal
         $('#viewBookingModal').modal('hide');
