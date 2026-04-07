@@ -72,12 +72,39 @@
                         {{ __('Category') }}
                     </a>
                 </li>
+                @php
+                    $paymentsOpen = str_contains(Route::currentRouteName(), 'payments.')
+                        || str_contains(Route::currentRouteName(), 'teacher-payments.')
+                        || str_contains(Route::currentRouteName(), 'instructor-payments.');
+                @endphp
                 <li class="nav-item">
-                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'payments') ? 'active' : '' }}" href="{{ route('payments.index') }}">
-                        <i class="fas fa-money-bill-wave text-primary"></i>
-                        {{ __('Payments') }}
+                    <a class="nav-link d-flex justify-content-between align-items-center {{ $paymentsOpen ? 'active' : '' }}" href="#paymentsMenu" data-toggle="collapse" role="button" aria-expanded="{{ $paymentsOpen ? 'true' : 'false' }}" aria-controls="paymentsMenu">
+                        <span>
+                            <i class="fas fa-money-bill-wave text-primary"></i>
+                            {{ __('Payments') }}
+                        </span>
+                        <i class="fas fa-chevron-right small {{ $paymentsOpen ? 'rotate-90' : '' }}"></i>
                     </a>
                 </li>
+                <div class="collapse {{ $paymentsOpen ? 'show' : '' }}" id="paymentsMenu">
+                    <ul class="navbar-nav px-3">
+                        <li class="nav-item pl-4">
+                            <a class="nav-link {{ str_contains(Route::currentRouteName(), 'payments.') ? 'active' : '' }}" href="{{ route('payments.index') }}">
+                                {{ __('Student') }}
+                            </a>
+                        </li>
+                        <li class="nav-item pl-4">
+                            <a class="nav-link {{ str_contains(Route::currentRouteName(), 'teacher-payments.') ? 'active' : '' }}" href="{{ route('teacher-payments.index') }}">
+                                {{ __('Teacher') }}
+                            </a>
+                        </li>
+                        <li class="nav-item pl-4">
+                            <a class="nav-link {{ str_contains(Route::currentRouteName(), 'instructor-payments.') ? 'active' : '' }}" href="{{ route('instructor-payments.index') }}">
+                                {{ __('Instructor') }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains(Route::currentRouteName(), 'reports') ? 'active' : '' }}" href="{{ route('reports.index') }}">
                         <i class="fas fa-chart-bar text-primary"></i>

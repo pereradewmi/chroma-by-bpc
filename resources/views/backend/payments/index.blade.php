@@ -10,37 +10,14 @@
                     <div class="card-header border-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h3 class="mb-0">Payment Management</h3>
+                                <h3 class="mb-0">Student Payments</h3>
+                            </div>
+                            <div class="col text-right">
+                                <a href="{{ route('payments.form') }}" class="btn btn-sm btn-primary">Add New Payment</a>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Navigation Tabs -->
-                    <div class="card-header bg-light border-bottom">
-                        <ul class="nav nav-tabs nav-fill" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="{{ route('payments.index') }}" role="tab">
-                                    <i class="fas fa-graduation-cap"></i> Student Payments
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('teacher-payments.index') }}" role="tab">
-                                    <i class="fas fa-chalkboard-user"></i> Teacher Payments
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('instructor-payments.index') }}" role="tab">
-                                    <i class="fas fa-person-chalkboard"></i> Instructor Payments
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="row align-items-center">
-                        <div class="col ml-auto">
-                            <a href="{{ route('payments.form') }}" class="btn btn-sm btn-primary mt-3 mr-3">Add New Payment</a>
-                        </div>
-                    </div>
+                    
 
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show mx-4 mt-3" role="alert">
