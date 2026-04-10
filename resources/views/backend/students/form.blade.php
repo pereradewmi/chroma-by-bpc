@@ -25,14 +25,12 @@
                                 <input type="hidden" name="is_update" value="1">
                                 <input type="hidden" name="student_id" value="{{ $student->AutoID }}">
                             @endif
-                            
-                            <h6 class="heading-small text-muted mb-3">Student Information</h6>
-                            
+
                             <div class="pl-lg-4 student-form-compact">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="fName">First Name</label>
+                                            <label class="form-control-label" for="fName">First Name <span class="text-danger">*</span></label>
                                             <input type="text" id="fName" name="fName" 
                                                 class="form-control form-control-alternative @error('fName') is-invalid @enderror" 
                                                 placeholder="First Name" 
@@ -42,9 +40,9 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="lName">Last Name</label>
+                                            <label class="form-control-label" for="lName">Last Name <span class="text-danger">*</span></label>
                                             <input type="text" id="lName" name="lName" 
                                                 class="form-control form-control-alternative @error('lName') is-invalid @enderror" 
                                                 placeholder="Last Name" 
@@ -54,12 +52,9 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="mobileNo">Mobile Number</label>
+                                            <label class="form-control-label" for="mobileNo">Mobile Number <span class="text-danger">*</span></label>
                                             <input type="text" id="mobileNo" name="mobileNo"
                                                 class="form-control form-control-alternative @error('mobileNo') is-invalid @enderror"
                                                 placeholder="Mobile Number"
@@ -69,9 +64,9 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="studentemail">Email Address</label>
+                                            <label class="form-control-label" for="studentemail">Email Address <span class="text-danger">*</span></label>
                                             <input type="email" id="studentemail" name="studentemail"
                                                 class="form-control form-control-alternative @error('studentemail') is-invalid @enderror"
                                                 placeholder="Email Address"
@@ -84,14 +79,25 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="Age">Age</label>
+                                            <label class="form-control-label" for="Age">Age <span class="text-danger">*</span></label>
                                             <input type="number" id="Age" name="Age"
                                                 class="form-control form-control-alternative @error('Age') is-invalid @enderror"
                                                 placeholder="Age" min="1" max="100"
                                                 value="{{ old('Age', $student->Age) }}" required>
                                             @error('Age')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="Address">Address <span class="text-danger">*</span></label>
+                                            <textarea id="Address" name="Address" rows="2"
+                                                class="form-control form-control-alternative @error('Address') is-invalid @enderror" 
+                                                placeholder="Address" required>{{ old('Address', $student->Address) }}</textarea>
+                                            @error('Address')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -104,66 +110,44 @@
                                                     id="studentpic" name="studentpic" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
                                                 <label class="custom-file-label" for="studentpic">Choose image...</label>
                                             </div>
-                                            <small class="form-text text-muted d-block mt-2">
-                                                <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
-                                                @if($isEdit && $student->studentpic)
-                                                    <br><strong>Current Picture:</strong> {{ $student->studentpic }}
-                                                @endif
-                                            </small>
+                                            @if($isEdit && $student->studentpic)
+                                                <small class="form-text text-muted d-block mt-2">
+                                                    <strong>Current Picture:</strong> {{ $student->studentpic }}
+                                                </small>
+                                            @endif
                                             @error('studentpic')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="Address">Address</label>
-                                            <textarea id="Address" name="Address" rows="2"
-                                                class="form-control form-control-alternative @error('Address') is-invalid @enderror" 
-                                                placeholder="Address" required>{{ old('Address', $student->Address) }}</textarea>
-                                            @error('Address')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h6 class="heading-small text-muted mb-3 mt-4">Guardian Information</h6>
 
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="guardian_name">Guardian Name</label>
+                                            <label class="form-control-label" for="guardian_name">Guardian Name <span class="text-danger">*</span></label>
                                             <input type="text" id="guardian_name" name="guardian_name"
                                                 class="form-control form-control-alternative @error('guardian_name') is-invalid @enderror"
                                                 placeholder="Guardian's Full Name"
-                                                value="{{ old('guardian_name', $student->guardian_name) }}">
+                                                value="{{ old('guardian_name', $student->guardian_name) }}" required>
                                             @error('guardian_name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="form-control-label" for="guardian_phone">Guardian Phone</label>
+                                            <label class="form-control-label" for="guardian_phone">Guardian Phone <span class="text-danger">*</span></label>
                                             <input type="text" id="guardian_phone" name="guardian_phone"
                                                 class="form-control form-control-alternative @error('guardian_phone') is-invalid @enderror"
                                                 placeholder="Guardian's Phone Number"
-                                                value="{{ old('guardian_phone', $student->guardian_phone) }}">
+                                                value="{{ old('guardian_phone', $student->guardian_phone) }}" required>
                                             @error('guardian_phone')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-
-                                <h6 class="heading-small text-muted mb-3 mt-4">Class Assignment</h6>
-
-                                <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="classDropdownToggle">Assign Classes</label>
                                             @php
@@ -187,9 +171,6 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            <small class="form-text text-muted d-block mt-2">
-                                                <i class="fas fa-info-circle"></i> Use the checkboxes to select one or more classes.
-                                            </small>
                                             @error('class_ids')
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
@@ -197,15 +178,15 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-3">
-                                    <div class="col-lg-6">
+                                <div class="row mt-4 align-items-center">
+                                    <div class="col-lg-4">
                                         <div class="form-group mb-0">
                                             <label class="form-control-label">Status</label>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="hidden" name="Active" value="0">
                                                 <input type="checkbox" id="Active" name="Active" value="1"
                                                     class="custom-control-input"
-                                                    {{ old('Active', $student->Active) ? 'checked' : '' }}>
+                                                    {{ old('Active', $isEdit ? $student->Active : 1) ? 'checked' : '' }}>
                                                 <label class="custom-control-label" for="Active">Active Student</label>
                                             </div>
                                             @error('Active')
@@ -213,10 +194,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div class="row mt-4">
-                                    <div class="col-lg-12 text-right">
+                                    <div class="col-lg-8 text-right">
                                         <a href="{{ route('students.index') }}" class="btn btn-secondary">
                                             Cancel
                                         </a>

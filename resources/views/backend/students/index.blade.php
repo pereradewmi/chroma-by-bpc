@@ -32,11 +32,11 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No</th>
+                                    <th scope="col">Photo</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Classes</th>
                                     <th scope="col">Mobile Number</th>
-                                    {{-- <th scope="col">Age</th> --}}
-                                    {{-- <th scope="col">Address</th> --}}
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Guardian Name</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -44,20 +44,46 @@
                                 @forelse($students as $student)
                                     <tr>
                                         <td>{{ ($students->firstItem() ?? 1) + $loop->index }}</td>
-                                        <td>{{ $student->fName }} {{ $student->lName }}</td>
-                                        {{-- <td>{{ $student->mobileNo }}</td> --}}
-                                        {{-- <td>{{ $student->Age }}</td> --}}
-                                        <td>{{ Str::limit($student->Address, 50) }}</td>
                                         <td>
-                                            @if((int) $student->Active === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) $student->Active === 0)
-                                                <span class="badge badge-secondary">Inactive</span>
+                                            @if($student->studentpic)
+                                                <img
+                                                    src="{{ $student->photo_url }}"
+                                                    alt="{{ $student->fName }} {{ $student->lName }}"
+                                                    class="avatar rounded-circle"
+                                                    style="width: 40px; height: 40px; object-fit: cover;"
+                                                >
                                             @else
-                                                <span class="badge badge-danger">Deleted</span>
+                                                <span class="avatar rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    {{ strtoupper(substr($student->fName, 0, 1)) }}
+                                                </span>
                                             @endif
                                         </td>
+                                        <td>{{ $student->fName }} {{ $student->lName }}</td>
                                         <td>
+                                            @php
+                                                // Prefer pivot table if available, fall back to JSON column
+                                                $classNames = [];
+
+                                                if ($student->relationLoaded('classes') || method_exists($student, 'classes')) {
+                                                    foreach ($student->classes as $class) {
+                                                        $classNames[] = $class->cName;
+                                                    }
+                                                }
+
+                                                if (empty($classNames) && !empty($student->class_ids)) {
+                                                    $ids = json_decode($student->class_ids, true) ?: [];
+                                                    $classNames = App\Models\ClassRoom::whereIn('cID', $ids)->pluck('cName')->toArray();
+                                                }
+                                            @endphp
+                                            @if(!empty($classNames))
+                                                {{ implode(', ', $classNames) }}
+                                            @else
+                                                <span class="text-muted">No classes assigned</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $student->mobileNo }}</td>
+                                        <td>{{ $student->guardian_name }}</td>
+                                        <td >
                                             <a href="{{ route('students.form', $student->AutoID) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
                                             </a>
