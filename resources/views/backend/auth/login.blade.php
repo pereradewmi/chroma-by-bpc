@@ -169,9 +169,9 @@
             box-shadow: 0 5px 15px rgba(4, 65, 95, 0.4);
         }
 
-        .text-primary {
+        /* .text-primary {
             color: #04415f !important;
-        }
+        } */
 
         .bg-default {
             background: linear-gradient(135deg, #04415f 0%, #064d7a 100%) !important;

@@ -12,9 +12,21 @@ class SessionController extends Controller
     /**
      * Display the sessions list
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sessions = Session::where('status', '!=', 2)->latest()->paginate(10);
+        $search = trim((string) $request->get('search', ''));
+
+        $sessions = Session::where('status', '!=', 2)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('sName', 'like', "%{$search}%")
+                        ->orWhere('sDescription', 'like', "%{$search}%")
+                        ->orWhere('sID', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
         return view('backend.sessions.index', compact('sessions'));
     }
 

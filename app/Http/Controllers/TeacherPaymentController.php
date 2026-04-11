@@ -12,11 +12,24 @@ class TeacherPaymentController extends Controller
     /**
      * Display the teacher payment details management page
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->get('search', ''));
+
         $payments = TeacherPayment::with(['teacher'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('paymentID', 'like', "%{$search}%")
+                        ->orWhere('month', 'like', "%{$search}%")
+                        ->orWhereHas('teacher', function ($teacherQuery) use ($search) {
+                            $teacherQuery->where('tFName', 'like', "%{$search}%")
+                                ->orWhere('tLName', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('backend.payments.teacher-index', compact('payments'));
     }

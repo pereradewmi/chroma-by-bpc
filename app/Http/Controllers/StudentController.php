@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassRoom;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +13,34 @@ class StudentController extends Controller
     /**
      * Display the student registration form
      */
-    public function index()
+    public function frontendRegister()
     {
+        $student = new Student();
+        $isEdit = false;
+        $classes = ClassRoom::orderBy('cName')->get();
+
+        return view('frontend.register', compact('student', 'isEdit', 'classes'));
+    }
+
+    public function index(Request $request)
+    {
+        $search = trim((string) $request->get('search', ''));
+
         $students = Student::where('Active', '!=', 2)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('fName', 'like', "%{$search}%")
+                        ->orWhere('lName', 'like', "%{$search}%")
+                        ->orWhere('mobileNo', 'like', "%{$search}%")
+                        ->orWhere('studentemail', 'like', "%{$search}%")
+                        ->orWhere('guardian_name', 'like', "%{$search}%")
+                        ->orWhere('AutoID', 'like', "%{$search}%");
+                });
+            })
             ->with('classes')
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
         return view('backend.students.index', compact('students'));
     }
 
@@ -60,49 +83,43 @@ class StudentController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'studentemail', 'guardian_name', 'guardian_phone']);
-        $data['Active'] = $request->has('Active') ? 1 : 0;
-        $data['class_ids'] = json_encode($request->get('class_ids', []));
-
-        // Handle image upload
-        if ($request->hasFile('studentpic')) {
-            $image = $request->file('studentpic');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-
-            // Create directory if it doesn't exist
-            $uploadPath = storage_path('app/public/students');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
-            }
-
-            $image->move($uploadPath, $imageName);
-            $data['studentpic'] = $imageName;
-        }
-
-        if ($request->get('is_update') && $request->get('student_id')) {
-            // Update existing student
-            $student = Student::findOrFail($request->get('student_id'));
-
-            // Delete old image if new image is uploaded
-            if (isset($data['studentpic']) && $student->studentpic && file_exists(storage_path('app/public/students/' . $student->studentpic))) {
-                unlink(storage_path('app/public/students/' . $student->studentpic));
-            }
-
-            $student->update($data);
-            $message = 'Student updated successfully!';
-        } else {
-            // Create new student
-            $student = Student::create($data);
-            $message = 'Student registered successfully!';
-        }
-
-        // Sync selected classes/subjects to pivot table when available
-        if (Schema::hasTable('student_classes')) {
-            $student->classes()->sync($request->get('class_ids', []));
-        }
+        [$student, $message] = $this->saveStudentData($request);
 
         return redirect()->route('students.index')
             ->with('success', $message);
+    }
+
+    /**
+     * Store a public frontend student registration.
+     */
+    public function frontendStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'fName' => 'required|string|max:255',
+            'lName' => 'required|string|max:255',
+            'Address' => 'required|string',
+            'mobileNo' => 'required|string|max:20',
+            'Age' => 'required|integer|min:1|max:100',
+            'studentemail' => 'required|email|max:255',
+            'studentpic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'guardian_name' => 'required|string|max:255',
+            'guardian_phone' => 'required|string|max:20',
+            'class_ids' => 'nullable|array',
+            'class_ids.*' => 'exists:classdetails,cID',
+            'Active' => 'boolean'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $request->merge(['Active' => 0]);
+        $this->saveStudentData($request, false, 0);
+
+        return redirect()->route('frontend.register')
+            ->with('success', 'Student registered successfully!');
     }
 
     /**
@@ -134,5 +151,45 @@ class StudentController extends Controller
         $student->update(['Active' => (int) $request->status]);
 
         return redirect()->route('students.index')->with('success', 'Student status updated successfully!');
+    }
+
+    private function saveStudentData(Request $request, bool $allowUpdate = true, ?int $forceActive = null): array
+    {
+        $data = $request->only(['fName', 'lName', 'Address', 'mobileNo', 'Age', 'studentemail', 'guardian_name', 'guardian_phone']);
+        $data['Active'] = $forceActive ?? ($request->boolean('Active') ? 1 : 0);
+        $data['class_ids'] = json_encode($request->get('class_ids', []));
+
+        if ($request->hasFile('studentpic')) {
+            $image = $request->file('studentpic');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+
+            $uploadPath = storage_path('app/public/students');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $image->move($uploadPath, $imageName);
+            $data['studentpic'] = $imageName;
+        }
+
+        if ($allowUpdate && $request->get('is_update') && $request->get('student_id')) {
+            $student = Student::findOrFail($request->get('student_id'));
+
+            if (isset($data['studentpic']) && $student->studentpic && file_exists(storage_path('app/public/students/' . $student->studentpic))) {
+                unlink(storage_path('app/public/students/' . $student->studentpic));
+            }
+
+            $student->update($data);
+            $message = 'Student updated successfully!';
+        } else {
+            $student = Student::create($data);
+            $message = 'Student registered successfully!';
+        }
+
+        if (Schema::hasTable('student_classes')) {
+            $student->classes()->sync($request->get('class_ids', []));
+        }
+
+        return [$student, $message];
     }
 }

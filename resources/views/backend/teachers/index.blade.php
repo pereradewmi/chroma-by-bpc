@@ -27,6 +27,13 @@
                         </div>
                     @endif
 
+                    <div class="px-3 pb-3 d-flex justify-content-end">
+                        <form id="teachers-search-form" class="m-2 d-flex align-items-center flex-nowrap justify-content-end" role="search" method="GET" action="{{ route('teachers.index') }}">
+                            <input class="form-control form-control-sm mr-2" style="width: 220px;" type="search" name="search" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-sm btn-primary mr-2" type="submit">Search</button>
+                        </form>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
@@ -35,16 +42,26 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Mobile Number</th>
                                     <th scope="col">Teacher Type</th>
+                                    {{-- <th scope="col">Status</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="teachers-table-body">
                                 @forelse($teachers as $teacher)
                                     <tr>
                                         <td>{{ ($teachers->firstItem() ?? 1) + $loop->index }}</td>
                                         <td>{{ $teacher->tFName }} {{ $teacher->tLName }}</td>
                                         <td>{{ $teacher->tMobileNo }}</td>
                                         <td>{{ $teacher->teacherType === 'instructor' ? 'Instructor' : 'Class Teacher' }}</td>
+                                        {{-- <td>
+                                            @if((int) $teacher->Active === 1)
+                                                <span class="badge badge-success">Active</span>
+                                            @elseif((int) $teacher->Active === 0)
+                                                <span class="badge badge-secondary">Inactive</span>
+                                            @else
+                                                <span class="badge badge-danger">Deleted</span>
+                                            @endif
+                                        </td> --}}
                                         <td>
                                             <a href="{{ route('teachers.form', $teacher->T_ID) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
@@ -75,20 +92,26 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No teachers found.</td>
+                                        <td colspan="5" class="text-center">No teachers found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                     
-                    @if($teachers->hasPages())
-                        <div class="card-footer py-4">
-                            <nav class="d-flex justify-content-end" aria-label="...">
+                    <div class="card-footer py-4" id="teachers-pagination-wrapper">
+                        <nav class="d-flex justify-content-end" aria-label="..." id="teachers-pagination">
+                            @if($teachers->hasPages())
                                 {{ $teachers->links() }}
-                            </nav>
-                        </div>
-                    @endif
+                            @else
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                    <li class="page-item active btn-primary"><span class="btn-primary page-link">1</span></li>
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                                </ul>
+                            @endif
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,4 +163,83 @@
             transform: translateX(10px);
         }
     </style>
+
+    <script>
+        (function () {
+            const form = document.getElementById('teachers-search-form');
+            const input = form ? form.querySelector('input[name="search"]') : null;
+            const tableBody = document.getElementById('teachers-table-body');
+            const pagination = document.getElementById('teachers-pagination');
+            let searchTimer = null;
+
+            if (!form || !input || !tableBody) {
+                return;
+            }
+
+            const loadTeachers = function (url, pushState = true) {
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function (response) {
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextTableBody = doc.getElementById('teachers-table-body');
+                        const nextPagination = doc.getElementById('teachers-pagination');
+
+                        if (nextTableBody) {
+                            tableBody.innerHTML = nextTableBody.innerHTML;
+                        }
+
+                        if (pagination && nextPagination) {
+                            pagination.innerHTML = nextPagination.innerHTML;
+                        }
+
+                        if (pushState) {
+                            window.history.pushState({}, '', url);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Failed to load teachers list:', error);
+                    });
+            };
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const searchValue = (input.value || '').trim();
+                const targetUrl = new URL(form.action, window.location.origin);
+
+                if (searchValue !== '') {
+                    targetUrl.searchParams.set('search', searchValue);
+                }
+
+                loadTeachers(targetUrl.toString());
+            });
+
+            input.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(function () {
+                    form.dispatchEvent(new Event('submit', { cancelable: true }));
+                }, 300);
+            });
+
+            document.addEventListener('click', function (event) {
+                const pageLink = event.target.closest('#teachers-pagination a.page-link');
+
+                if (!pageLink || !pageLink.href) {
+                    return;
+                }
+
+                event.preventDefault();
+                loadTeachers(pageLink.href);
+            });
+
+            window.addEventListener('popstate', function () {
+                loadTeachers(window.location.href, false);
+            });
+        })();
+    </script>
 @endsection

@@ -12,9 +12,22 @@ class ClassRoomController extends Controller
     /**
      * Display the classes list for backend
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classes = ClassRoom::where('status', '!=', 2)->orderBy('cID', 'asc')->paginate(10);
+        $search = trim((string) $request->get('search', ''));
+
+        $classes = ClassRoom::where('status', '!=', 2)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('cName', 'like', "%{$search}%")
+                        ->orWhere('cDescription', 'like', "%{$search}%")
+                        ->orWhere('classfee', 'like', "%{$search}%")
+                        ->orWhere('cID', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('cID', 'asc')
+            ->paginate(10)
+            ->withQueryString();
         return view('backend.classes.index', compact('classes'));
     }
 

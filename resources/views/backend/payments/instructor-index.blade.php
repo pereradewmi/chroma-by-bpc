@@ -28,6 +28,13 @@
                         </div>
                     @endif
 
+                    <div class="px-4 pb-3 d-flex justify-content-end">
+                        <form id="instructor-payments-search-form" class="m-2 d-flex align-items-center flex-nowrap justify-content-end" role="search" method="GET" action="{{ route('instructor-payments.index') }}">
+                            <input class="form-control form-control-sm mr-2" style="width: 220px;" type="search" name="search" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-sm btn-primary mr-2" type="submit">Search</button>
+                        </form>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
@@ -42,7 +49,7 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="instructor-payments-table-body">
                                 @forelse($payments as $payment)
                                     <tr>
                                         <td>{{ $payment->paymentID }}</td>
@@ -96,15 +103,100 @@
                         </table>
                     </div>
 
-                    @if($payments->hasPages())
-                        <div class="card-footer py-4">
-                            <nav class="d-flex justify-content-end" aria-label="...">
+                    <div class="card-footer py-4" id="instructor-payments-pagination-wrapper">
+                        <nav class="d-flex justify-content-end" aria-label="..." id="instructor-payments-pagination">
+                            @if($payments->hasPages())
                                 {{ $payments->links() }}
-                            </nav>
-                        </div>
-                    @endif
+                            @else
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                    <li class="page-item active btn-primary"><span class="btn-primary page-link">1</span></li>
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                                </ul>
+                            @endif
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const form = document.getElementById('instructor-payments-search-form');
+            const input = form ? form.querySelector('input[name="search"]') : null;
+            const tableBody = document.getElementById('instructor-payments-table-body');
+            const pagination = document.getElementById('instructor-payments-pagination');
+            let searchTimer = null;
+
+            if (!form || !input || !tableBody) {
+                return;
+            }
+
+            const loadInstructorPayments = function (url, pushState = true) {
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function (response) {
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextTableBody = doc.getElementById('instructor-payments-table-body');
+                        const nextPagination = doc.getElementById('instructor-payments-pagination');
+
+                        if (nextTableBody) {
+                            tableBody.innerHTML = nextTableBody.innerHTML;
+                        }
+
+                        if (pagination && nextPagination) {
+                            pagination.innerHTML = nextPagination.innerHTML;
+                        }
+
+                        if (pushState) {
+                            window.history.pushState({}, '', url);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Failed to load instructor payments list:', error);
+                    });
+            };
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const searchValue = (input.value || '').trim();
+                const targetUrl = new URL(form.action, window.location.origin);
+
+                if (searchValue !== '') {
+                    targetUrl.searchParams.set('search', searchValue);
+                }
+
+                loadInstructorPayments(targetUrl.toString());
+            });
+
+            input.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(function () {
+                    form.dispatchEvent(new Event('submit', { cancelable: true }));
+                }, 300);
+            });
+
+            document.addEventListener('click', function (event) {
+                const pageLink = event.target.closest('#instructor-payments-pagination a.page-link');
+
+                if (!pageLink || !pageLink.href) {
+                    return;
+                }
+
+                event.preventDefault();
+                loadInstructorPayments(pageLink.href);
+            });
+
+            window.addEventListener('popstate', function () {
+                loadInstructorPayments(window.location.href, false);
+            });
+        })();
+    </script>
 @endsection

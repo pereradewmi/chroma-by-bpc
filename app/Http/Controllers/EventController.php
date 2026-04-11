@@ -12,9 +12,20 @@ class EventController extends Controller
     /**
      * Display the events list for backend
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::latest()->paginate(10);
+        $search = trim((string) $request->get('search', ''));
+
+        $events = Event::when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('eName', 'like', "%{$search}%")
+                        ->orWhere('eDescription', 'like', "%{$search}%")
+                        ->orWhere('eID', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
         return view('backend.events.index', compact('events'));
     }
 

@@ -14543,10 +14543,10 @@ button.bg-darker:focus
     color: #fff !important;
 }
 
-.text-primary
+/* .text-primary
 {
     color: #5e72e4 !important;
-}
+} */
 
 a.text-primary:hover,
 a.text-primary:focus

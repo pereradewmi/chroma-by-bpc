@@ -112,9 +112,8 @@ Route::get('/ContactUs', function () {
 })->name('frontend.contact');
 Route::post('/ContactUs', [FrontendController::class, 'sendContactMail'])->name('frontend.contact.send');
 
-Route::get('/Registration', function () {
-    return view('frontend.register');
-})->name('frontend.register');
+Route::get('/Registration', [StudentController::class, 'frontendRegister'])->name('frontend.register');
+Route::post('/Registration', [StudentController::class, 'frontendStore'])->name('frontend.register.store');
 
 // Frontend Calendar routes (public access - no authentication required)
 Route::prefix('Appointment')->name('Appointment.')->group(function () {

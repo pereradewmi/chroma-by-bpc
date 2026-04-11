@@ -284,16 +284,18 @@
 
 <!-- View Booking Modal -->
 <div class="modal fade" id="viewBookingModal" tabindex="-1" aria-labelledby="viewBookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header text-white" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);">
-                <h5 class="modal-title" id="viewBookingModalLabel">
-                    <i class="fas fa-eye me-2"></i>Booking Details
+                <h5 class="modal-title text-white" id="viewBookingModalLabel">
+                    <i class="fas fa-calendar-check me-2"></i>All Appointments
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="bookingDetails">
-                <!-- Booking details will be loaded here -->
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-spinner fa-spin me-2"></i>Loading appointments...
+                </div>
             </div>
         </div>
     </div>
@@ -322,7 +324,8 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                right: 'dayGridMonth'
+                // right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         height: 'auto',
         events: {
@@ -344,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Handle event click
         eventClick: function(info) {
-            showBookingDetails(info.event.id);
+            showAllAppointmentsModal(info.event.startStr || info.event.start);
         },
         
         // Event styling
@@ -529,34 +532,100 @@ function submitBooking() {
     });
 }
 
-function showBookingDetails(bookingId) {
-    fetch(`{{ route("Appointment.bookings.show", ":id") }}`.replace(':id', bookingId))
+function showAllAppointmentsModal(clickedDateTime) {
+    fetch('{{ route("Appointment.bookings") }}')
     .then(response => response.json())
-    .then(booking => {
-        const statusBadge = getStatusBadge(booking.status);
-        const typeBadge = booking.type === 'event' ? 
-            '<span class="badge bg-primary">Event</span>' : 
-            '<span class="badge bg-info">Session</span>';
-            
-        document.getElementById('bookingDetails').innerHTML = `
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Title:</strong> ${booking.title}</p>
-                    <p><strong>Type:</strong> ${typeBadge}</p>
-                    <p><strong>Date:</strong> ${new Date(booking.booking_date).toLocaleDateString()}</p>
-                    <p><strong>Time:</strong> ${booking.start_time} ${booking.end_time ? '- ' + booking.end_time : ''}</p>
-                    <p><strong>Duration:</strong> ${booking.duration_hours ? booking.duration_hours + ' hours' : 'Not specified'}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Customer:</strong> ${booking.customer_name}</p>
-                    <p><strong>Phone:</strong> ${booking.phone_number}</p>
-                    <p><strong>Email:</strong> ${booking.email || 'Not provided'}</p>
-                    <p><strong>People:</strong> ${booking.number_of_people}</p>
-                    <p><strong>Status:</strong> ${statusBadge}</p>
-                </div>
+    .then(bookings => {
+        const clickedDate = clickedDateTime ? new Date(clickedDateTime) : null;
+        const clickedDateKey = clickedDate && !Number.isNaN(clickedDate.getTime())
+            ? clickedDate.toISOString().split('T')[0]
+            : null;
+
+        const sortedBookings = bookings
+            .slice()
+            .filter((booking) => {
+                if (!clickedDateKey) {
+                    return true;
+                }
+
+                return String(booking.start || '').slice(0, 10) === clickedDateKey;
+            })
+            .sort((firstBooking, secondBooking) => new Date(firstBooking.start) - new Date(secondBooking.start));
+
+        const escapeHtml = (value) => String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+
+        const formatDateTime = (dateTime) => {
+            if (!dateTime) {
+                return 'Not specified';
+            }
+
+            const parsedDate = new Date(dateTime);
+            if (Number.isNaN(parsedDate.getTime())) {
+                return escapeHtml(dateTime);
+            }
+
+            return parsedDate.toLocaleString([], {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        };
+
+        const formatTime = (dateTime) => {
+            if (!dateTime) {
+                return 'Not specified';
+            }
+
+            const parsedDate = new Date(dateTime);
+            if (Number.isNaN(parsedDate.getTime())) {
+                return escapeHtml(dateTime);
+            }
+
+            return parsedDate.toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit'
+            });
+        };
+
+        const highlightStyle = 'border-left: 4px solid #003d82;';
+
+        document.getElementById('bookingDetails').innerHTML = sortedBookings.length ? `
+            <div class="d-flex flex-column gap-3">
+                ${sortedBookings.map((booking, index) => {
+                    const typeBadge = booking.extendedProps?.type === 'event'
+                        ? '<span class="badge bg-primary">Event</span>'
+                        : '<span class="badge bg-info text-dark">Session</span>';
+
+                    return `
+                        <div class="card shadow-sm border-0" style="${highlightStyle}${index === 0 ? 'background-color: #f8fbff;' : ''}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                    <div>
+                                        <div class="text-muted small mb-1">Appointment ${index + 1}</div>
+                                        <h6 class="mb-1">${escapeHtml(booking.title || 'Untitled appointment')}</h6>
+                                        <div class="small text-muted">
+                                            <span class="me-3"><strong>Type:</strong> ${typeBadge}</span>
+                                            <span><strong>Time:</strong> ${formatTime(booking.start)} - ${formatTime(booking.end)}</span>
+                                        </div>
+                                        <div class="small text-muted mt-1"><strong>Status:</strong> ${escapeHtml(booking.extendedProps?.status || 'Not specified')}</div>
+                                    </div>
+                                    <span class="badge bg-secondary">${formatDateTime(booking.start)}</span>
+                                </div>
+                                ${booking.extendedProps?.description ? `<div class="mt-3"><strong>Description:</strong><br>${escapeHtml(booking.extendedProps.description)}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
-            ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
-            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> $${booking.price}</div>` : ''}
+        ` : `
+            <div class="text-center text-muted py-4">No appointments found.</div>
         `;
         
         const modal = new bootstrap.Modal(document.getElementById('viewBookingModal'));

@@ -36,22 +36,31 @@ class BookingController extends Controller
         try {
             $query = Booking::query();
 
-            // Check if this is frontend or backend request based on route name
+            // Check if this is the public frontend request based on route name
             $routeName = $request->route()->getName();
-            $isFrontend = $routeName === 'calendar.bookings';
+            $isFrontend = $routeName === 'Appointment.bookings';
 
             // Filter bookings by date range if provided
             $start = $request->get('start');
             $end = $request->get('end');
+            $search = trim((string) $request->get('search', ''));
 
             if ($start && $end) {
                 $query->whereBetween('booking_date', [$start, $end]);
             }
 
-            // For frontend, only show public AND approved events
+            // For frontend, only show approved bookings
             if ($isFrontend) {
-                $query->where('pubprievent', Booking::EVENT_PUBLIC)
-                      ->where('bStatus', 'approved');
+                $query->where('bStatus', 'approved');
+            } elseif ($search !== '') {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('booking_ID', 'like', "%{$search}%")
+                        ->orWhere('bTitle', 'like', "%{$search}%")
+                        ->orWhere('bName', 'like', "%{$search}%")
+                        ->orWhere('bEmail', 'like', "%{$search}%")
+                        ->orWhere('bPhone', 'like', "%{$search}%")
+                        ->orWhere('bStatus', 'like', "%{$search}%");
+                });
             }
 
             $bookings = $query->get();
@@ -72,13 +81,13 @@ class BookingController extends Controller
                     'customer_name' => $booking->bName,
                     'phone_number' => $booking->bPhone,
                     'email' => $booking->bEmail,
-                    'description' => $booking->bDescription ?? ''
+                    'description' => $booking->bDescription ?? '',
+                    'status' => $booking->bStatus
                 ];
 
                 // Add additional fields for backend only
                 if (!$isFrontend) {
                     $extendedProps = array_merge($extendedProps, [
-                        'status' => $booking->bStatus,
                         'price' => $booking->bPrice,
                         'payment_status' => $booking->bPayment_status,
                         'rejection_reason' => $booking->bRejection_reason,

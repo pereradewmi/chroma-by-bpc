@@ -11,9 +11,23 @@ class TeacherController extends Controller
     /**
      * Display the teacher registration form
      */
-    public function index()
+    public function index(Request $request)
     {
-        $teachers = Teacher::where('Active', '!=', 2)->latest()->paginate(10);
+        $search = trim((string) $request->get('search', ''));
+
+        $teachers = Teacher::where('Active', '!=', 2)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('tFName', 'like', "%{$search}%")
+                        ->orWhere('tLName', 'like', "%{$search}%")
+                        ->orWhere('tMobileNo', 'like', "%{$search}%")
+                        ->orWhere('teacherType', 'like', "%{$search}%")
+                        ->orWhere('T_ID', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
         return view('backend.teachers.index', compact('teachers'));
     }
 

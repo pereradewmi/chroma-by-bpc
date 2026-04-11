@@ -5,7 +5,7 @@
             <!-- Brand -->
             <a class="navbar-brand pt-0 m-0 d-flex align-items-center" href="{{ route('dashboard') }}">
                 <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="Chroma Logo" style="max-height: 40px;">
-                <span class="ms-2 text-white font-weight-bold" style="font-size: 0.9rem;">Chroma</span>
+                {{-- <span class="ms-2 text-white font-weight-bold" style="font-size: 0.9rem;">Chroma</span> --}}
             </a>
             
         </div>

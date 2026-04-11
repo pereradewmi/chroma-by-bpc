@@ -398,7 +398,7 @@ if (document.getElementById('end_time')) {
     text-overflow: ellipsis;
 }
 
-.text-primary { color: #007bff !important; }
+/* .text-primary { color: #007bff !important; } */
 .text-success { color: #28a745 !important; }
 .text-warning { color: #ffc107 !important; }
 .text-info { color: #17a2b8 !important; }
