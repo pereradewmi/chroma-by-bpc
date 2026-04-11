@@ -207,5 +207,6 @@ Route::middleware('check.login')->prefix('admin/reports')->name('reports.')->gro
     Route::get('/', [ReportsController::class, 'index'])->name('index');
     Route::get('/download', [ReportsController::class, 'download'])->name('download');
     Route::get('/filter-options', [ReportsController::class, 'getFilterOptions'])->name('filter-options');
+    Route::get('/user-payments', [ReportsController::class, 'userPayments'])->name('user-payments');
 });
 

@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\BookingLog;
+use App\Models\PaymentDetail;
+use App\Models\InstructorPayment;
+use App\Models\TeacherPayment;
+use App\Models\ClassRoom;
+use App\Models\Teacher;
+use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 
@@ -27,6 +33,114 @@ class ReportsController extends Controller
         $stats = $this->getStatistics($request);
         
         return view('backend.reports.index', compact('bookings', 'filters', 'stats'));
+    }
+
+    /**
+     * Display aggregated user payment reports (students, instructors, teachers)
+     */
+    public function userPayments(Request $request)
+    {
+        $filters = [
+            'class_id' => $request->get('class_id'),
+            'teacher_id' => $request->get('teacher_id'),
+            'student_id' => $request->get('student_id'),
+            'date_from' => $request->get('date_from'),
+            'date_to' => $request->get('date_to'),
+        ];
+
+        $dateFrom = $filters['date_from'] ? Carbon::parse($filters['date_from'])->startOfDay() : null;
+        $dateTo = $filters['date_to'] ? Carbon::parse($filters['date_to'])->endOfDay() : null;
+
+        // Student class payments
+        $studentQuery = PaymentDetail::with(['student', 'classRoom']);
+        if ($filters['class_id']) {
+            $studentQuery->where('classID', $filters['class_id']);
+        }
+        if ($filters['student_id']) {
+            $studentQuery->where('studentID', $filters['student_id']);
+        }
+        if ($dateFrom) {
+            $studentQuery->where('created_at', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $studentQuery->where('created_at', '<=', $dateTo);
+        }
+        $studentPayments = $studentQuery->get()->map(function ($p) {
+            return [
+                'type' => 'Class Fee',
+                'source' => 'class',
+                'date' => $p->created_at,
+                'month' => $p->month,
+                'student' => optional($p->student)->fName . ' ' . optional($p->student)->lName,
+                'teacher' => null,
+                'class' => optional($p->classRoom)->cName,
+                'amount' => optional($p->classRoom)->classfee ?? 0,
+                'sessions_count' => null,
+            ];
+        });
+
+        // Instructor payments
+        $instructorQuery = InstructorPayment::with(['instructor', 'session']);
+        if ($filters['teacher_id']) {
+            $instructorQuery->where('instructor_id', $filters['teacher_id']);
+        }
+        if ($dateFrom) {
+            $instructorQuery->where('created_at', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $instructorQuery->where('created_at', '<=', $dateTo);
+        }
+        $instructorPayments = $instructorQuery->get()->map(function ($p) {
+            return [
+                'type' => 'Instructor Session',
+                'source' => 'instructor',
+                'date' => $p->created_at,
+                'month' => $p->month,
+                'student' => null,
+                'teacher' => optional($p->instructor)->tFName . ' ' . optional($p->instructor)->tLName,
+                'class' => optional($p->session)->sName,
+                'amount' => $p->amount,
+                'sessions_count' => $p->sessions_count,
+            ];
+        });
+
+        // Teacher payments
+        $teacherQuery = TeacherPayment::with(['teacher']);
+        if ($filters['teacher_id']) {
+            $teacherQuery->where('teacher_id', $filters['teacher_id']);
+        }
+        if ($dateFrom) {
+            $teacherQuery->where('created_at', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $teacherQuery->where('created_at', '<=', $dateTo);
+        }
+        $teacherPayments = $teacherQuery->get()->map(function ($p) {
+            return [
+                'type' => 'Teacher Payment',
+                'source' => 'teacher',
+                'date' => $p->created_at,
+                'month' => $p->month,
+                'student' => null,
+                'teacher' => optional($p->teacher)->tFName . ' ' . optional($p->teacher)->tLName,
+                'class' => null,
+                'amount' => $p->amount,
+                'sessions_count' => null,
+            ];
+        });
+
+        $payments = $studentPayments
+            ->concat($instructorPayments)
+            ->concat($teacherPayments)
+            ->sortByDesc('date')
+            ->values();
+
+        // Dropdown options
+        $classes = ClassRoom::orderBy('cName')->get();
+        $teachers = Teacher::where('Active', '!=', 2)->orderBy('tFName')->get();
+        $students = Student::where('Active', '!=', 2)->orderBy('fName')->get();
+
+        return view('backend.reports.user-payments', compact('payments', 'filters', 'classes', 'teachers', 'students'));
     }
 
     /**

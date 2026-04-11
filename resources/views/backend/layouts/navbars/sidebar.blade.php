@@ -105,12 +105,33 @@
                         </li>
                     </ul>
                 </div>
+                @php
+                    $reportsOpen = str_contains(Route::currentRouteName(), 'reports.index')
+                        || str_contains(Route::currentRouteName(), 'reports.user-payments');
+                @endphp
                 <li class="nav-item">
-                    <a class="nav-link {{ str_contains(Route::currentRouteName(), 'reports') ? 'active' : '' }}" href="{{ route('reports.index') }}">
-                        <i class="fas fa-chart-bar text-primary"></i>
-                        {{ __('Reports') }}
+                    <a class="nav-link d-flex justify-content-between align-items-center {{ $reportsOpen ? 'active' : '' }}" href="#reportsMenu" data-toggle="collapse" role="button" aria-expanded="{{ $reportsOpen ? 'true' : 'false' }}" aria-controls="reportsMenu">
+                        <span>
+                            <i class="fas fa-chart-bar text-primary"></i>
+                            {{ __('Reports') }}
+                        </span>
+                        <i class="fas fa-chevron-right small {{ $reportsOpen ? 'rotate-90' : '' }}"></i>
                     </a>
                 </li>
+                <div class="collapse {{ $reportsOpen ? 'show' : '' }}" id="reportsMenu">
+                    <ul class="navbar-nav px-3">
+                        <li class="nav-item pl-4">
+                            <a class="nav-link {{ Route::currentRouteName() === 'reports.index' ? 'active' : '' }}" href="{{ route('reports.index') }}">
+                                {{ __('Booking') }}
+                            </a>
+                        </li>
+                        <li class="nav-item pl-4">
+                            <a class="nav-link {{ Route::currentRouteName() === 'reports.user-payments' ? 'active' : '' }}" href="{{ route('reports.user-payments') }}">
+                                {{ __('Users') }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
             </ul>
             
