@@ -16,10 +16,7 @@
                         <form method="POST" action="{{ route('instructor-payments.store') }}">
                             @csrf
 
-                            <h6 class="heading-small text-muted mb-3">
-                                <i class="fas fa-money-bill-wave"></i> Payment Information
-                            </h6>
-
+                            <!-- First row: Instructor and Session -->
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group mb-2">
@@ -40,17 +37,23 @@
 
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group mb-2">
-                                        <label class="form-control-label font-weight-600" for="amount">Amount (Rs.)</label>
-                                        <input type="number" id="amount" name="amount" step="0.01" min="0" class="form-control form-control-alternative"
-                                            placeholder="Enter payment amount" required
-                                            value="{{ old('amount') }}">
-                                        @error('amount')
+                                        <label class="form-control-label font-weight-600" for="session_id">Select Session</label>
+                                        <select id="session_id" name="session_id" class="form-control form-control-alternative" required>
+                                            <option value="">Choose a session...</option>
+                                            @foreach($sessions as $session)
+                                                <option value="{{ $session->sID }}" {{ old('session_id') == $session->sID ? 'selected' : '' }}>
+                                                    {{ $session->sName }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('session_id')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Second row: Month and Amount -->
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group mb-2">
@@ -71,7 +74,22 @@
 
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group mb-2">
-                                        <label class="form-control-label font-weight-600" for="sessions_count">Number of Sessions</label>
+                                        <label class="form-control-label font-weight-600" for="amount">Amount (Rs.)</label>
+                                        <input type="number" id="amount" name="amount" step="0.01" min="0" class="form-control form-control-alternative"
+                                            placeholder="Enter payment amount" required
+                                            value="{{ old('amount') }}">
+                                        @error('amount')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Third row: Number of Sessions and Description (equal width) -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group mb-2">
+                                        <label class="form-control-label font-weight-600" for="sessions_count">No. of Sessions</label>
                                         <input type="number" id="sessions_count" name="sessions_count" min="1" class="form-control form-control-alternative"
                                             placeholder="Enter number of sessions" required
                                             value="{{ old('sessions_count') }}">
@@ -80,14 +98,12 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <div class="form-group mb-2">
                                         <label class="form-control-label font-weight-600" for="description">Description</label>
-                                        <textarea id="description" name="description" rows="3" class="form-control form-control-alternative"
-                                            placeholder="Enter payment description (optional)">{{ old('description') }}</textarea>
+                                        <textarea id="description" name="description" rows="2" class="form-control form-control-alternative"
+                                            placeholder="Optional notes">{{ old('description') }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror

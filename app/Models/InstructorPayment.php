@@ -14,6 +14,7 @@ class InstructorPayment extends Model
 
     protected $fillable = [
         'instructor_id',
+        'session_id',
         'amount',
         'month',
         'sessions_count',
@@ -26,5 +27,13 @@ class InstructorPayment extends Model
     public function instructor()
     {
         return $this->belongsTo(Teacher::class, 'instructor_id', 'T_ID');
+    }
+
+    /**
+     * Get the session associated with the payment
+     */
+    public function session()
+    {
+        return $this->belongsTo(Session::class, 'session_id', 'sID');
     }
 }

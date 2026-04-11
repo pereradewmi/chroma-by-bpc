@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InstructorPayment;
 use App\Models\Teacher;
+use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,6 +31,9 @@ class InstructorPaymentController extends Controller
             ->where('Active', 1)
             ->orderBy('tFName')
             ->get();
+        $sessions = Session::where('status', 1)
+            ->orderBy('sName')
+            ->get();
         $months = [
             '01' => 'January',
             '02' => 'February',
@@ -45,7 +49,7 @@ class InstructorPaymentController extends Controller
             '12' => 'December'
         ];
 
-        return view('backend.payments.instructor-form', compact('instructors', 'months'));
+        return view('backend.payments.instructor-form', compact('instructors', 'months', 'sessions'));
     }
 
     /**
@@ -55,6 +59,7 @@ class InstructorPaymentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'instructor_id' => 'required|exists:teacherdetails,T_ID',
+            'session_id' => 'required|exists:sessiondetails,sID',
             'amount' => 'required|numeric|min:0',
             'month' => 'required|string|size:2',
             'sessions_count' => 'required|integer|min:1',
@@ -69,6 +74,7 @@ class InstructorPaymentController extends Controller
 
         // Check if payment already exists
         $existingPayment = InstructorPayment::where('instructor_id', $request->instructor_id)
+            ->where('session_id', $request->session_id)
             ->where('month', $request->month)
             ->first();
 
@@ -80,6 +86,7 @@ class InstructorPaymentController extends Controller
 
         InstructorPayment::create([
             'instructor_id' => $request->instructor_id,
+            'session_id' => $request->session_id,
             'amount' => $request->amount,
             'month' => $request->month,
             'sessions_count' => $request->sessions_count,
