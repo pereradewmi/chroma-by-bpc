@@ -34,8 +34,7 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Mobile Number</th>
-                                    {{-- <th scope="col">Address</th> --}}
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Teacher Type</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -45,16 +44,7 @@
                                         <td>{{ ($teachers->firstItem() ?? 1) + $loop->index }}</td>
                                         <td>{{ $teacher->tFName }} {{ $teacher->tLName }}</td>
                                         <td>{{ $teacher->tMobileNo }}</td>
-                                        {{-- <td>{{ Str::limit($teacher->tAddress, 40) }}</td> --}}
-                                        <td>
-                                            @if((int) $teacher->Active === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) $teacher->Active === 0)
-                                                <span class="badge badge-danger">Inactive</span>
-                                            @else
-                                                <span class="badge badge-secondary">Deleted</span>
-                                            @endif
-                                        </td>
+                                        <td>{{ $teacher->teacherType === 'instructor' ? 'Instructor' : 'Class Teacher' }}</td>
                                         <td>
                                             <a href="{{ route('teachers.form', $teacher->T_ID) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>

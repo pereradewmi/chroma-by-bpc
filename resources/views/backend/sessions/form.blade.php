@@ -26,8 +26,6 @@
                                 <input type="hidden" name="session_id" value="{{ $session->sID }}">
                             @endif
 
-                            <h6 class="heading-small text-muted mb-4">Session Information</h6>
-
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -51,13 +49,6 @@
                                                     id="sImage" name="sImage" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
                                                 <label class="custom-file-label" for="sImage">Choose image...</label>
                                             </div>
-                                            <small class="form-text text-muted d-block mt-2">
-                                                <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
-                                                @if($isEdit && $session->sImage)
-                                                    <br><strong>Current Image:</strong> {{ $session->sImage }}
-                                                @endif
-                                                <br><strong>Note:</strong> If no image is uploaded, the Chroma logo will be used as default.
-                                            </small>
                                             @error('sImage')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -92,12 +83,14 @@
                                     </div>
                                 @endif
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary">
+                                <div class="row mt-4">
+                                    <div class="col-lg-12 text-right">
+                                        <a href="{{ route('sessions.index') }}" class="btn btn-secondary">
+                                            Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             {{ $isEdit ? 'Update Session' : 'Create Session' }}
                                         </button>
-                                        <a href="{{ route('sessions.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>

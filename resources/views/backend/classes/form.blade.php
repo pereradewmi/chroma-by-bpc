@@ -26,8 +26,6 @@
                                 <input type="hidden" name="class_id" value="{{ $class->cID }}">
                             @endif
 
-                            <h6 class="heading-small text-muted mb-4">Class Information</h6>
-
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -134,12 +132,14 @@
                                     </div>
                                 @endif
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary">
+                                <div class="row mt-4">
+                                    <div class="col-lg-12 text-right">
+                                        <a href="{{ route('classes.index') }}" class="btn btn-secondary">
+                                            Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             {{ $isEdit ? 'Update Class' : 'Create Class' }}
                                         </button>
-                                        <a href="{{ route('classes.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>

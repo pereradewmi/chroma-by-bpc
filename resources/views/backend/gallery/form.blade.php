@@ -26,8 +26,6 @@
                                 <input type="hidden" name="image_id" value="{{ $image->id }}">
                             @endif
 
-                            <h6 class="heading-small text-muted mb-4">Image Information</h6>
-
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -69,12 +67,7 @@
                                                 <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" {{ $isEdit ? '' : 'required' }}>
                                                 <label class="custom-file-label" for="image">Choose image...</label>
                                             </div>
-                                            <small class="form-text text-muted d-block mt-2">
-                                                <i class="fas fa-info-circle"></i> Supported formats: JPEG, PNG, JPG, GIF, WebP (Max 5MB)
-                                                @if($isEdit)
-                                                    <br><strong>Note:</strong> Leave empty to keep existing image.
-                                                @endif
-                                            </small>
+
                                             @error('image')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -95,12 +88,14 @@
                                     </div>
                                 @endif
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary">
+                                <div class="row mt-4">
+                                    <div class="col-lg-12 text-right">
+                                        <a href="{{ route('admin.images.index') }}" class="btn btn-secondary">
+                                            Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             {{ $isEdit ? 'Update Image' : 'Add Image' }}
                                         </button>
-                                        <a href="{{ route('admin.images.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>

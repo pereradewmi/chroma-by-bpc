@@ -71,7 +71,7 @@
                                             @error('background_image')
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
-                                            <small class="form-text text-muted">Supported formats: JPG, PNG, GIF (Max 2MB)</small>
+                                           
                                         </div>
                                     </div>
 
@@ -87,12 +87,14 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary">
+                                <div class="row mt-4">
+                                    <div class="col-lg-12 text-right">
+                                        <a href="{{ route('admin.image-categories.index') }}" class="btn btn-secondary">
+                                            Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             {{ $isEdit ? 'Update Category' : 'Create Category' }}
                                         </button>
-                                        <a href="{{ route('admin.image-categories.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>

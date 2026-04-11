@@ -26,7 +26,7 @@ class InstructorPaymentController extends Controller
      */
     public function form()
     {
-        $instructors = Teacher::where('teacher_type', 'instructor')
+        $instructors = Teacher::where('teacherType', 'instructor')
             ->where('Active', 1)
             ->orderBy('tFName')
             ->get();
