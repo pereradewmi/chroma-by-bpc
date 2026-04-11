@@ -14,6 +14,11 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentDetailController;
 use App\Models\Event;
 use App\Models\Session;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\PaymentDetail;
+use App\Models\TeacherPayment;
+use Carbon\Carbon;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -37,7 +42,39 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::middleware('check.login')->group(function () {
     // Dashboard route
     Route::get('/admin/dashboard', function () {
-        return view('backend.dashboard');
+        $currentMonth = Carbon::now()->format('m');
+
+        // Students who haven't paid for the current month
+        $paidStudentIds = PaymentDetail::where('month', $currentMonth)
+            ->pluck('studentID')
+            ->unique();
+
+        $unpaidStudents = Student::where('Active', 1)
+            ->whereHas('classes')
+            ->when($paidStudentIds->isNotEmpty(), function ($query) use ($paidStudentIds) {
+                $query->whereNotIn('AutoID', $paidStudentIds);
+            })
+            ->orderBy('fName')
+            ->orderBy('lName')
+            ->take(10)
+            ->get();
+
+        // Teachers (class teachers) who haven't been paid for the current month
+        $paidTeacherIds = TeacherPayment::where('month', $currentMonth)
+            ->pluck('teacher_id')
+            ->unique();
+
+        $unpaidTeachers = Teacher::where('Active', 1)
+            ->where('teacherType', 'class_teacher')
+            ->when($paidTeacherIds->isNotEmpty(), function ($query) use ($paidTeacherIds) {
+                $query->whereNotIn('T_ID', $paidTeacherIds);
+            })
+            ->orderBy('tFName')
+            ->orderBy('tLName')
+            ->take(10)
+            ->get();
+
+        return view('backend.dashboard', compact('unpaidStudents', 'unpaidTeachers'));
     })->name('dashboard');
 
     // Profile routes

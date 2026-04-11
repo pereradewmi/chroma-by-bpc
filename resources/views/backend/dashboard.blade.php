@@ -5,12 +5,67 @@
     
     <!-- Page content -->
     <div class="container-fluid mt--4 mb-4">
-        <!-- Calendar Section -->
-        <div class="row justify-content-center">
-            <div class="col-xl-12 col-lg-12">
-                <div class="card shadow">
+        <div class="row">
+            <!-- Calendar Section -->
+            <div class="col-xl-9 col-lg-9 mb-4">
+                <div class="card shadow h-100">
                     <div class="card-body p-4">
                         <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unpaid summaries -->
+            <div class="col-xl-3 col-lg-3">
+                <div class="card shadow mb-4">
+                    <div class="card-header border-0 pb-2">
+                        <h5 class="mb-0">Students not paid this month</h5>
+                        <small class="text-muted">Current month: {{ now()->format('F') }}</small>
+                    </div>
+                    <div class="card-body pt-2 pb-3">
+                        @if(isset($unpaidStudents) && $unpaidStudents->count())
+                            <ul class="list-group list-group-flush">
+                                @foreach($unpaidStudents as $student)
+                                    <li class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="font-weight-bold">{{ $student->fName }} {{ $student->lName }}</span><br>
+                                            <small class="text-muted">ID: {{ $student->AutoID }}</small>
+                                        </div>
+                                        @if($student->mobileNo)
+                                            <small class="text-muted">{{ $student->mobileNo }}</small>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted mb-0">All active students have a payment for this month.</p>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="card shadow">
+                    <div class="card-header border-0 pb-2">
+                        <h5 class="mb-0">Teachers not paid this month</h5>
+                        <small class="text-muted">Current month: {{ now()->format('F') }}</small>
+                    </div>
+                    <div class="card-body pt-2 pb-3">
+                        @if(isset($unpaidTeachers) && $unpaidTeachers->count())
+                            <ul class="list-group list-group-flush">
+                                @foreach($unpaidTeachers as $teacher)
+                                    <li class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="font-weight-bold">{{ $teacher->tFName }} {{ $teacher->tLName }}</span><br>
+                                            <small class="text-muted">ID: {{ $teacher->T_ID }}</small>
+                                        </div>
+                                        @if($teacher->tMobileNo)
+                                            <small class="text-muted">{{ $teacher->tMobileNo }}</small>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted mb-0">All class teachers have been paid for this month.</p>
+                        @endif
                     </div>
                 </div>
             </div>
