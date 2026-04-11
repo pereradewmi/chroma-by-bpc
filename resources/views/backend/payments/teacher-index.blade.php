@@ -37,7 +37,7 @@
                                     <th scope="col">Amount</th>
                                     <th scope="col">Month</th>
                                     <th scope="col">Payment Date</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col" class="text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,7 +51,7 @@
                                                         {{ $payment->teacher->tFName }} {{ $payment->teacher->tLName }}
                                                     </span>
                                                     <br>
-                                                    <small class="text-muted">ID: {{ $payment->teacher->T_ID }}</small>
+                                                    
                                                 </div>
                                             </div>
                                         </td>
@@ -69,14 +69,10 @@
                                             {{ $months[$payment->month] ?? 'Unknown' }}
                                         </td>
                                         <td>{{ $payment->created_at->format('M d, Y') }}</td>
-                                        <td>
-                                            <form method="POST" action="{{ route('teacher-payments.destroy', $payment->paymentID) }}" style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                                    <i class="fas fa-trash"></i> Delete
-                                                </button>
-                                            </form>
+                                        <td class="text-right">
+                                            <a href="{{ route('teacher-payments.receipt', $payment->paymentID) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-invoice"></i> Receipt
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty

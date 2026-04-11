@@ -38,7 +38,8 @@
                                     <th scope="col">Sessions</th>
                                     <th scope="col">Month</th>
                                     <th scope="col">Payment Date</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col" class="text-right">Actions</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,7 +53,7 @@
                                                         {{ $payment->instructor->tFName }} {{ $payment->instructor->tLName }}
                                                     </span>
                                                     <br>
-                                                    <small class="text-muted">ID: {{ $payment->instructor->T_ID }}</small>
+                                                    
                                                 </div>
                                             </div>
                                         </td>
@@ -73,14 +74,10 @@
                                             {{ $months[$payment->month] ?? 'Unknown' }}
                                         </td>
                                         <td>{{ $payment->created_at->format('M d, Y') }}</td>
-                                        <td>
-                                            <form method="POST" action="{{ route('instructor-payments.destroy', $payment->paymentID) }}" style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                                    <i class="fas fa-trash"></i> Delete
-                                                </button>
-                                            </form>
+                                        <td class="text-right">
+                                            <a href="{{ route('instructor-payments.receipt', $payment->paymentID) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-invoice"></i> Receipt
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty

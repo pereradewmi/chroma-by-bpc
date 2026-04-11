@@ -13,8 +13,8 @@
                     </div>
 
                     <div class="card-body p-4 student-payment-form-compact">
+                        <div id="payment_message" style="display:none;" class="alert" role="alert"></div>
                         <form id="payment_form">
-                            <h6 class="heading-small text-muted mb-3">Payment Information</h6>
 
                             <!-- Step 1: Student Search -->
                             <div id="step1" class="payment-step mb-4 pb-4 border-bottom">
@@ -190,12 +190,27 @@
             resultsDiv.innerHTML = html;
         }
 
+        function showPaymentMessage(type, message) {
+            const box = document.getElementById('payment_message');
+            box.className = 'alert alert-' + type;
+            box.innerHTML = message;
+            box.style.display = 'block';
+        }
+
+        function clearPaymentMessage() {
+            const box = document.getElementById('payment_message');
+            box.style.display = 'none';
+            box.className = 'alert';
+            box.innerHTML = '';
+        }
+
         function selectStudent(studentId) {
             selectedStudent = studentId;
 
             fetch(`{{ route('payments.student-details', ':id') }}`.replace(':id', studentId))
                 .then(response => response.json())
                 .then(student => {
+                    clearPaymentMessage();
                     document.getElementById('selected_student_id').value = student.id;
 
                     const detailsHtml = `
@@ -212,7 +227,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching student details:', error);
-                    alert('Failed to load student details. Please try again.');
+                    showPaymentMessage('danger', '<i class="fas fa-exclamation-circle"></i> Failed to load student details. Please try again.');
                 });
         }
 
@@ -237,10 +252,11 @@
             const paymentType = document.getElementById('paymentTypeDropdown').value;
 
             if (!studentID || !classID || !month) {
-                alert('Please fill in all required fields.');
+                showPaymentMessage('warning', '<i class="fas fa-exclamation-triangle"></i> Please fill in all required fields.');
                 return;
             }
 
+            clearPaymentMessage();
             document.getElementById('loading').style.display = 'block';
             document.getElementById('submit_payment_btn').disabled = true;
 
@@ -263,17 +279,18 @@
                 document.getElementById('submit_payment_btn').disabled = false;
 
                 if (data.success) {
-                    alert('Payment recorded successfully!');
-                    changeStudent();
+                    // On success, go straight back to the payments index table with a success flag
+                    window.location.href = '{{ route('payments.index') }}?success=1';
                 } else {
                     if (data.errors) {
-                        let errorMsg = 'Validation errors:\n';
+                        let list = '<strong>Validation errors:</strong><ul class="mb-0">';
                         Object.keys(data.errors).forEach(key => {
-                            errorMsg += '- ' + data.errors[key].join(', ') + '\n';
+                            list += '<li>' + data.errors[key].join(', ') + '</li>';
                         });
-                        alert(errorMsg);
+                        list += '</ul>';
+                        showPaymentMessage('danger', list);
                     } else {
-                        alert(data.message || 'An error occurred. Please try again.');
+                        showPaymentMessage('danger', data.message || 'An error occurred. Please try again.');
                     }
                 }
             })
@@ -281,7 +298,7 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('submit_payment_btn').disabled = false;
                 console.error('Payment error:', error);
-                alert('Failed to record payment. Please try again.');
+                showPaymentMessage('danger', '<i class="fas fa-exclamation-circle"></i> Failed to record payment. Please try again.');
             });
         }
     </script>
