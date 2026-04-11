@@ -34,8 +34,6 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Image</th>
                                     <th scope="col">Category</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Created Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -47,14 +45,6 @@
                                             <img src="{{ Storage::url($image->image_path) }}" alt="Gallery Image" class="img-fluid" style="max-height: 50px;">
                                         </td>
                                         <td>{{ optional($image->category)->name ?? '-' }}</td>
-                                        <td>
-                                            @if($image->status)
-                                                <span class="badge badge-success">Active</span>
-                                            @else
-                                                <span class="badge badge-danger">Inactive</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $image->created_at->format('M d, Y') }}</td>
                                         <td>
                                             <a href="{{ route('admin.images.form', $image->id) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>

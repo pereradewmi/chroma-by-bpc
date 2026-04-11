@@ -32,11 +32,8 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No</th>
-                                    <th scope="col">Class Video</th>
                                     <th scope="col">Class Name</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Status</th>
-                                    {{-- <th scope="col">Created Date</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -44,23 +41,9 @@
                                 @forelse($classes as $class)
                                     <tr>
                                         <td>{{ ($classes->firstItem() ?? 1) + $loop->index }}</td>
-                                        <td>
-                                            <video style="width: 90px; height: 50px; object-fit: cover; border-radius: 4px;" muted loop autoplay playsinline>
-                                                <source src="{{ $class->getClassVideo() }}" type="video/mp4">
-                                            </video>
-                                        </td>
                                         <td><strong>{{ $class->cName }}</strong></td>
                                         <td>
                                             <small>{{ Str::limit(strip_tags($class->cDescription), 50) }}</small>
-                                        </td>
-                                        <td>
-                                            @if((int) ($class->status ?? 1) === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) ($class->status ?? 1) === 0)
-                                                <span class="badge badge-secondary">Inactive</span>
-                                            @else
-                                                <span class="badge badge-danger">Deleted</span>
-                                            @endif
                                         </td>
                                         {{-- <td>{{ $class->created_at->format('M d, Y') }}</td> --}}
                                         <td class="class-actions-cell">

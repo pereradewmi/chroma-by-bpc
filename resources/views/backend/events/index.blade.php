@@ -35,8 +35,6 @@
                                     <th scope="col">Event Image</th>
                                     <th scope="col">Event Name</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Status</th>
-                                    {{-- <th scope="col">Created Date</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -50,15 +48,6 @@
                                         <td><strong>{{ $event->eName }}</strong></td>
                                         <td>
                                             <small>{{ Str::limit($event->eDescription, 50) }}</small>
-                                        </td>
-                                        <td>
-                                            @if((int) $event->status === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) $event->status === 0)
-                                                <span class="badge badge-secondary">Inactive</span>
-                                            @else
-                                                <span class="badge badge-danger">Deleted</span>
-                                            @endif
                                         </td>
                                         {{-- <td>
                                             <small>{{ $event->created_at->format('M d, Y') }}</small>

@@ -35,8 +35,6 @@
                                     <th scope="col">Session Image</th>
                                     <th scope="col">Session Name</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Status</th>
-                                    {{-- <th scope="col">Created Date</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -50,15 +48,6 @@
                                         <td><strong>{{ $session->sName }}</strong></td>
                                         <td>
                                             <small>{{ Str::limit($session->sDescription, 50) }}</small>
-                                        </td>
-                                        <td>
-                                            @if((int) ($session->status ?? 1) === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) ($session->status ?? 1) === 0)
-                                                <span class="badge badge-secondary">Inactive</span>
-                                            @else
-                                                <span class="badge badge-danger">Deleted</span>
-                                            @endif
                                         </td>
                                         {{-- <td>{{ $session->created_at->format('M d, Y') }}</td> --}}
                                         <td class="session-actions-cell">

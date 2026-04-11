@@ -45,4 +45,10 @@ class ClassRoom extends Model
 
         return asset('front-assets/img/home/pottery.mp4');
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'student_classes', 'class_id', 'student_id')
+            ->withTimestamps();
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
@@ -13,7 +14,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::where('Active', '!=', 2)->latest()->paginate(10);
+        $students = Student::where('Active', '!=', 2)
+            ->with('classes')
+            ->latest()
+            ->paginate(10);
         return view('backend.students.index', compact('students'));
     }
 
@@ -41,8 +45,8 @@ class StudentController extends Controller
             'Age' => 'required|integer|min:1|max:100',
             'studentemail' => 'required|email|max:255',
             'studentpic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'guardian_name' => 'nullable|string|max:255',
-            'guardian_phone' => 'nullable|string|max:20',
+            'guardian_name' => 'required|string|max:255',
+            'guardian_phone' => 'required|string|max:20',
             'class_ids' => 'nullable|array',
             'class_ids.*' => 'exists:classdetails,cID',
             'Active' => 'boolean',
@@ -90,6 +94,11 @@ class StudentController extends Controller
             // Create new student
             $student = Student::create($data);
             $message = 'Student registered successfully!';
+        }
+
+        // Sync selected classes/subjects to pivot table when available
+        if (Schema::hasTable('student_classes')) {
+            $student->classes()->sync($request->get('class_ids', []));
         }
 
         return redirect()->route('students.index')
