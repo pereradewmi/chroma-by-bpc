@@ -17,12 +17,16 @@
                             </div>
                         </div>
                     </div>
-                    
+                    @php
+                        $inlineSuccess = request()->has('success') && request()->success == 1;
+                    @endphp
 
-                    @if(session('success'))
+                    @if(session('success') || $inlineSuccess)
                         <div class="alert alert-success alert-dismissible fade show mx-4 mt-3" role="alert">
                             <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                            <span class="alert-text">{{ session('success') }}</span>
+                            <span class="alert-text">
+                                {{ session('success') ?? 'Payment recorded successfully.' }}
+                            </span>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -39,6 +43,7 @@
                                     <th scope="col">Month</th>
                                     <th scope="col">Class Fee</th>
                                     <th scope="col">Payment Date</th>
+                                    <th scope="col" class="text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,6 +79,11 @@
                                         </td>
                                         <td>Rs. {{ number_format($payment->classRoom->classfee ?? 0, 2) }}</td>
                                         <td>{{ $payment->created_at->format('M d, Y') }}</td>
+                                        <td class="text-right">
+                                            <a href="{{ route('payments.receipt', $payment->paymentID) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-invoice"></i> Receipt
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

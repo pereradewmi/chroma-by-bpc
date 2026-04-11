@@ -14,6 +14,11 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentDetailController;
 use App\Models\Event;
 use App\Models\Session;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\PaymentDetail;
+use App\Models\TeacherPayment;
+use Carbon\Carbon;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -37,7 +42,39 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::middleware('check.login')->group(function () {
     // Dashboard route
     Route::get('/admin/dashboard', function () {
-        return view('backend.dashboard');
+        $currentMonth = Carbon::now()->format('m');
+
+        // Students who haven't paid for the current month
+        $paidStudentIds = PaymentDetail::where('month', $currentMonth)
+            ->pluck('studentID')
+            ->unique();
+
+        $unpaidStudents = Student::where('Active', 1)
+            ->whereHas('classes')
+            ->when($paidStudentIds->isNotEmpty(), function ($query) use ($paidStudentIds) {
+                $query->whereNotIn('AutoID', $paidStudentIds);
+            })
+            ->orderBy('fName')
+            ->orderBy('lName')
+            ->take(10)
+            ->get();
+
+        // Teachers (class teachers) who haven't been paid for the current month
+        $paidTeacherIds = TeacherPayment::where('month', $currentMonth)
+            ->pluck('teacher_id')
+            ->unique();
+
+        $unpaidTeachers = Teacher::where('Active', 1)
+            ->where('teacherType', 'class_teacher')
+            ->when($paidTeacherIds->isNotEmpty(), function ($query) use ($paidTeacherIds) {
+                $query->whereNotIn('T_ID', $paidTeacherIds);
+            })
+            ->orderBy('tFName')
+            ->orderBy('tLName')
+            ->take(10)
+            ->get();
+
+        return view('backend.dashboard', compact('unpaidStudents', 'unpaidTeachers'));
     })->name('dashboard');
 
     // Profile routes
@@ -142,6 +179,7 @@ Route::middleware('check.login')->prefix('admin/payments')->name('payments.')->g
     Route::get('/student-details/{id}', [PaymentDetailController::class, 'getStudentDetails'])->name('student-details');
     Route::post('/confirm', [PaymentDetailController::class, 'confirm'])->name('confirm');
     Route::post('/store', [PaymentDetailController::class, 'store'])->name('store');
+    Route::get('/{id}/receipt', [PaymentDetailController::class, 'receipt'])->name('receipt');
     Route::delete('/{id}', [PaymentDetailController::class, 'destroy'])->name('destroy');
 });
 
@@ -150,6 +188,7 @@ Route::middleware('check.login')->prefix('admin/teacher-payments')->name('teache
     Route::get('/', [App\Http\Controllers\TeacherPaymentController::class, 'index'])->name('index');
     Route::get('/form', [App\Http\Controllers\TeacherPaymentController::class, 'form'])->name('form');
     Route::post('/store', [App\Http\Controllers\TeacherPaymentController::class, 'store'])->name('store');
+    Route::get('/{id}/receipt', [App\Http\Controllers\TeacherPaymentController::class, 'receipt'])->name('receipt');
     Route::delete('/{id}', [App\Http\Controllers\TeacherPaymentController::class, 'destroy'])->name('destroy');
 });
 
@@ -158,6 +197,7 @@ Route::middleware('check.login')->prefix('admin/instructor-payments')->name('ins
     Route::get('/', [App\Http\Controllers\InstructorPaymentController::class, 'index'])->name('index');
     Route::get('/form', [App\Http\Controllers\InstructorPaymentController::class, 'form'])->name('form');
     Route::post('/store', [App\Http\Controllers\InstructorPaymentController::class, 'store'])->name('store');
+    Route::get('/{id}/receipt', [App\Http\Controllers\InstructorPaymentController::class, 'receipt'])->name('receipt');
     Route::delete('/{id}', [App\Http\Controllers\InstructorPaymentController::class, 'destroy'])->name('destroy');
 });
 
@@ -207,5 +247,6 @@ Route::middleware('check.login')->prefix('admin/reports')->name('reports.')->gro
     Route::get('/', [ReportsController::class, 'index'])->name('index');
     Route::get('/download', [ReportsController::class, 'download'])->name('download');
     Route::get('/filter-options', [ReportsController::class, 'getFilterOptions'])->name('filter-options');
+    Route::get('/user-payments', [ReportsController::class, 'userPayments'])->name('user-payments');
 });
 
