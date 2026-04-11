@@ -227,6 +227,16 @@ class PaymentDetailController extends Controller
     }
 
     /**
+     * Show printable receipt for a student payment
+     */
+    public function receipt($id)
+    {
+        $payment = PaymentDetail::with(['student', 'classRoom'])->findOrFail($id);
+
+        return view('backend.payments.student-receipt', compact('payment'));
+    }
+
+    /**
      * Delete a payment record
      */
     public function destroy($id)

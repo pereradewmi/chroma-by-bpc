@@ -37,6 +37,7 @@
                                     <th scope="col">Amount</th>
                                     <th scope="col">Month</th>
                                     <th scope="col">Payment Date</th>
+                                    <th scope="col" class="text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,7 +69,11 @@
                                             {{ $months[$payment->month] ?? 'Unknown' }}
                                         </td>
                                         <td>{{ $payment->created_at->format('M d, Y') }}</td>
-
+                                        <td class="text-right">
+                                            <a href="{{ route('teacher-payments.receipt', $payment->paymentID) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-invoice"></i> Receipt
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

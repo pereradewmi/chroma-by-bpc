@@ -87,6 +87,16 @@ class TeacherPaymentController extends Controller
     }
 
     /**
+     * Show printable receipt for a teacher payment
+     */
+    public function receipt($id)
+    {
+        $payment = TeacherPayment::with(['teacher'])->findOrFail($id);
+
+        return view('backend.payments.teacher-receipt', compact('payment'));
+    }
+
+    /**
      * Delete a teacher payment record
      */
     public function destroy($id)

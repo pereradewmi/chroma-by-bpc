@@ -98,6 +98,16 @@ class InstructorPaymentController extends Controller
     }
 
     /**
+     * Show printable receipt for an instructor payment
+     */
+    public function receipt($id)
+    {
+        $payment = InstructorPayment::with(['instructor', 'session'])->findOrFail($id);
+
+        return view('backend.payments.instructor-receipt', compact('payment'));
+    }
+
+    /**
      * Delete an instructor payment record
      */
     public function destroy($id)

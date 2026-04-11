@@ -142,6 +142,7 @@ Route::middleware('check.login')->prefix('admin/payments')->name('payments.')->g
     Route::get('/student-details/{id}', [PaymentDetailController::class, 'getStudentDetails'])->name('student-details');
     Route::post('/confirm', [PaymentDetailController::class, 'confirm'])->name('confirm');
     Route::post('/store', [PaymentDetailController::class, 'store'])->name('store');
+    Route::get('/{id}/receipt', [PaymentDetailController::class, 'receipt'])->name('receipt');
     Route::delete('/{id}', [PaymentDetailController::class, 'destroy'])->name('destroy');
 });
 
@@ -150,6 +151,7 @@ Route::middleware('check.login')->prefix('admin/teacher-payments')->name('teache
     Route::get('/', [App\Http\Controllers\TeacherPaymentController::class, 'index'])->name('index');
     Route::get('/form', [App\Http\Controllers\TeacherPaymentController::class, 'form'])->name('form');
     Route::post('/store', [App\Http\Controllers\TeacherPaymentController::class, 'store'])->name('store');
+    Route::get('/{id}/receipt', [App\Http\Controllers\TeacherPaymentController::class, 'receipt'])->name('receipt');
     Route::delete('/{id}', [App\Http\Controllers\TeacherPaymentController::class, 'destroy'])->name('destroy');
 });
 
@@ -158,6 +160,7 @@ Route::middleware('check.login')->prefix('admin/instructor-payments')->name('ins
     Route::get('/', [App\Http\Controllers\InstructorPaymentController::class, 'index'])->name('index');
     Route::get('/form', [App\Http\Controllers\InstructorPaymentController::class, 'form'])->name('form');
     Route::post('/store', [App\Http\Controllers\InstructorPaymentController::class, 'store'])->name('store');
+    Route::get('/{id}/receipt', [App\Http\Controllers\InstructorPaymentController::class, 'receipt'])->name('receipt');
     Route::delete('/{id}', [App\Http\Controllers\InstructorPaymentController::class, 'destroy'])->name('destroy');
 });
 
