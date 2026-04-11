@@ -27,22 +27,29 @@
                         </div>
                     @endif
 
+                    <div class="px-3 pb-3 d-flex justify-content-end">
+                        <form id="image-categories-search-form" class="m-2 d-flex align-items-center flex-nowrap justify-content-end" role="search" method="GET" action="{{ route('admin.image-categories.index') }}">
+                            <input class="form-control form-control-sm mr-2" style="width: 220px;" type="search" name="search" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-sm btn-primary mr-2" type="submit">Search</button>
+                        </form>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Status</th>
+                                    {{-- <th scope="col">Status</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="image-categories-table-body">
                                 @forelse($categories as $category)
                                     <tr>
                                         <td>{{ ($categories->firstItem() ?? 1) + $loop->index }}</td>
                                         <td><strong>{{ $category->name }}</strong></td>
-                                        <td>
+                                        {{-- <td>
                                             @if($category->status == 1)
                                                 <span class="badge badge-success">Active</span>
                                             @elseif($category->status == 0)
@@ -50,7 +57,7 @@
                                             @else
                                                 <span class="badge badge-danger">Deleted</span>
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             <a href="{{ route('admin.image-categories.form', $category->id) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
@@ -59,22 +66,107 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">No image categories found.</td>
+                                        <td colspan="3" class="text-center">No image categories found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
 
-                    @if($categories->hasPages())
-                        <div class="card-footer py-4">
-                            <nav class="d-flex justify-content-end" aria-label="...">
+                    <div class="card-footer py-4" id="image-categories-pagination-wrapper">
+                        <nav class="d-flex justify-content-end" aria-label="..." id="image-categories-pagination">
+                            @if($categories->hasPages())
                                 {{ $categories->links() }}
-                            </nav>
-                        </div>
-                    @endif
+                            @else
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                    <li class="page-item active btn-primary"><span class="btn-primary page-link">1</span></li>
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                                </ul>
+                            @endif
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const form = document.getElementById('image-categories-search-form');
+            const input = form ? form.querySelector('input[name="search"]') : null;
+            const tableBody = document.getElementById('image-categories-table-body');
+            const pagination = document.getElementById('image-categories-pagination');
+            let searchTimer = null;
+
+            if (!form || !input || !tableBody) {
+                return;
+            }
+
+            const loadCategories = function (url, pushState = true) {
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function (response) {
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextTableBody = doc.getElementById('image-categories-table-body');
+                        const nextPagination = doc.getElementById('image-categories-pagination');
+
+                        if (nextTableBody) {
+                            tableBody.innerHTML = nextTableBody.innerHTML;
+                        }
+
+                        if (pagination && nextPagination) {
+                            pagination.innerHTML = nextPagination.innerHTML;
+                        }
+
+                        if (pushState) {
+                            window.history.pushState({}, '', url);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Failed to load image categories list:', error);
+                    });
+            };
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const searchValue = (input.value || '').trim();
+                const targetUrl = new URL(form.action, window.location.origin);
+
+                if (searchValue !== '') {
+                    targetUrl.searchParams.set('search', searchValue);
+                }
+
+                loadCategories(targetUrl.toString());
+            });
+
+            input.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(function () {
+                    form.dispatchEvent(new Event('submit', { cancelable: true }));
+                }, 300);
+            });
+
+            document.addEventListener('click', function (event) {
+                const pageLink = event.target.closest('#image-categories-pagination a.page-link');
+
+                if (!pageLink || !pageLink.href) {
+                    return;
+                }
+
+                event.preventDefault();
+                loadCategories(pageLink.href);
+            });
+
+            window.addEventListener('popstate', function () {
+                loadCategories(window.location.href, false);
+            });
+        })();
+    </script>
 @endsection

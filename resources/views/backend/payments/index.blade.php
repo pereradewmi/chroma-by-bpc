@@ -33,6 +33,13 @@
                         </div>
                     @endif
 
+                    <div class="px-4 pb-3 d-flex justify-content-end">
+                        <form id="payments-search-form" class="m-2 d-flex align-items-center flex-nowrap justify-content-end" role="search" method="GET" action="{{ route('payments.index') }}">
+                            <input class="form-control form-control-sm mr-2" style="width: 220px;" type="search" name="search" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-sm btn-primary mr-2" type="submit">Search</button>
+                        </form>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
@@ -46,7 +53,7 @@
                                     <th scope="col" class="text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="payments-table-body">
                                 @forelse($payments as $payment)
                                     <tr>
                                         <td>{{ $payment->paymentID }}</td>
@@ -101,15 +108,100 @@
                         </table>
                     </div>
 
-                    @if($payments->hasPages())
-                        <div class="card-footer py-4">
-                            <nav class="d-flex justify-content-end" aria-label="...">
+                    <div class="card-footer py-4" id="payments-pagination-wrapper">
+                        <nav class="d-flex justify-content-end" aria-label="..." id="payments-pagination">
+                            @if($payments->hasPages())
                                 {{ $payments->links() }}
-                            </nav>
-                        </div>
-                    @endif
+                            @else
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                    <li class="page-item active btn-primary"><span class="btn-primary page-link">1</span></li>
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                                </ul>
+                            @endif
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const form = document.getElementById('payments-search-form');
+            const input = form ? form.querySelector('input[name="search"]') : null;
+            const tableBody = document.getElementById('payments-table-body');
+            const pagination = document.getElementById('payments-pagination');
+            let searchTimer = null;
+
+            if (!form || !input || !tableBody) {
+                return;
+            }
+
+            const loadPayments = function (url, pushState = true) {
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function (response) {
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const nextTableBody = doc.getElementById('payments-table-body');
+                        const nextPagination = doc.getElementById('payments-pagination');
+
+                        if (nextTableBody) {
+                            tableBody.innerHTML = nextTableBody.innerHTML;
+                        }
+
+                        if (pagination && nextPagination) {
+                            pagination.innerHTML = nextPagination.innerHTML;
+                        }
+
+                        if (pushState) {
+                            window.history.pushState({}, '', url);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Failed to load student payments list:', error);
+                    });
+            };
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const searchValue = (input.value || '').trim();
+                const targetUrl = new URL(form.action, window.location.origin);
+
+                if (searchValue !== '') {
+                    targetUrl.searchParams.set('search', searchValue);
+                }
+
+                loadPayments(targetUrl.toString());
+            });
+
+            input.addEventListener('input', function () {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(function () {
+                    form.dispatchEvent(new Event('submit', { cancelable: true }));
+                }, 300);
+            });
+
+            document.addEventListener('click', function (event) {
+                const pageLink = event.target.closest('#payments-pagination a.page-link');
+
+                if (!pageLink || !pageLink.href) {
+                    return;
+                }
+
+                event.preventDefault();
+                loadPayments(pageLink.href);
+            });
+
+            window.addEventListener('popstate', function () {
+                loadPayments(window.location.href, false);
+            });
+        })();
+    </script>
 @endsection

@@ -36,9 +36,22 @@ class ImageController extends Controller
     /**
      * Display all images (admin)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $images = Image::with('category')->latest()->paginate(12);
+        $search = trim((string) $request->get('search', ''));
+
+        $images = Image::with('category')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('id', $search)
+                        ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                            $categoryQuery->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
 
         return view('backend.gallery.index', compact('images'));
     }

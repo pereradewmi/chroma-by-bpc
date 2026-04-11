@@ -80,7 +80,12 @@
                                     </select>
                                 </div>
                             </div>
-                             <div class="col-md-3 col-sm-6"></div>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Search</label>
+                                    <input class="form-control" type="search" name="search" value="{{ request('search') }}" placeholder="Search bookings">
+                                </div>
+                            </div>
                             <div class="col-md-3 col-sm-6 pt-4">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-filter mr-1"></i>{{ __('Apply Filters') }}
@@ -126,7 +131,7 @@
                                 <th scope="col">{{ __('Booking Date') }}</th>
                                 <th scope="col">{{ __('Event') }}</th>
                                 <th scope="col">{{ __('Type') }}</th>
-                                <th scope="col">{{ __('Status') }}</th>
+                                {{-- <th scope="col">{{ __('Status') }}</th> --}}
                                 <th scope="col">{{ __('Payment') }}</th>
                                 <th scope="col">{{ __('Price') }}</th>
                             </tr>
@@ -162,11 +167,11 @@
                                         {{ ucfirst($booking->bEvent_type ?? 'N/A') }}
                                     </span>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <span class="badge badge-pill badge-{{ $booking->bStatus == 'approved' ? 'success' : ($booking->bStatus == 'rejected' ? 'danger' : 'warning') }}">
                                         {{ ucfirst($booking->bStatus) }}
                                     </span>
-                                </td>
+                                </td> --}}
                                 <td>
                                     <span class="badge badge-pill badge-{{ $booking->bPayment_status == 'paid' ? 'success' : ($booking->bPayment_status == 'refunded' ? 'info' : 'warning') }}">
                                         {{ ucfirst($booking->bPayment_status ?? 'pending') }}
@@ -176,7 +181,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="9" class="text-center py-4">
+                                <td colspan="8" class="text-center py-4">
                                     <div class="my-4">
                                         <i class="fas fa-search text-muted" style="font-size: 3rem;"></i>
                                         <h4 class="text-muted mt-3">{{ __('No data found') }}</h4>
@@ -188,13 +193,19 @@
                         </tbody>
                     </table>
                 </div>
-                @if($bookings->hasPages())
                 <div class="card-footer py-4">
                     <nav class="d-flex justify-content-end" aria-label="...">
-                        {{ $bookings->appends(request()->except('page'))->links() }}
+                        @if($bookings->hasPages())
+                            {{ $bookings->appends(request()->except('page'))->links() }}
+                        @else
+                            <ul class="pagination mb-0">
+                                <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                <li class="page-item active"><span class="page-link">1</span></li>
+                                <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                            </ul>
+                        @endif
                     </nav>
                 </div>
-                @endif
             </div>
         </div>
     </div>

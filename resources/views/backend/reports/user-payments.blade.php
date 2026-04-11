@@ -60,7 +60,11 @@
                                     <label class="form-control-label">To Date</label>
                                     <input type="date" name="date_to" class="form-control" value="{{ $filters['date_to'] ?? '' }}">
                                 </div>
-                                <div class="col-md-9 d-flex align-items-end justify-content-end mb-3">
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-control-label">Search</label>
+                                    <input type="search" name="search" class="form-control" value="{{ request('search') }}" placeholder="Search payments">
+                                </div>
+                                <div class="col-md-6 d-flex align-items-end justify-content-end mb-3">
                                     <button type="submit" class="btn btn-primary mr-2">Apply Filters</button>
                                     <a href="{{ route('reports.user-payments') }}" class="btn btn-secondary">Reset</a>
                                 </div>

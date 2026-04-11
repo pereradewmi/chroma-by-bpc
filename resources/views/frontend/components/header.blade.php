@@ -14,6 +14,7 @@
           <li><a href="{{ route('frontend.gallery') }}" class="{{ request()->routeIs('frontend.gallery*') ? 'active' : '' }}">Gallery</a></li>
           <li><a href="{{ route('Appointment.index') }}" class="{{ request()->routeIs('Appointment.*') ? 'active' : '' }}">Appointment</a></li>
           <li><a href="{{ route('frontend.contact') }}" class="{{ request()->routeIs('frontend.contact*') ? 'active' : '' }}">Contact</a></li>
+          <li><a href="{{ route('frontend.register') }}" class="{{ request()->routeIs('frontend.register*') ? 'active' : '' }}" style="display:inline-block; padding:8px 14px; border-radius:8px; background: linear-gradient(135deg, #001f3f 0%, #003d82 100%); color:#fff; font-weight:600; margin-left:6px;">Student Registration</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

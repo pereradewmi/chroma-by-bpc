@@ -25,9 +25,21 @@ class ReportsController extends Controller
         
         // Apply filters
         $filters = $this->applyFilters($query, $request);
+        $search = trim((string) $request->get('search', ''));
+
+        if ($search !== '') {
+            $query->where(function ($subQuery) use ($search) {
+                $subQuery->where('bName', 'like', "%{$search}%")
+                    ->orWhere('bEmail', 'like', "%{$search}%")
+                    ->orWhere('bPhone', 'like', "%{$search}%")
+                    ->orWhere('bTitle', 'like', "%{$search}%")
+                    ->orWhere('bEvent_Category', 'like', "%{$search}%")
+                    ->orWhere('booking_ID', 'like', "%{$search}%");
+            });
+        }
         
         // Get paginated results
-        $bookings = $query->orderBy('created_at', 'desc')->paginate(50);
+        $bookings = $query->orderBy('created_at', 'desc')->paginate(50)->withQueryString();
         
         // Get summary statistics
         $stats = $this->getStatistics($request);
@@ -46,6 +58,7 @@ class ReportsController extends Controller
             'student_id' => $request->get('student_id'),
             'date_from' => $request->get('date_from'),
             'date_to' => $request->get('date_to'),
+            'search' => $request->get('search'),
         ];
 
         $dateFrom = $filters['date_from'] ? Carbon::parse($filters['date_from'])->startOfDay() : null;
@@ -132,6 +145,17 @@ class ReportsController extends Controller
         $payments = $studentPayments
             ->concat($instructorPayments)
             ->concat($teacherPayments)
+            ->when(!empty($filters['search']), function ($collection) use ($filters) {
+                $search = strtolower($filters['search']);
+
+                return $collection->filter(function ($payment) use ($search) {
+                    return str_contains(strtolower((string) ($payment['type'] ?? '')), $search)
+                        || str_contains(strtolower((string) ($payment['student'] ?? '')), $search)
+                        || str_contains(strtolower((string) ($payment['teacher'] ?? '')), $search)
+                        || str_contains(strtolower((string) ($payment['class'] ?? '')), $search)
+                        || str_contains(strtolower((string) ($payment['month'] ?? '')), $search);
+                });
+            })
             ->sortByDesc('date')
             ->values();
 

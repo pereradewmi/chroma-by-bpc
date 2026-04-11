@@ -12,11 +12,20 @@ class ImageCategoryController extends Controller
     /**
      * Display image categories list
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->get('search', ''));
+
         $categories = ImageCategory::where('status', '!=', 2)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', "%{$search}%")
+                        ->orWhere('id', 'like', "%{$search}%");
+                });
+            })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('backend.image-categories.index', compact('categories'));
     }

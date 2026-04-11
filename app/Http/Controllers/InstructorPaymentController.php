@@ -13,11 +13,27 @@ class InstructorPaymentController extends Controller
     /**
      * Display the instructor payment details management page
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->get('search', ''));
+
         $payments = InstructorPayment::with(['instructor'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('paymentID', 'like', "%{$search}%")
+                        ->orWhere('month', 'like', "%{$search}%")
+                        ->orWhereHas('instructor', function ($instructorQuery) use ($search) {
+                            $instructorQuery->where('tFName', 'like', "%{$search}%")
+                                ->orWhere('tLName', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('session', function ($sessionQuery) use ($search) {
+                            $sessionQuery->where('sName', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('backend.payments.instructor-index', compact('payments'));
     }

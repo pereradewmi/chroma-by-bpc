@@ -250,9 +250,21 @@
             .main-content .table-responsive,
             .main-content table.table {
                 border-radius: 12px;
-                overflow: hidden;
                 background: #ffffff;
                 box-shadow: 0 8px 24px rgba(4, 65, 95, 0.12);
+            }
+
+            .main-content .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .main-content .table-responsive > table.table {
+                margin-bottom: 0;
+                min-width: 100%;
             }
 
             .main-content .table-responsive table.table {
@@ -261,14 +273,42 @@
             }
 
             /* Pagination */
-            .pagination .page-link.active {
-                background-color: #04415f !important;
-                border-color: #04415f !important;
+            .card-footer .pagination {
+                margin-bottom: 0;
+                gap: 4px;
             }
 
-            .pagination .page-link:hover {
-                color: #04415f !important;
-                border-color: #04415f !important;
+            .card-footer .pagination .page-link {
+                color: #0d6efd;
+                background-color: #ffffff;
+                border: 1px solid #dee2e6;
+                border-radius: 4px !important;
+                padding: 0.35rem 0.7rem;
+                line-height: 1.2;
+                box-shadow: none !important;
+            }
+
+            .card-footer .pagination .page-item.active .page-link {
+                color: #ffffff;
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+                font-weight: 600;
+            }
+
+            .card-footer .pagination .page-item.disabled .page-link {
+                color: #6c757d;
+                background-color: #ffffff;
+                border-color: #dee2e6;
+                opacity: 1;
+            }
+
+            .card-footer .pagination .page-link:hover {
+                color: #0d6efd;
+                border-color: #0d6efd;
+            }
+
+            .card-footer .pagination .page-link:focus {
+                box-shadow: none;
             }
 
             /* Alerts */

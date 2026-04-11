@@ -15,11 +15,27 @@ class PaymentDetailController extends Controller
     /**
      * Display the payment details management page
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->get('search', ''));
+
         $payments = PaymentDetail::with(['student', 'classRoom'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('paymentID', 'like', "%{$search}%")
+                        ->orWhere('month', 'like', "%{$search}%")
+                        ->orWhereHas('student', function ($studentQuery) use ($search) {
+                            $studentQuery->where('fName', 'like', "%{$search}%")
+                                ->orWhere('lName', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('classRoom', function ($classQuery) use ($search) {
+                            $classQuery->where('cName', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         return view('backend.payments.index', compact('payments'));
     }

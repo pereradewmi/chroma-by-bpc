@@ -11,6 +11,13 @@
                     <h6>Booking Management</h6>
                     <p class="text-sm mb-0">Manage all calendar bookings</p>
                 </div>
+                <div class="px-4 pt-3 d-flex justify-content-end">
+                    <div class="d-flex align-items-center flex-nowrap justify-content-end">
+                        <input type="search" class="form-control form-control-sm mr-2" id="bookingSearch" style="width: 220px;" placeholder="Search bookings">
+                        <button type="button" class="btn btn-sm btn-primary mr-2" onclick="loadBookings()">Search</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearBookingSearch()">Reset</button>
+                    </div>
+                </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0" id="bookingsTable">
@@ -19,7 +26,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Event</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Customer</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date & Time</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                    {{-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th> --}}
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
                                 </tr>
                             </thead>
@@ -68,7 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadBookings() {
-    fetch('{{ route("calendar.bookings") }}')
+    const search = document.getElementById('bookingSearch')?.value || '';
+    const url = new URL('{{ route("calendar.bookings") }}', window.location.origin);
+
+    if (search.trim() !== '') {
+        url.searchParams.set('search', search.trim());
+    }
+
+    fetch(url.toString())
         .then(response => response.json())
         .then(bookings => {
             displayBookings(bookings);
@@ -78,13 +92,21 @@ function loadBookings() {
         });
 }
 
+function clearBookingSearch() {
+    const input = document.getElementById('bookingSearch');
+    if (input) {
+        input.value = '';
+    }
+    loadBookings();
+}
+
 function displayBookings(bookings) {
     const tbody = document.getElementById('bookingsTableBody');
     
     if (bookings.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center py-4">
+                <td colspan="4" class="text-center py-4">
                     <p class="text-muted">No bookings found</p>
                 </td>
             </tr>
@@ -119,9 +141,9 @@ function displayBookings(bookings) {
                     <span class="text-secondary text-xs font-weight-bold">${startDate.toLocaleDateString()}</span><br>
                     <span class="text-secondary text-xs">${startDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} ${endTime ? '- ' + endTime : ''}</span>
                 </td>
-                <td class="align-middle text-center">
+                {{-- <td class="align-middle text-center">
                     ${statusBadge}
-                </td>
+                </td> --}}
                 <td class="align-middle text-center">
                     <button class="btn btn-link text-dark px-3 mb-0" onclick="viewBookingDetails('${booking.id}')" title="View" aria-label="View">
                         <i class="fas fa-eye text-dark" aria-hidden="true"></i>
