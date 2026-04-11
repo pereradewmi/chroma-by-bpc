@@ -287,7 +287,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header text-white" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);">
-                <h5 class="modal-title" id="viewBookingModalLabel">
+                <h5 class="modal-title text-white" id="viewBookingModalLabel">
                     <i class="fas fa-eye me-2"></i>Booking Details
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -548,15 +548,15 @@ function showBookingDetails(bookingId) {
                     <p><strong>Duration:</strong> ${booking.duration_hours ? booking.duration_hours + ' hours' : 'Not specified'}</p>
                 </div>
                 <div class="col-md-6">
-                    <p><strong>Customer:</strong> ${booking.customer_name}</p>
-                    <p><strong>Phone:</strong> ${booking.phone_number}</p>
-                    <p><strong>Email:</strong> ${booking.email || 'Not provided'}</p>
-                    <p><strong>People:</strong> ${booking.number_of_people}</p>
-                    <p><strong>Status:</strong> ${statusBadge}</p>
+                    <!-- <p><strong>Customer:</strong> ${booking.customer_name}</p> -->
+                    <!-- <p><strong>Phone:</strong> ${booking.phone_number}</p> -->
+                    <!-- <p><strong>Email:</strong> ${booking.email || 'Not provided'}</p> -->
+                    <!-- <p><strong>People:</strong> ${booking.number_of_people}</p> -->
+                    <!-- <p><strong>Status:</strong> ${statusBadge}</p> -->
                 </div>
             </div>
             ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
-            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> $${booking.price}</div>` : ''}
+           <!-- ${booking.price ? `<div class="mt-2"><strong>Price:</strong> ${booking.price}</div>` : ''} -->
         `;
         
         const modal = new bootstrap.Modal(document.getElementById('viewBookingModal'));
