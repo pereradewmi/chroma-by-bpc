@@ -5,34 +5,31 @@
 
     <div class="container-fluid mt-4">
         <div class="row">
-            <div class="col-xl-10 offset-xl-1 order-xl-1">
+            <div class="col-xl-8 offset-xl-2 order-xl-1">
                 <div class="card shadow">
-                    <div class="card-header bg-primary text-white border-0 d-flex justify-content-between align-items-center" style="padding: 1.5rem;">
-                        <h3 class="mb-0">Record Payment Details</h3>
+                    <div class="card-header bg-primary text-white border-0 d-flex justify-content-between align-items-center" style="padding: 1.25rem 1.5rem;">
+                        <h3 class="mb-0">Record Student Payment</h3>
                         <a href="{{ route('payments.index') }}" class="btn btn-sm btn-light">Back to List</a>
                     </div>
 
-                    <div class="card-body p-4">
-                        <!-- Single Form (Simplified) -->
+                    <div class="card-body p-4 student-payment-form-compact">
                         <form id="payment_form">
-                            <h6 class="heading-small text-muted mb-3">
-                                Payment Information
-                            </h6>
+                            <h6 class="heading-small text-muted mb-3">Payment Information</h6>
 
                             <!-- Step 1: Student Search -->
                             <div id="step1" class="payment-step mb-4 pb-4 border-bottom">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="form-control-label font-weight-600">Search Student</label>
                                     <input type="text" id="student_search" name="student_search"
-                                        class="form-control form-control-lg"
+                                        class="form-control form-control-alternative"
                                         placeholder="Type student name or ID..."
-                                        autocomplete="off" style="border-radius: 8px;">
+                                        autocomplete="off">
                                     <div id="search_results" class="mt-2"></div>
                                     <input type="hidden" id="selected_student_id" name="studentID" value="">
                                 </div>
 
                                 <!-- Selected Student Info -->
-                                <div class="alert alert-secondary mt-3 p-3" id="selected_student_info" style="display: none; border-radius: 8px;">
+                                <div class="alert alert-secondary mt-3 p-3" id="selected_student_info" style="display: none; border-radius: 0.5rem;">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h6 class="alert-heading mb-2">
@@ -57,7 +54,7 @@
                                     <div class="col-md-6 mb-3">
                                         <div class="form-group">
                                             <label class="form-control-label font-weight-600" for="paymentTypeDropdown">Payment Type</label>
-                                            <select id="paymentTypeDropdown" name="payment_type" class="form-control form-control-lg" style="border-radius: 8px;">
+                                            <select id="paymentTypeDropdown" name="payment_type" class="form-control form-control-alternative">
                                                 <option value="class_fee">Class Fee</option>
                                                 <option value="admission">Admission</option>
                                             </select>
@@ -66,7 +63,7 @@
                                     <div class="col-md-6 mb-3">
                                         <div class="form-group">
                                             <label class="form-control-label font-weight-600" for="classID">Select Class</label>
-                                            <select id="classID" name="classID" class="form-control form-control-lg" required style="border-radius: 8px;">
+                                            <select id="classID" name="classID" class="form-control form-control-alternative" required>
                                                 <option value="">Choose a class...</option>
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->cID }}" data-fee="{{ $class->classfee ?? 0 }}" data-admission="{{ $class->admission_amount ?? 0 }}">
@@ -79,10 +76,10 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 mb-0">
                                         <div class="form-group">
                                             <label class="form-control-label font-weight-600" for="month">Select Month</label>
-                                            <select id="month" name="month" class="form-control form-control-lg" required style="border-radius: 8px;">
+                                            <select id="month" name="month" class="form-control form-control-alternative" required>
                                                 <option value="">Choose a month...</option>
                                                 @foreach($months as $code => $name)
                                                     <option value="{{ $code }}">{{ $name }}</option>
@@ -91,12 +88,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-lg btn-light" onclick="resetForm()" style="border-radius: 8px; padding: 0.7rem 2rem;">
-                                        <i class="fas fa-redo"></i> Reset
+                                <div class="mt-4 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-secondary mr-2" onclick="resetForm()">
+                                        Reset
                                     </button>
-                                    <button type="button" id="submit_payment_btn" class="btn btn-lg btn-primary" onclick="submitPayment()" style="border-radius: 8px; padding: 0.7rem 2rem;">
-                                        <i class="fas fa-check-circle"></i> Record Payment
+                                    <button type="button" id="submit_payment_btn" class="btn btn-primary" onclick="submitPayment()">
+                                        Record Payment
                                     </button>
                                 </div>
 
@@ -116,17 +113,19 @@
     </div>
 
     <style>
-        .form-control-lg {
-            font-size: 1rem;
-            padding: 0.75rem 1rem;
+        .student-payment-form-compact .form-group {
+            margin-bottom: 0.75rem;
         }
-        .btn-lg {
-            font-size: 1rem;
+
+        .student-payment-form-compact .heading-small {
+            margin-bottom: 1rem !important;
         }
+
         .list-group-item {
-            border-radius: 8px !important;
+            border-radius: 0.5rem !important;
             margin-bottom: 0.5rem;
         }
+
         #search_results .list-group-item:hover {
             background-color: #f8f9fa;
         }

@@ -26,8 +26,6 @@
                                 <input type="hidden" name="event_id" value="{{ $event->eID }}">
                             @endif
 
-                            <h6 class="heading-small text-muted mb-4">Event Information</h6>
-
                             <div class="pl-lg-4">
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -116,30 +114,29 @@
                                     </div>
                                 @endif
 
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
+                                <div class="row mt-4 align-items-center">
+                                    <div class="col-lg-4">
+                                        <div class="form-group mb-0">
                                             <label class="form-control-label">Status</label>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="hidden" name="status" value="0">
                                                 <input type="checkbox" id="status" name="status" value="1"
                                                     class="custom-control-input"
-                                                    {{ old('status', $event->status) ? 'checked' : '' }}>
-                                                <label class="custom-control-label" for="status">Active </label>
+                                                    {{ old('status', $isEdit ? $event->status : 1) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="status">Active Event</label>
                                             </div>
                                             @error('status')
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary">
+                                    <div class="col-lg-8 text-right">
+                                        <a href="{{ route('events.index') }}" class="btn btn-secondary">
+                                            Cancel
+                                        </a>
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             {{ $isEdit ? 'Update Event' : 'Create Event' }}
                                         </button>
-                                        <a href="{{ route('events.index') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </div>
