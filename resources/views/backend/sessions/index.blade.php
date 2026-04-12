@@ -39,7 +39,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No</th>
-                                    <th scope="col">Session Image</th>
+                                    {{-- <th scope="col">Session Image</th> --}}
                                     <th scope="col">Session Name</th>
                                     <th scope="col">Description</th>
                                     {{-- <th scope="col">Status</th> --}}
@@ -50,10 +50,22 @@
                                 @forelse($sessions as $session)
                                     <tr>
                                         <td>{{ ($sessions->firstItem() ?? 1) + $loop->index }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <img src="{{ $session->getSessionImage() }}" alt="Session Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                        </td> --}}
+                                        <td>
+                                            <a
+                                                href="javascript:void(0)"
+                                                class="session-name-link font-weight-600"
+                                                data-name="{{ $session->sName }}"
+                                                data-id="{{ $session->sID }}"
+                                                data-description="{{ $session->sDescription }}"
+                                                data-status="{{ (int) ($session->status ?? 1) === 1 ? 'Active' : ((int) ($session->status ?? 1) === 0 ? 'Inactive' : 'Deleted') }}"
+                                                data-image="{{ $session->sImage ? $session->getSessionImage() : '' }}"
+                                            >
+                                                <strong>{{ $session->sName }}</strong>
+                                            </a>
                                         </td>
-                                        <td><strong>{{ $session->sName }}</strong></td>
                                         <td>
                                             <small>{{ Str::limit($session->sDescription, 50) }}</small>
                                         </td>
@@ -118,6 +130,37 @@
                                 </ul>
                             @endif
                         </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sessionDetailsModal" tabindex="-1" role="dialog" aria-labelledby="sessionDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sessionDetailsModalLabel">Session Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                            <img id="session-detail-image" src="" alt="Session Image" class="rounded border" style="width: 120px; height: 140px; object-fit: cover; display: none;">
+                            <div id="session-detail-image-placeholder" class="rounded bg-secondary text-white align-items-center justify-content-center" style="width: 140px; height: 140px; font-size: 2rem; display: inline-flex;">
+                                -
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6 mb-2"><strong>Name:</strong> <span id="session-detail-name">-</span></div>
+                                <div class="col-md-6 mb-2"><strong>Session ID:</strong> <span id="session-detail-id">-</span></div>
+                                <div class="col-md-6 mb-2"><strong>Status:</strong> <span id="session-detail-status">-</span></div>
+                                <div class="col-12 mb-2"><strong>Description:</strong> <span id="session-detail-description">-</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -214,6 +257,10 @@
         .status-switch input:checked + .status-slider:before {
             transform: translateX(10px);
         }
+
+        .session-name-link {
+            cursor: pointer;
+        }
     </style>
 
     <script>
@@ -291,6 +338,53 @@
 
             window.addEventListener('popstate', function () {
                 loadSessions(window.location.href, false);
+            });
+
+            document.addEventListener('click', function (event) {
+                const link = event.target.closest('.session-name-link');
+
+                if (!link) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                const session = {
+                    name: link.getAttribute('data-name') || '',
+                    id: link.getAttribute('data-id') || '',
+                    description: link.getAttribute('data-description') || '',
+                    status: link.getAttribute('data-status') || '',
+                    image: link.getAttribute('data-image') || ''
+                };
+
+                const setText = function (id, value) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = value ? String(value) : '-';
+                    }
+                };
+
+                setText('session-detail-name', session.name);
+                setText('session-detail-id', session.id);
+                setText('session-detail-status', session.status);
+                setText('session-detail-description', session.description);
+
+                const image = document.getElementById('session-detail-image');
+                const imagePlaceholder = document.getElementById('session-detail-image-placeholder');
+
+                if (image && imagePlaceholder) {
+                    if (session.image) {
+                        image.src = session.image;
+                        image.style.display = 'inline-block';
+                        imagePlaceholder.style.display = 'none';
+                    } else {
+                        image.removeAttribute('src');
+                        image.style.display = 'none';
+                        imagePlaceholder.style.display = 'inline-flex';
+                    }
+                }
+
+                $('#sessionDetailsModal').modal('show');
             });
         })();
     </script>
