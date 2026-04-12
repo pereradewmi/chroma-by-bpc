@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Booking;
-use App\Models\BookingLog;
-use App\Models\PaymentDetail;
-use App\Models\InstructorPayment;
-use App\Models\TeacherPayment;
 use App\Models\ClassRoom;
-use App\Models\Teacher;
+use App\Models\InstructorPayment;
+use App\Models\PaymentDetail;
 use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\TeacherPayment;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class ReportsController extends Controller
@@ -22,7 +21,7 @@ class ReportsController extends Controller
     public function index(Request $request)
     {
         $query = Booking::query();
-        
+
         // Apply filters
         $filters = $this->applyFilters($query, $request);
         $search = trim((string) $request->get('search', ''));
@@ -37,13 +36,13 @@ class ReportsController extends Controller
                     ->orWhere('booking_ID', 'like', "%{$search}%");
             });
         }
-        
+
         // Get paginated results
         $bookings = $query->orderBy('created_at', 'desc')->paginate(50)->withQueryString();
-        
+
         // Get summary statistics
         $stats = $this->getStatistics($request);
-        
+
         return view('backend.reports.index', compact('bookings', 'filters', 'stats'));
     }
 
@@ -84,7 +83,7 @@ class ReportsController extends Controller
                 'source' => 'class',
                 'date' => $p->created_at,
                 'month' => $p->month,
-                'student' => optional($p->student)->fName . ' ' . optional($p->student)->lName,
+                'student' => optional($p->student)->fName.' '.optional($p->student)->lName,
                 'teacher' => null,
                 'class' => optional($p->classRoom)->cName,
                 'amount' => optional($p->classRoom)->classfee ?? 0,
@@ -110,7 +109,7 @@ class ReportsController extends Controller
                 'date' => $p->created_at,
                 'month' => $p->month,
                 'student' => null,
-                'teacher' => optional($p->instructor)->tFName . ' ' . optional($p->instructor)->tLName,
+                'teacher' => optional($p->instructor)->tFName.' '.optional($p->instructor)->tLName,
                 'class' => optional($p->session)->sName,
                 'amount' => $p->amount,
                 'sessions_count' => $p->sessions_count,
@@ -135,7 +134,7 @@ class ReportsController extends Controller
                 'date' => $p->created_at,
                 'month' => $p->month,
                 'student' => null,
-                'teacher' => optional($p->teacher)->tFName . ' ' . optional($p->teacher)->tLName,
+                'teacher' => optional($p->teacher)->tFName.' '.optional($p->teacher)->tLName,
                 'class' => null,
                 'amount' => $p->amount,
                 'sessions_count' => null,
@@ -145,7 +144,7 @@ class ReportsController extends Controller
         $payments = $studentPayments
             ->concat($instructorPayments)
             ->concat($teacherPayments)
-            ->when(!empty($filters['search']), function ($collection) use ($filters) {
+            ->when(! empty($filters['search']), function ($collection) use ($filters) {
                 $search = strtolower($filters['search']);
 
                 return $collection->filter(function ($payment) use ($search) {
@@ -174,15 +173,15 @@ class ReportsController extends Controller
     {
         $query = Booking::query();
         $this->applyFilters($query, $request);
-        
+
         $bookings = $query->orderBy('created_at', 'desc')->get();
-        
+
         $format = $request->get('format', 'csv');
-        
+
         if ($format === 'excel') {
             return $this->generateExcel($bookings, $request);
         }
-        
+
         return $this->generateCSV($bookings, $request);
     }
 
@@ -204,7 +203,7 @@ class ReportsController extends Controller
         if ($filters['date_from']) {
             $query->whereDate('booking_date', '>=', Carbon::parse($filters['date_from']));
         }
-        
+
         if ($filters['date_to']) {
             $query->whereDate('booking_date', '<=', Carbon::parse($filters['date_to']));
         }
@@ -239,10 +238,10 @@ class ReportsController extends Controller
     {
         $query = Booking::query();
         $this->applyFilters($query, $request);
-        
+
         $totalBookings = $query->count();
         $totalRevenue = $query->sum('bPrice');
-        
+
         // Status breakdown
         $statusStats = [
             'pending' => (clone $query)->where('bStatus', Booking::STATUS_PENDING)->count(),
@@ -270,16 +269,16 @@ class ReportsController extends Controller
      */
     private function generateCSV($bookings, Request $request)
     {
-        $filename = 'bookings_report_' . Carbon::now()->format('Y-m-d_H-i-s') . '.csv';
-        
+        $filename = 'bookings_report_'.Carbon::now()->format('Y-m-d_H-i-s').'.csv';
+
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ];
 
-        $callback = function() use ($bookings) {
+        $callback = function () use ($bookings) {
             $file = fopen('php://output', 'w');
-            
+
             // CSV headers
             fputcsv($file, [
                 'Booking ID',
@@ -300,7 +299,7 @@ class ReportsController extends Controller
                 'Approved At',
                 'Rejected By',
                 'Rejected At',
-                'Rejection Reason'
+                'Rejection Reason',
             ]);
 
             // CSV data
@@ -324,7 +323,7 @@ class ReportsController extends Controller
                     $booking->bApproved_at ? $booking->bApproved_at->format('Y-m-d H:i:s') : '',
                     $booking->bReject_by,
                     $booking->bReject_at ? $booking->bReject_at->format('Y-m-d H:i:s') : '',
-                    $booking->bRejection_reason
+                    $booking->bRejection_reason,
                 ]);
             }
 
@@ -339,15 +338,15 @@ class ReportsController extends Controller
      */
     private function generateExcel($bookings, Request $request)
     {
-        $filename = 'bookings_report_' . Carbon::now()->format('Y-m-d_H-i-s') . '.xls';
-        
+        $filename = 'bookings_report_'.Carbon::now()->format('Y-m-d_H-i-s').'.xls';
+
         $headers = [
             'Content-Type' => 'application/vnd.ms-excel',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ];
 
         $content = '<table border="1">';
-        
+
         // Excel headers
         $content .= '<tr>';
         $content .= '<th>Booking ID</th>';
@@ -374,25 +373,25 @@ class ReportsController extends Controller
         // Excel data
         foreach ($bookings as $booking) {
             $content .= '<tr>';
-            $content .= '<td>' . htmlspecialchars($booking->booking_ID) . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bName) . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bEmail) . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bPhone) . '</td>';
-            $content .= '<td>' . ($booking->booking_date ? $booking->booking_date->format('Y-m-d') : '') . '</td>';
-            $content .= '<td>' . ($booking->bStart_datetime ? $booking->bStart_datetime->format('Y-m-d H:i:s') : '') . '</td>';
-            $content .= '<td>' . ($booking->bEnd_datetime ? $booking->bEnd_datetime->format('Y-m-d H:i:s') : '') . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bTitle) . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bDescription) . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bEvent_type) . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bEvent_Category) . '</td>';
-            $content .= '<td>' . ucfirst($booking->bStatus) . '</td>';
-            $content .= '<td>' . ucfirst($booking->bPayment_status) . '</td>';
-            $content .= '<td>' . $booking->bPrice . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bApproved_by) . '</td>';
-            $content .= '<td>' . ($booking->bApproved_at ? $booking->bApproved_at->format('Y-m-d H:i:s') : '') . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bReject_by) . '</td>';
-            $content .= '<td>' . ($booking->bReject_at ? $booking->bReject_at->format('Y-m-d H:i:s') : '') . '</td>';
-            $content .= '<td>' . htmlspecialchars($booking->bRejection_reason) . '</td>';
+            $content .= '<td>'.htmlspecialchars($booking->booking_ID).'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bName).'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bEmail).'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bPhone).'</td>';
+            $content .= '<td>'.($booking->booking_date ? $booking->booking_date->format('Y-m-d') : '').'</td>';
+            $content .= '<td>'.($booking->bStart_datetime ? $booking->bStart_datetime->format('Y-m-d H:i:s') : '').'</td>';
+            $content .= '<td>'.($booking->bEnd_datetime ? $booking->bEnd_datetime->format('Y-m-d H:i:s') : '').'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bTitle).'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bDescription).'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bEvent_type).'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bEvent_Category).'</td>';
+            $content .= '<td>'.ucfirst($booking->bStatus).'</td>';
+            $content .= '<td>'.ucfirst($booking->bPayment_status).'</td>';
+            $content .= '<td>'.$booking->bPrice.'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bApproved_by).'</td>';
+            $content .= '<td>'.($booking->bApproved_at ? $booking->bApproved_at->format('Y-m-d H:i:s') : '').'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bReject_by).'</td>';
+            $content .= '<td>'.($booking->bReject_at ? $booking->bReject_at->format('Y-m-d H:i:s') : '').'</td>';
+            $content .= '<td>'.htmlspecialchars($booking->bRejection_reason).'</td>';
             $content .= '</tr>';
         }
 
@@ -408,20 +407,20 @@ class ReportsController extends Controller
     {
         $eventTypes = Booking::distinct()->pluck('bEvent_type')->filter()->sort();
         $eventCategories = Booking::distinct()->pluck('bEvent_Category')->filter()->sort();
-        
+
         return response()->json([
             'event_types' => $eventTypes,
             'event_categories' => $eventCategories,
             'statuses' => [
                 Booking::STATUS_PENDING => 'Pending',
                 Booking::STATUS_APPROVED => 'Approved',
-                Booking::STATUS_REJECTED => 'Rejected'
+                Booking::STATUS_REJECTED => 'Rejected',
             ],
             'payment_statuses' => [
                 Booking::PAYMENT_PENDING => 'Pending',
                 Booking::PAYMENT_PAID => 'Paid',
-                Booking::PAYMENT_REFUNDED => 'Refunded'
-            ]
+                Booking::PAYMENT_REFUNDED => 'Refunded',
+            ],
         ]);
     }
 }

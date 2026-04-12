@@ -102,7 +102,7 @@
                             Student Registration
                         </div>
                         <h1 class="h3 mb-3">Join Chroma By BPC</h1>
-                        <p class="mb-4">Register your student details online and select the classes you want to enroll in.</p>
+                        <p class="mb-4">Register student online and after registration you can contact the admin to assign the classes you want.</p>
                         <div class="mb-3">
                             <strong>What to prepare</strong>
                             <ul class="mt-2 mb-0 ps-3">
@@ -117,7 +117,7 @@
                 <div class="col-lg-8">
                     <div class="card register-card">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i>Student Registration Form</h5>
+                            <h5 class="mb-0 text-white"><i class="bi bi-person-plus-fill me-2"></i>Student Registration Form</h5>
                         </div>
                         <div class="card-body p-4 p-md-5">
                             @if (session('success'))
@@ -174,7 +174,7 @@
                                         <label class="form-label" for="studentpic">Student Picture</label>
                                         <input type="file" id="studentpic" name="studentpic" class="form-control @error('studentpic') is-invalid @enderror" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label class="form-label">Select Classes</label>
                                         <div class="class-scroll">
                                             @forelse($classes as $class)
@@ -189,7 +189,7 @@
                                                 <div class="text-muted">No classes available right now.</div>
                                             @endforelse
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                                 <div class="d-flex flex-wrap gap-2 justify-content-end mt-4">

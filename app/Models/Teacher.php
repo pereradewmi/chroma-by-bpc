@@ -10,6 +10,7 @@ class Teacher extends Model
     use HasFactory;
 
     protected $table = 'teacherdetails';
+
     protected $primaryKey = 'T_ID';
 
     protected $fillable = [
@@ -18,7 +19,7 @@ class Teacher extends Model
         'tMobileNo',
         'tAddress',
         'Active',
-        'teacherType'
+        'teacherType',
     ];
 
     protected $casts = [
@@ -40,7 +41,7 @@ class Teacher extends Model
     // Full name accessor
     public function getFullNameAttribute()
     {
-        return $this->tFName . ' ' . $this->tLName;
+        return $this->tFName.' '.$this->tLName;
     }
 
     // Scope for active teachers

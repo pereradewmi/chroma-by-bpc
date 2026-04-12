@@ -11,6 +11,7 @@ class ImageCategory extends Model
     use HasFactory;
 
     protected $table = 'imagecategories';
+
     public $timestamps = false;
 
     protected $fillable = [

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\InstructorPayment;
-use App\Models\Teacher;
 use App\Models\Session;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -62,7 +62,7 @@ class InstructorPaymentController extends Controller
             '09' => 'September',
             '10' => 'October',
             '11' => 'November',
-            '12' => 'December'
+            '12' => 'December',
         ];
 
         return view('backend.payments.instructor-form', compact('instructors', 'months', 'sessions'));
@@ -79,7 +79,7 @@ class InstructorPaymentController extends Controller
             'amount' => 'required|numeric|min:0',
             'month' => 'required|string|size:2',
             'sessions_count' => 'required|integer|min:1',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -106,7 +106,7 @@ class InstructorPaymentController extends Controller
             'amount' => $request->amount,
             'month' => $request->month,
             'sessions_count' => $request->sessions_count,
-            'description' => $request->description
+            'description' => $request->description,
         ]);
 
         return redirect()->route('instructor-payments.index')

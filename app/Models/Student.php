@@ -11,6 +11,7 @@ class Student extends Model
     use HasFactory;
 
     protected $table = 'studentdetails';
+
     protected $primaryKey = 'AutoID';
 
     protected $fillable = [
@@ -24,12 +25,12 @@ class Student extends Model
         'studentpic',
         'guardian_name',
         'guardian_phone',
-        'class_ids'
+        'class_ids',
     ];
 
     protected $casts = [
         'Age' => 'integer',
-        'Active' => 'integer'
+        'Active' => 'integer',
     ];
 
     public function classes()
@@ -41,7 +42,7 @@ class Student extends Model
     public function getPhotoUrlAttribute(): string
     {
         if ($this->studentpic) {
-            $path = 'students/' . ltrim($this->studentpic, '/');
+            $path = 'students/'.ltrim($this->studentpic, '/');
 
             if (Storage::disk('public')->exists($path)) {
                 return Storage::url($path);

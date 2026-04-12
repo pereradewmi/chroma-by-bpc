@@ -10,6 +10,7 @@ class Event extends Model
     use HasFactory;
 
     protected $table = 'eventdetails';
+
     protected $primaryKey = 'eID';
 
     protected $fillable = [
@@ -18,7 +19,7 @@ class Event extends Model
         'eImage',
         'status',
         'dateFrom',
-        'dateTo'
+        'dateTo',
     ];
 
     protected $casts = [
@@ -32,9 +33,10 @@ class Event extends Model
      */
     public function getEventImage()
     {
-        if ($this->eImage && file_exists(storage_path('app/public/events/' . $this->eImage))) {
-            return asset('storage/events/' . $this->eImage);
+        if ($this->eImage && file_exists(storage_path('app/public/events/'.$this->eImage))) {
+            return asset('storage/events/'.$this->eImage);
         }
+
         return asset('front-assets/img/logo.png');
     }
 }

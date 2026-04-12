@@ -2,9 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\PaymentDetail;
-use App\Models\Student;
 use App\Models\ClassRoom;
+use App\Models\Student;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -14,8 +13,11 @@ class PaymentNotificationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $student;
+
     public $classRoom;
+
     public $month;
+
     public $months;
 
     /**
@@ -39,7 +41,7 @@ class PaymentNotificationMail extends Mailable
             '09' => 'September',
             '10' => 'October',
             '11' => 'November',
-            '12' => 'December'
+            '12' => 'December',
         ];
     }
 
@@ -49,7 +51,7 @@ class PaymentNotificationMail extends Mailable
     public function build()
     {
         return $this
-            ->subject('Payment Confirmation - ' . $this->classRoom->cName . ' - ' . $this->months[$this->month])
+            ->subject('Payment Confirmation - '.$this->classRoom->cName.' - '.$this->months[$this->month])
             ->view('emails.payment-notification');
     }
 }

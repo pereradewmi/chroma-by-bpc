@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class SessionController extends Controller
 {
@@ -27,6 +27,7 @@ class SessionController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
         return view('backend.sessions.index', compact('sessions'));
     }
 
@@ -35,8 +36,8 @@ class SessionController extends Controller
      */
     public function form($id = null)
     {
-        $session = $id ? Session::findOrFail($id) : new Session();
-        $isEdit = !is_null($id);
+        $session = $id ? Session::findOrFail($id) : new Session;
+        $isEdit = ! is_null($id);
 
         return view('backend.sessions.form', compact('session', 'isEdit'));
     }
@@ -52,7 +53,7 @@ class SessionController extends Controller
             'sImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
             'status' => 'nullable|in:0,1,2',
             'is_update' => 'boolean',
-            'session_id' => 'nullable|exists:sessiondetails,sID'
+            'session_id' => 'nullable|exists:sessiondetails,sID',
         ]);
 
         if ($validator->fails()) {
@@ -69,12 +70,12 @@ class SessionController extends Controller
             $image = $request->file('sImage');
 
             // Create storage directory if it doesn't exist
-            if (!Storage::exists('public/sessions')) {
+            if (! Storage::exists('public/sessions')) {
                 Storage::makeDirectory('public/sessions');
             }
 
             // Generate unique filename with timestamp
-            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $filename = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
 
             // Store image in storage/app/public/sessions/
             $path = $image->storeAs('public/sessions', $filename);
@@ -87,8 +88,8 @@ class SessionController extends Controller
             $session = Session::findOrFail($request->get('session_id'));
 
             // Delete old image if new image is uploaded
-            if ($request->hasFile('sImage') && $session->sImage && Storage::exists('public/sessions/' . $session->sImage)) {
-                Storage::delete('public/sessions/' . $session->sImage);
+            if ($request->hasFile('sImage') && $session->sImage && Storage::exists('public/sessions/'.$session->sImage)) {
+                Storage::delete('public/sessions/'.$session->sImage);
             }
 
             $session->update($data);

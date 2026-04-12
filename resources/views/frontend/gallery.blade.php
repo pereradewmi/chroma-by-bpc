@@ -85,10 +85,17 @@
       // Handle category card hover effects
       function bindCategoryCards() {
         const cards = categoryCardsView.querySelectorAll('.category-card-item');
+        const isMobile = window.innerWidth < 768;
 
         cards.forEach(function (card) {
           const overlay = card.querySelector('.category-overlay');
           const name = card.querySelector('h5');
+
+          // On mobile, show overlay and name by default
+          if (isMobile) {
+            overlay.style.opacity = '1';
+            name.style.opacity = '1';
+          }
 
           card.addEventListener('mouseenter', function () {
             overlay.style.opacity = '1';
@@ -97,8 +104,11 @@
           });
 
           card.addEventListener('mouseleave', function () {
-            overlay.style.opacity = '0';
-            name.style.opacity = '0';
+            // On mobile, keep overlay and name visible
+            if (!isMobile) {
+              overlay.style.opacity = '0';
+              name.style.opacity = '0';
+            }
             card.style.transform = 'scale(1)';
           });
 
@@ -108,6 +118,11 @@
           });
         });
       }
+
+      // Handle window resize for responsive behavior
+      window.addEventListener('resize', function () {
+        bindCategoryCards();
+      });
 
       // Load images for a specific category
       async function loadCategoryImages(categoryId, pushState = true) {

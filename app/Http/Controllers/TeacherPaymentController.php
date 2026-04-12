@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TeacherPayment;
 use App\Models\Teacher;
+use App\Models\TeacherPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -55,7 +55,7 @@ class TeacherPaymentController extends Controller
             '09' => 'September',
             '10' => 'October',
             '11' => 'November',
-            '12' => 'December'
+            '12' => 'December',
         ];
 
         return view('backend.payments.teacher-form', compact('teachers', 'months'));
@@ -69,7 +69,7 @@ class TeacherPaymentController extends Controller
         $validator = Validator::make($request->all(), [
             'teacher_id' => 'required|exists:teacherdetails,T_ID',
             'amount' => 'required|numeric|min:0',
-            'month' => 'required|string|size:2'
+            'month' => 'required|string|size:2',
         ]);
 
         if ($validator->fails()) {
@@ -92,7 +92,7 @@ class TeacherPaymentController extends Controller
         TeacherPayment::create([
             'teacher_id' => $request->teacher_id,
             'amount' => $request->amount,
-            'month' => $request->month
+            'month' => $request->month,
         ]);
 
         return redirect()->route('teacher-payments.index')

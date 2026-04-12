@@ -10,6 +10,7 @@ class InstructorPayment extends Model
     use HasFactory;
 
     protected $table = 'instructorpaymentdetails';
+
     protected $primaryKey = 'paymentID';
 
     protected $fillable = [
@@ -18,7 +19,7 @@ class InstructorPayment extends Model
         'amount',
         'month',
         'sessions_count',
-        'description'
+        'description',
     ];
 
     /**

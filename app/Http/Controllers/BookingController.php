@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
 use App\Models\Booking;
 use App\Models\BookingLog;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -66,7 +64,7 @@ class BookingController extends Controller
             $bookings = $query->get();
 
             // Format for FullCalendar
-            $formattedBookings = $bookings->map(function($booking) use ($isFrontend) {
+            $formattedBookings = $bookings->map(function ($booking) use ($isFrontend) {
 
                 // Determine color based on status
                 $color = '#ffc107'; // default yellow for pending
@@ -82,29 +80,29 @@ class BookingController extends Controller
                     'phone_number' => $booking->bPhone,
                     'email' => $booking->bEmail,
                     'description' => $booking->bDescription ?? '',
-                    'status' => $booking->bStatus
+                    'status' => $booking->bStatus,
                 ];
 
                 // Add additional fields for backend only
-                if (!$isFrontend) {
+                if (! $isFrontend) {
                     $extendedProps = array_merge($extendedProps, [
                         'price' => $booking->bPrice,
                         'payment_status' => $booking->bPayment_status,
                         'rejection_reason' => $booking->bRejection_reason,
-                        'pubprievent' => $booking->pubprievent
+                        'pubprievent' => $booking->pubprievent,
                     ]);
                 }
 
                 return [
                     'id' => $booking->booking_ID,
-                    'title' => $booking->bTitle . ' - ' . $booking->bName,
+                    'title' => $booking->bTitle.' - '.$booking->bName,
                     'start' => $booking->bStart_datetime->format('Y-m-d\TH:i:s'),
                     'end' => $booking->bEnd_datetime ?
                             $booking->bEnd_datetime->format('Y-m-d\TH:i:s') : null,
                     'backgroundColor' => $color,
                     'borderColor' => $color,
                     'textColor' => '#ffffff',
-                    'extendedProps' => $extendedProps
+                    'extendedProps' => $extendedProps,
                 ];
             });
 
@@ -112,7 +110,7 @@ class BookingController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to load bookings: ' . $e->getMessage()
+                'error' => 'Failed to load bookings: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -136,16 +134,16 @@ class BookingController extends Controller
                 'bStatus' => 'nullable|in:pending,approved,rejected',
                 'bPrice' => 'nullable|numeric|min:0',
                 'bPayment_status' => 'nullable|in:pending,paid,refunded',
-                'bRejection_reason' => 'nullable|string|max:500'
+                'bRejection_reason' => 'nullable|string|max:500',
             ], [
                 'booking_date.after' => 'Booking date must be tomorrow or later.',
-                'bStart_datetime.after' => 'Start date and time must be tomorrow or later.'
+                'bStart_datetime.after' => 'Start date and time must be tomorrow or later.',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
 
@@ -169,7 +167,7 @@ class BookingController extends Controller
                 'bReject_by' => null,
                 'bReject_at' => null,
                 'bRejection_reason' => $request->bRejection_reason ?? '',
-                'pubprievent' => Booking::EVENT_PRIVATE // Default to private
+                'pubprievent' => Booking::EVENT_PRIVATE, // Default to private
             ]);
 
             // Log the creation
@@ -184,13 +182,13 @@ class BookingController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Booking created successfully!',
-                'booking' => $booking
+                'booking' => $booking,
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Error: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -202,7 +200,7 @@ class BookingController extends Controller
     {
         $booking = Booking::find($id);
 
-        if (!$booking) {
+        if (! $booking) {
             return response()->json(['error' => 'Booking not found'], 404);
         }
 
@@ -231,7 +229,7 @@ class BookingController extends Controller
             'price' => $booking->bPrice,
             'payment_status' => $booking->bPayment_status,
             'rejection_reason' => $booking->bRejection_reason,
-            'pubprievent' => $booking->pubprievent
+            'pubprievent' => $booking->pubprievent,
         ]);
     }
 
@@ -242,44 +240,44 @@ class BookingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:pending,approved,rejected',
-            'rejection_reason' => 'nullable|string|max:500'
+            'rejection_reason' => 'nullable|string|max:500',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 422);
         }
 
         $booking = Booking::find($id);
-        
-        if (!$booking) {
+
+        if (! $booking) {
             return response()->json([
                 'success' => false,
-                'message' => 'Booking not found'
+                'message' => 'Booking not found',
             ], 404);
         }
 
         // Store old data for logging
         $oldData = $booking->toArray();
-        
+
         $user = Auth::user();
         $updateData = [
             'bStatus' => $request->status,
             'bRejection_reason' => $request->status === 'rejected' ? $request->rejection_reason : null,
         ];
-        
+
         if ($request->status === 'approved') {
             $updateData['bApproved_at'] = now();
             $updateData['bApproved_by'] = $user ? $user->id : null;
-        } else if ($request->status === 'rejected') {
+        } elseif ($request->status === 'rejected') {
             $updateData['bReject_at'] = now();
             $updateData['bReject_by'] = $user ? $user->id : null;
         }
-        
+
         $booking->update($updateData);
-        
+
         // Log the status change
         BookingLog::logBookingChange(
             $booking,
@@ -292,7 +290,7 @@ class BookingController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Booking status updated successfully',
-            'booking' => $booking
+            'booking' => $booking,
         ]);
     }
 
@@ -302,11 +300,11 @@ class BookingController extends Controller
     public function destroy($id)
     {
         $booking = Booking::find($id);
-        
-        if (!$booking) {
+
+        if (! $booking) {
             return response()->json([
                 'success' => false,
-                'message' => 'Booking not found'
+                'message' => 'Booking not found',
             ], 404);
         }
 
@@ -323,7 +321,7 @@ class BookingController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Booking deleted successfully'
+            'message' => 'Booking deleted successfully',
         ]);
     }
 
@@ -341,7 +339,7 @@ class BookingController extends Controller
             'total' => $total,
             'pending' => $pending,
             'approved' => $approved,
-            'today' => $today
+            'today' => $today,
         ]);
     }
 
@@ -352,30 +350,30 @@ class BookingController extends Controller
     {
         try {
             $booking = Booking::find($id);
-            
-            if (!$booking) {
+
+            if (! $booking) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking not found'
+                    'message' => 'Booking not found',
                 ], 404);
             }
 
             if ($booking->bStatus === 'approved') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking is already approved'
+                    'message' => 'Booking is already approved',
                 ]);
             }
 
             // Store old data for logging
             $oldData = $booking->toArray();
-            
+
             $user = Auth::user();
             $booking->update([
                 'bStatus' => 'approved',
                 'bApproved_at' => now(),
                 'bApproved_by' => $user ? $user->id : null,
-                'bRejection_reason' => null // Clear any previous rejection reason
+                'bRejection_reason' => null, // Clear any previous rejection reason
             ]);
 
             // Log the approval
@@ -390,13 +388,13 @@ class BookingController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Booking approved successfully!',
-                'booking' => $booking->fresh()
+                'booking' => $booking->fresh(),
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error approving booking: ' . $e->getMessage()
+                'message' => 'Error approving booking: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -408,41 +406,41 @@ class BookingController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'rejection_reason' => 'required|string|max:500'
+                'rejection_reason' => 'required|string|max:500',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
 
             $booking = Booking::find($id);
-            
-            if (!$booking) {
+
+            if (! $booking) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking not found'
+                    'message' => 'Booking not found',
                 ], 404);
             }
 
             if ($booking->bStatus === 'rejected') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking is already rejected'
+                    'message' => 'Booking is already rejected',
                 ]);
             }
 
             // Store old data for logging
             $oldData = $booking->toArray();
-            
+
             $user = Auth::user();
             $booking->update([
                 'bStatus' => 'rejected',
                 'bReject_at' => now(),
                 'bReject_by' => $user ? $user->id : null,
-                'bRejection_reason' => $request->rejection_reason
+                'bRejection_reason' => $request->rejection_reason,
             ]);
 
             // Log the rejection
@@ -451,19 +449,19 @@ class BookingController extends Controller
                 'rejected',
                 $oldData,
                 $booking->fresh()->toArray(),
-                'Booking rejected by admin: ' . $request->rejection_reason
+                'Booking rejected by admin: '.$request->rejection_reason
             );
 
             return response()->json([
                 'success' => true,
                 'message' => 'Booking rejected successfully!',
-                'booking' => $booking->fresh()
+                'booking' => $booking->fresh(),
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error rejecting booking: ' . $e->getMessage()
+                'message' => 'Error rejecting booking: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -486,36 +484,36 @@ class BookingController extends Controller
                 'bDescription' => 'nullable|string|max:500',
                 'bStatus' => 'nullable|in:pending,approved,rejected',
                 'bPrice' => 'nullable|numeric|min:0',
-                'bPayment_status' => 'nullable|in:pending,paid,refunded'
+                'bPayment_status' => 'nullable|in:pending,paid,refunded',
             ], [
                 'booking_date.after' => 'Booking date must be tomorrow or later.',
-                'bStart_datetime.after' => 'Start date and time must be tomorrow or later.'
+                'bStart_datetime.after' => 'Start date and time must be tomorrow or later.',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
 
             $booking = Booking::find($id);
-            
-            if (!$booking) {
+
+            if (! $booking) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking not found'
+                    'message' => 'Booking not found',
                 ], 404);
             }
 
             // Store old data for logging
             $oldData = $booking->toArray();
-            
+
             $user = Auth::user();
             $updateData = $request->only([
-                'bTitle', 'bEvent_type', 'booking_date', 'bStart_datetime', 
-                'bEnd_datetime', 'bName', 'bPhone', 'bEmail', 'bDescription', 
-                'bStatus', 'bPrice', 'bPayment_status'
+                'bTitle', 'bEvent_type', 'booking_date', 'bStart_datetime',
+                'bEnd_datetime', 'bName', 'bPhone', 'bEmail', 'bDescription',
+                'bStatus', 'bPrice', 'bPayment_status',
             ]);
 
             $booking->update($updateData);
@@ -532,13 +530,13 @@ class BookingController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Booking updated successfully!',
-                'booking' => $booking->fresh()
+                'booking' => $booking->fresh(),
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error updating booking: ' . $e->getMessage()
+                'message' => 'Error updating booking: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -551,10 +549,10 @@ class BookingController extends Controller
         try {
             $booking = Booking::find($id);
 
-            if (!$booking) {
+            if (! $booking) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking not found'
+                    'message' => 'Booking not found',
                 ], 404);
             }
 
@@ -571,7 +569,7 @@ class BookingController extends Controller
                 'user_name' => 'System',
                 'user_role' => 'System',
                 'logged_at' => $booking->created_at ? $booking->created_at->format('Y-m-d H:i:s') : now()->format('Y-m-d H:i:s'),
-                'logged_at_human' => $booking->created_at ? $booking->created_at->diffForHumans() : now()->diffForHumans()
+                'logged_at_human' => $booking->created_at ? $booking->created_at->diffForHumans() : now()->diffForHumans(),
             ];
 
             // If there are updates, show them
@@ -580,11 +578,11 @@ class BookingController extends Controller
                     'id' => 2,
                     'action' => 'UPDATED',
                     'description' => 'Booking updated',
-                    'changes_summary' => 'Booking status: ' . ucfirst($booking->bStatus),
+                    'changes_summary' => 'Booking status: '.ucfirst($booking->bStatus),
                     'user_name' => $booking->bApproved_by ? 'Admin' : 'System',
                     'user_role' => 'Admin',
                     'logged_at' => $booking->updated_at->format('Y-m-d H:i:s'),
-                    'logged_at_human' => $booking->updated_at->diffForHumans()
+                    'logged_at_human' => $booking->updated_at->diffForHumans(),
                 ];
             }
 
@@ -598,7 +596,7 @@ class BookingController extends Controller
                     'user_name' => $booking->bApproved_by ?? 'Admin',
                     'user_role' => 'Admin',
                     'logged_at' => $booking->bApproved_at->format('Y-m-d H:i:s'),
-                    'logged_at_human' => $booking->bApproved_at->diffForHumans()
+                    'logged_at_human' => $booking->bApproved_at->diffForHumans(),
                 ];
             }
 
@@ -607,25 +605,26 @@ class BookingController extends Controller
                 $logs[] = [
                     'id' => 4,
                     'action' => 'REJECTED',
-                    'description' => 'Booking rejected: ' . ($booking->bRejection_reason ?? 'No reason provided'),
+                    'description' => 'Booking rejected: '.($booking->bRejection_reason ?? 'No reason provided'),
                     'changes_summary' => 'Booking was rejected',
                     'user_name' => $booking->bReject_by ?? 'Admin',
                     'user_role' => 'Admin',
                     'logged_at' => $booking->bReject_at->format('Y-m-d H:i:s'),
-                    'logged_at_human' => $booking->bReject_at->diffForHumans()
+                    'logged_at_human' => $booking->bReject_at->diffForHumans(),
                 ];
             }
 
             return response()->json([
                 'success' => true,
-                'logs' => $logs
+                'logs' => $logs,
             ]);
 
         } catch (\Exception $e) {
-            \Log::error('Error retrieving booking logs: ' . $e->getMessage());
+            \Log::error('Error retrieving booking logs: '.$e->getMessage());
+
             return response()->json([
                 'success' => false,
-                'message' => 'Error retrieving booking logs: ' . $e->getMessage()
+                'message' => 'Error retrieving booking logs: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -637,22 +636,22 @@ class BookingController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'pubprievent' => 'required|in:PUB,PRI'
+                'pubprievent' => 'required|in:PUB,PRI',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
 
             $booking = Booking::find($id);
 
-            if (!$booking) {
+            if (! $booking) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Booking not found'
+                    'message' => 'Booking not found',
                 ], 404);
             }
 
@@ -661,7 +660,7 @@ class BookingController extends Controller
 
             $user = Auth::user();
             $booking->update([
-                'pubprievent' => $request->pubprievent
+                'pubprievent' => $request->pubprievent,
             ]);
 
             // Log the status change
@@ -677,13 +676,13 @@ class BookingController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => "Event visibility updated to {$statusLabel} successfully!",
-                'booking' => $booking->fresh()
+                'booking' => $booking->fresh(),
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error updating event visibility: ' . $e->getMessage()
+                'message' => 'Error updating event visibility: '.$e->getMessage(),
             ], 500);
         }
     }

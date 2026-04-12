@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -40,7 +38,6 @@ class LoginController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -59,7 +56,7 @@ class LoginController extends Controller
         if ($loginDetail) {
             // Create a session for the user
             session(['user_id' => $loginDetail->L_ID, 'user_name' => $loginDetail->lName]);
-            
+
             return redirect()->intended($this->redirectTo);
         }
 
@@ -71,14 +68,12 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
     {
         session()->flush();
-        
+
         return redirect()->route('login')->with('message', 'You have been successfully logged out.');
     }
 }
-

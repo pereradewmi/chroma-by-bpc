@@ -28,6 +28,7 @@ class TeacherController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
         return view('backend.teachers.index', compact('teachers'));
     }
 
@@ -36,9 +37,9 @@ class TeacherController extends Controller
      */
     public function form($id = null)
     {
-        $teacher = $id ? Teacher::findOrFail($id) : new Teacher();
-        $isEdit = !is_null($id);
-        
+        $teacher = $id ? Teacher::findOrFail($id) : new Teacher;
+        $isEdit = ! is_null($id);
+
         return view('backend.teachers.form', compact('teacher', 'isEdit'));
     }
 
@@ -55,7 +56,7 @@ class TeacherController extends Controller
             'teacherType' => 'required|in:class_teacher,instructor',
             'Active' => 'boolean',
             'is_update' => 'boolean',
-            'teacher_id' => 'nullable|exists:teacherdetails,T_ID'
+            'teacher_id' => 'nullable|exists:teacherdetails,T_ID',
         ]);
 
         if ($validator->fails()) {

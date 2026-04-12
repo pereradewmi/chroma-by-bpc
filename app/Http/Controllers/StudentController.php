@@ -15,7 +15,7 @@ class StudentController extends Controller
      */
     public function frontendRegister()
     {
-        $student = new Student();
+        $student = new Student;
         $isEdit = false;
         $classes = ClassRoom::orderBy('cName')->get();
 
@@ -41,6 +41,7 @@ class StudentController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
         return view('backend.students.index', compact('students'));
     }
 
@@ -49,9 +50,9 @@ class StudentController extends Controller
      */
     public function form($id = null)
     {
-        $student = $id ? Student::findOrFail($id) : new Student();
-        $isEdit = !is_null($id);
-        
+        $student = $id ? Student::findOrFail($id) : new Student;
+        $isEdit = ! is_null($id);
+
         return view('backend.students.form', compact('student', 'isEdit'));
     }
 
@@ -74,7 +75,7 @@ class StudentController extends Controller
             'class_ids.*' => 'exists:classdetails,cID',
             'Active' => 'boolean',
             'is_update' => 'boolean',
-            'student_id' => 'nullable|exists:studentdetails,AutoID'
+            'student_id' => 'nullable|exists:studentdetails,AutoID',
         ]);
 
         if ($validator->fails()) {
@@ -106,7 +107,7 @@ class StudentController extends Controller
             'guardian_phone' => 'required|string|max:20',
             'class_ids' => 'nullable|array',
             'class_ids.*' => 'exists:classdetails,cID',
-            'Active' => 'boolean'
+            'Active' => 'boolean',
         ]);
 
         if ($validator->fails()) {
@@ -161,10 +162,10 @@ class StudentController extends Controller
 
         if ($request->hasFile('studentpic')) {
             $image = $request->file('studentpic');
-            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imageName = time().'_'.$image->getClientOriginalName();
 
             $uploadPath = storage_path('app/public/students');
-            if (!file_exists($uploadPath)) {
+            if (! file_exists($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
             }
 
@@ -175,8 +176,8 @@ class StudentController extends Controller
         if ($allowUpdate && $request->get('is_update') && $request->get('student_id')) {
             $student = Student::findOrFail($request->get('student_id'));
 
-            if (isset($data['studentpic']) && $student->studentpic && file_exists(storage_path('app/public/students/' . $student->studentpic))) {
-                unlink(storage_path('app/public/students/' . $student->studentpic));
+            if (isset($data['studentpic']) && $student->studentpic && file_exists(storage_path('app/public/students/'.$student->studentpic))) {
+                unlink(storage_path('app/public/students/'.$student->studentpic));
             }
 
             $student->update($data);

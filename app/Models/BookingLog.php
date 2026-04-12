@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class BookingLog extends Model
@@ -11,7 +11,9 @@ class BookingLog extends Model
     use HasFactory;
 
     protected $table = 'bookingdetailsdeleted';
+
     public $incrementing = false;
+
     protected $primaryKey = null;
 
     protected $fillable = [
@@ -21,11 +23,11 @@ class BookingLog extends Model
         'new_data',
         'description',
         'user_id',
-        'logged_at'
+        'logged_at',
     ];
 
     protected $casts = [
-        'logged_at' => 'datetime'
+        'logged_at' => 'datetime',
     ];
 
     /**
@@ -56,8 +58,9 @@ class BookingLog extends Model
             'approved' => 'APPROVED',
             'rejected' => 'REJECTED',
             'deleted' => 'DELETED',
-            'visibility_updated' => 'VISIBILITY_UPDATED'
+            'visibility_updated' => 'VISIBILITY_UPDATED',
         ];
+
         return $labels[strtolower($action)] ?? strtoupper($action);
     }
 
@@ -69,6 +72,7 @@ class BookingLog extends Model
         if ($this->user) {
             return $this->user->name ?? 'System';
         }
+
         return 'System';
     }
 
@@ -80,6 +84,7 @@ class BookingLog extends Model
         if ($this->user && method_exists($this->user, 'getRoleAttribute')) {
             return $this->user->getRoleAttribute();
         }
+
         return 'Admin';
     }
 
@@ -96,7 +101,7 @@ class BookingLog extends Model
      */
     public function getChangesSummaryAttribute()
     {
-        return 'Action: ' . ($this->formatted_action ?? 'UPDATED');
+        return 'Action: '.($this->formatted_action ?? 'UPDATED');
     }
 
     /**
@@ -116,10 +121,11 @@ class BookingLog extends Model
                 'new_data' => $newDataJson,
                 'description' => $description,
                 'user_id' => Auth::id(),
-                'logged_at' => now()
+                'logged_at' => now(),
             ]);
         } catch (\Exception $e) {
-            \Log::error('Failed to log booking change: ' . $e->getMessage());
+            \Log::error('Failed to log booking change: '.$e->getMessage());
+
             return null;
         }
     }

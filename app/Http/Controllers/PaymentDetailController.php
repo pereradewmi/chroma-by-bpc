@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentNotificationMail;
+use App\Models\ClassRoom;
 use App\Models\PaymentDetail;
 use App\Models\Student;
-use App\Models\ClassRoom;
-use App\Mail\PaymentNotificationMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class PaymentDetailController extends Controller
 {
@@ -58,11 +58,11 @@ class PaymentDetailController extends Controller
             '09' => 'September',
             '10' => 'October',
             '11' => 'November',
-            '12' => 'December'
+            '12' => 'December',
         ];
         $paymentTypes = [
             'class_fee' => 'Class Fee',
-            'admission' => 'Admission'
+            'admission' => 'Admission',
         ];
 
         return view('backend.payments.form', compact('classes', 'months', 'paymentTypes'));
@@ -85,14 +85,14 @@ class PaymentDetailController extends Controller
             ->where('Active', 1)
             ->limit(10)
             ->get()
-            ->map(function($student) {
+            ->map(function ($student) {
                 return [
                     'id' => $student->AutoID,
-                    'name' => $student->fName . ' ' . $student->lName,
+                    'name' => $student->fName.' '.$student->lName,
                     'mobile' => $student->mobileNo,
                     'email' => $student->studentemail ?? 'N/A',
                     'age' => $student->Age,
-                    'address' => $student->Address
+                    'address' => $student->Address,
                 ];
             });
 
@@ -108,11 +108,11 @@ class PaymentDetailController extends Controller
 
         return response()->json([
             'id' => $student->AutoID,
-            'name' => $student->fName . ' ' . $student->lName,
+            'name' => $student->fName.' '.$student->lName,
             'mobile' => $student->mobileNo,
             'email' => $student->studentemail ?? 'N/A',
             'age' => $student->Age,
-            'address' => $student->Address
+            'address' => $student->Address,
         ]);
     }
 
@@ -124,13 +124,13 @@ class PaymentDetailController extends Controller
         $validator = Validator::make($request->all(), [
             'studentID' => 'required|exists:studentdetails,AutoID',
             'classID' => 'required|exists:classdetails,cID',
-            'month' => 'required|string|size:2'
+            'month' => 'required|string|size:2',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -143,7 +143,7 @@ class PaymentDetailController extends Controller
         if ($existingPayment) {
             return response()->json([
                 'success' => false,
-                'message' => 'Payment for this student, class and month already exists!'
+                'message' => 'Payment for this student, class and month already exists!',
             ], 422);
         }
 
@@ -153,7 +153,7 @@ class PaymentDetailController extends Controller
         $months = [
             '01' => 'January', '02' => 'February', '03' => 'March', '04' => 'April',
             '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August',
-            '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December'
+            '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December',
         ];
 
         return response()->json([
@@ -161,20 +161,20 @@ class PaymentDetailController extends Controller
             'data' => [
                 'student' => [
                     'id' => $student->AutoID,
-                    'name' => $student->fName . ' ' . $student->lName,
+                    'name' => $student->fName.' '.$student->lName,
                     'mobile' => $student->mobileNo,
-                    'email' => $student->studentemail ?? 'N/A'
+                    'email' => $student->studentemail ?? 'N/A',
                 ],
                 'class' => [
                     'id' => $class->cID,
                     'name' => $class->cName,
-                    'fee' => $class->classfee ?? 0
+                    'fee' => $class->classfee ?? 0,
                 ],
                 'month' => [
                     'code' => $request->month,
-                    'name' => $months[$request->month] ?? 'Unknown'
-                ]
-            ]
+                    'name' => $months[$request->month] ?? 'Unknown',
+                ],
+            ],
         ]);
     }
 
@@ -187,13 +187,13 @@ class PaymentDetailController extends Controller
             'studentID' => 'required|exists:studentdetails,AutoID',
             'classID' => 'required|exists:classdetails,cID',
             'month' => 'required|string|size:2',
-            'payment_type' => 'nullable|in:class_fee,admission'
+            'payment_type' => 'nullable|in:class_fee,admission',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -207,7 +207,7 @@ class PaymentDetailController extends Controller
         if ($existingPayment) {
             return response()->json([
                 'success' => false,
-                'message' => 'Payment for this student, class and month already exists!'
+                'message' => 'Payment for this student, class and month already exists!',
             ], 422);
         }
 
@@ -216,7 +216,7 @@ class PaymentDetailController extends Controller
             'studentID' => $request->studentID,
             'classID' => $request->classID,
             'month' => $request->month,
-            'payment_type' => $request->payment_type ?? 'class_fee'
+            'payment_type' => $request->payment_type ?? 'class_fee',
         ]);
 
         // Get student and class information for email
@@ -231,14 +231,14 @@ class PaymentDetailController extends Controller
                 );
             } catch (\Exception $e) {
                 // Log the error but don't fail the payment creation
-                \Log::error('Failed to send payment notification email: ' . $e->getMessage());
+                \Log::error('Failed to send payment notification email: '.$e->getMessage());
             }
         }
 
         return response()->json([
             'success' => true,
             'message' => 'Payment recorded successfully!',
-            'payment_id' => $payment->paymentID
+            'payment_id' => $payment->paymentID,
         ]);
     }
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassRoom;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ClassRoomController extends Controller
 {
@@ -28,6 +28,7 @@ class ClassRoomController extends Controller
             ->orderBy('cID', 'asc')
             ->paginate(10)
             ->withQueryString();
+
         return view('backend.classes.index', compact('classes'));
     }
 
@@ -37,6 +38,7 @@ class ClassRoomController extends Controller
     public function frontendIndex()
     {
         $classes = ClassRoom::where('status', 1)->orderBy('cID', 'asc')->get();
+
         return view('frontend.classes', compact('classes'));
     }
 
@@ -45,8 +47,8 @@ class ClassRoomController extends Controller
      */
     public function form($id = null)
     {
-        $class = $id ? ClassRoom::findOrFail($id) : new ClassRoom();
-        $isEdit = !is_null($id);
+        $class = $id ? ClassRoom::findOrFail($id) : new ClassRoom;
+        $isEdit = ! is_null($id);
 
         return view('backend.classes.form', compact('class', 'isEdit'));
     }
@@ -64,7 +66,7 @@ class ClassRoomController extends Controller
             'status' => 'nullable|in:0,1,2',
             'cVideo' => 'nullable|file|mimetypes:video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska|max:51200',
             'is_update' => 'boolean',
-            'class_id' => 'nullable|exists:classdetails,cID'
+            'class_id' => 'nullable|exists:classdetails,cID',
         ]);
 
         if ($validator->fails()) {
@@ -81,12 +83,12 @@ class ClassRoomController extends Controller
             $video = $request->file('cVideo');
 
             // Create storage directory if it doesn't exist
-            if (!Storage::exists('public/class-videos')) {
+            if (! Storage::exists('public/class-videos')) {
                 Storage::makeDirectory('public/class-videos');
             }
 
             // Generate unique filename with timestamp
-            $filename = time() . '_' . uniqid() . '.' . $video->getClientOriginalExtension();
+            $filename = time().'_'.uniqid().'.'.$video->getClientOriginalExtension();
 
             // Store video in storage/app/public/class-videos/
             $video->storeAs('public/class-videos', $filename);
@@ -99,8 +101,8 @@ class ClassRoomController extends Controller
             $class = ClassRoom::findOrFail($request->get('class_id'));
 
             // Delete old video if new video is uploaded
-            if ($request->hasFile('cVideo') && $class->cVideo && Storage::exists('public/class-videos/' . $class->cVideo)) {
-                Storage::delete('public/class-videos/' . $class->cVideo);
+            if ($request->hasFile('cVideo') && $class->cVideo && Storage::exists('public/class-videos/'.$class->cVideo)) {
+                Storage::delete('public/class-videos/'.$class->cVideo);
             }
 
             $class->update($data);

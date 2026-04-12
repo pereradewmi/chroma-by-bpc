@@ -10,6 +10,7 @@ class ClassRoom extends Model
     use HasFactory;
 
     protected $table = 'classdetails';
+
     protected $primaryKey = 'cID';
 
     protected $fillable = [
@@ -19,7 +20,7 @@ class ClassRoom extends Model
         'cVideo',
         'status',
         'classfee',
-        'admission_amount'
+        'admission_amount',
     ];
 
     protected $casts = [
@@ -31,16 +32,17 @@ class ClassRoom extends Model
      */
     public function getClassImage()
     {
-        if ($this->cImage && file_exists(storage_path('app/public/classes/' . $this->cImage))) {
-            return asset('storage/classes/' . $this->cImage);
+        if ($this->cImage && file_exists(storage_path('app/public/classes/'.$this->cImage))) {
+            return asset('storage/classes/'.$this->cImage);
         }
+
         return asset('front-assets/img/logo.png');
     }
 
     public function getClassVideo()
     {
-        if ($this->cVideo && file_exists(storage_path('app/public/class-videos/' . $this->cVideo))) {
-            return asset('storage/class-videos/' . $this->cVideo);
+        if ($this->cVideo && file_exists(storage_path('app/public/class-videos/'.$this->cVideo))) {
+            return asset('storage/class-videos/'.$this->cVideo);
         }
 
         return asset('front-assets/img/home/pottery.mp4');

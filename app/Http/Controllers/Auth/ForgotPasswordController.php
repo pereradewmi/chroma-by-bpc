@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {
-
     use SendsPasswordResetEmails;
 
     /**
@@ -32,7 +31,7 @@ class ForgotPasswordController extends Controller
 
         return redirect()->back()->withInfo('Emails are not sent in the demo environment.');
 
-             $response = $this->broker()->sendResetLink(
+        $response = $this->broker()->sendResetLink(
             $this->credentials($request)
         );
 

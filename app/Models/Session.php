@@ -10,13 +10,14 @@ class Session extends Model
     use HasFactory;
 
     protected $table = 'sessiondetails';
+
     protected $primaryKey = 'sID';
 
     protected $fillable = [
         'sName',
         'sDescription',
         'sImage',
-        'status'
+        'status',
     ];
 
     protected $casts = [
@@ -28,9 +29,10 @@ class Session extends Model
      */
     public function getSessionImage()
     {
-        if ($this->sImage && file_exists(storage_path('app/public/sessions/' . $this->sImage))) {
-            return asset('storage/sessions/' . $this->sImage);
+        if ($this->sImage && file_exists(storage_path('app/public/sessions/'.$this->sImage))) {
+            return asset('storage/sessions/'.$this->sImage);
         }
+
         return asset('front-assets/img/logo.png');
     }
 }

@@ -29,7 +29,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Pending</h5>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Pending Bookings</h5>
                             <span class="h2 font-weight-bold mb-0 text-warning" id="pendingBookings">-</span>
                         </div>
                         <div class="col-auto">
@@ -46,7 +46,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Approved</h5>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Approved Bookings</h5>
                             <span class="h2 font-weight-bold mb-0 text-success" id="approvedBookings">-</span>
                         </div>
                         <div class="col-auto">
@@ -63,12 +63,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Today</h5>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Today's Bookings</h5>
                             <span class="h2 font-weight-bold mb-0 text-info" id="todayBookings">-</span>
                         </div>
                         <div class="col-auto">
                             <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                                <i class="fas fa-calendar-day"></i>
+                                <i class="fas fa-calendar-alt"></i>
                             </div>
                         </div>
                     </div>
@@ -485,7 +485,7 @@
 let currentBookingId = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing calendar...');
+    // console.log('DOM loaded, initializing calendar...');
     const calendarEl = document.getElementById('calendar');
     
     if (!calendarEl) {
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    console.log('Calendar element found, creating calendar...');
+    // console.log('Calendar element found, creating calendar...');
     
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -517,13 +517,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Handle date selection
         select: function(info) {
-            console.log('Date selected:', info.startStr);
+            // console.log('Date selected:', info.startStr);
             showBookingModal(info.startStr);
         },
         
         // Handle event click
         eventClick: function(info) {
-            console.log('Event clicked:', info.event.id);
+            // console.log('Event clicked:', info.event.id);
             showBookingDetails(info.event.id);
         },
         
@@ -534,13 +534,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add success callback for events loading
         eventSourceSuccess: function(events) {
-            console.log('Events loaded:', events);
+            // console.log('Events loaded:', events);
         }
     });
     
-    console.log('Rendering calendar...');
+    // console.log('Rendering calendar...');
     calendar.render();
-    console.log('Calendar rendered successfully');
+    // console.log('Calendar rendered successfully');
     
     // Make calendar globally accessible for refreshing
     window.calendarInstance = calendar;
@@ -602,7 +602,7 @@ function showBookingModal(selectedDate = null) {
 }
 
 function submitBooking() {
-    console.log('Submitting booking...');
+    // console.log('Submitting booking...');
     
     // Validate dates before submitting
     const bookingDate = document.getElementById('booking_date').value;
@@ -651,7 +651,7 @@ function submitBooking() {
         data[key] = value;
     });
     
-    console.log('Form data:', data);
+    // console.log('Form data:', data);
     
     // Show loading state
     const submitButton = document.getElementById('submitBooking');
@@ -668,11 +668,11 @@ function submitBooking() {
         body: JSON.stringify(data)
     })
     .then(response => {
-        console.log('Response status:', response.status);
+        // console.log('Response status:', response.status);
         return response.json();
     })
     .then(data => {
-        console.log('Response data:', data);
+        // console.log('Response data:', data);
         
         if (data.success) {
             Swal.fire({
@@ -1074,7 +1074,7 @@ function loadPendingBookings() {
 function refreshCalendar() {
     if (window.calendarInstance) {
         window.calendarInstance.refetchEvents();
-        console.log('Calendar events refreshed');
+        // console.log('Calendar events refreshed');
     }
 }
 

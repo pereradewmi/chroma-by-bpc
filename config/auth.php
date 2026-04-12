@@ -14,7 +14,6 @@ return [
         ],
     ],
 
-
     'providers' => [
         'users' => [
             'driver' => 'eloquent',

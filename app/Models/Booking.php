@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Booking extends Model
 {
     use HasFactory;
 
     protected $table = 'bookingdetails';
+
     protected $primaryKey = 'booking_ID';
 
     protected $fillable = [
@@ -32,7 +32,7 @@ class Booking extends Model
         'bReject_by',
         'bReject_at',
         'bRejection_reason',
-        'pubprievent'
+        'pubprievent',
     ];
 
     protected $casts = [
@@ -41,30 +41,38 @@ class Booking extends Model
         'bEnd_datetime' => 'datetime',
         'bApproved_at' => 'datetime',
         'bReject_at' => 'datetime',
-        'bPrice' => 'decimal:2'
+        'bPrice' => 'decimal:2',
     ];
 
     // Status constants
     const STATUS_PENDING = 'pending';
+
     const STATUS_APPROVED = 'approved';
+
     const STATUS_REJECTED = 'rejected';
 
     // Type constants
     const TYPE_EVENT = 'event';
+
     const TYPE_SESSION = 'session';
 
     // Payment Status constants
     const PAYMENT_PENDING = 'pending';
+
     const PAYMENT_PAID = 'paid';
+
     const PAYMENT_REFUNDED = 'refunded';
 
     // Public/Private Event constants
     const EVENT_PUBLIC = 'PUB';
+
     const EVENT_PRIVATE = 'PRI';
 
     // Color constants
     const COLOR_PENDING = '#ffc107'; // Yellow
+
     const COLOR_APPROVED = '#28a745'; // Green
+
     const COLOR_REJECTED = '#dc3545'; // Red
 
     /**
@@ -72,7 +80,7 @@ class Booking extends Model
      */
     public function getStatusColorAttribute()
     {
-        return match($this->bStatus) {
+        return match ($this->bStatus) {
             self::STATUS_PENDING => self::COLOR_PENDING,
             self::STATUS_APPROVED => self::COLOR_APPROVED,
             self::STATUS_REJECTED => self::COLOR_REJECTED,

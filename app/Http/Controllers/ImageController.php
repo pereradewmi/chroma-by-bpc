@@ -24,7 +24,7 @@ class ImageController extends Controller
         $imagesQuery = Image::where('status', 1)
             ->with('category');
 
-        if (!empty($selectedCategoryId)) {
+        if (! empty($selectedCategoryId)) {
             $imagesQuery->where('c_id', (int) $selectedCategoryId);
         }
 
@@ -61,8 +61,8 @@ class ImageController extends Controller
      */
     public function form($id = null)
     {
-        $image = $id ? Image::findOrFail($id) : new Image();
-        $isEdit = !is_null($id);
+        $image = $id ? Image::findOrFail($id) : new Image;
+        $isEdit = ! is_null($id);
         $categories = ImageCategory::where('status', 1)->orderBy('name')->get();
 
         return view('backend.gallery.form', compact('image', 'isEdit', 'categories'));
@@ -75,16 +75,16 @@ class ImageController extends Controller
     {
         $image = Image::find($id);
 
-        if (!$image) {
+        if (! $image) {
             return response()->json([
                 'success' => false,
-                'message' => 'Image not found'
+                'message' => 'Image not found',
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $image
+            'data' => $image,
         ]);
     }
 
@@ -98,7 +98,7 @@ class ImageController extends Controller
         $validator = Validator::make($request->all(), [
             'c_id' => 'required|exists:imagecategories,id',
             'status' => 'required|in:0,1',
-            'image' => ($isUpdate ? 'nullable' : 'required') . '|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'image' => ($isUpdate ? 'nullable' : 'required').'|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
             'is_update' => 'nullable|boolean',
             'image_id' => 'nullable|exists:images,id',
         ]);
@@ -112,7 +112,7 @@ class ImageController extends Controller
         if ($isUpdate && $request->get('image_id')) {
             $image = Image::findOrFail($request->get('image_id'));
         } else {
-            $image = new Image();
+            $image = new Image;
         }
 
         $data = [
@@ -141,10 +141,10 @@ class ImageController extends Controller
     {
         $image = Image::find($id);
 
-        if (!$image) {
+        if (! $image) {
             return response()->json([
                 'success' => false,
-                'message' => 'Image not found'
+                'message' => 'Image not found',
             ], 404);
         }
 
@@ -189,7 +189,7 @@ class ImageController extends Controller
     {
         $image = Image::find($id);
 
-        if (!$image) {
+        if (! $image) {
             return redirect()->route('admin.images.index')
                 ->with('error', 'Image not found');
         }

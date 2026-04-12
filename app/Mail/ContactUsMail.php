@@ -20,7 +20,7 @@ class ContactUsMail extends Mailable
     public function build()
     {
         return $this
-            ->subject('Website Contact: ' . $this->contactData['subject'])
+            ->subject('Website Contact: '.$this->contactData['subject'])
             ->replyTo($this->contactData['email'], $this->contactData['name'])
             ->view('emails.contact-us');
     }

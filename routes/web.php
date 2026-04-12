@@ -1,24 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ClassRoomController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\ImageCategoryController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\PaymentDetailController;
+use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\ClassRoomController;
-use App\Http\Controllers\SessionController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\ImageCategoryController;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\ReportsController;
-use App\Http\Controllers\PaymentDetailController;
 use App\Models\Event;
+use App\Models\PaymentDetail;
 use App\Models\Session;
 use App\Models\Student;
 use App\Models\Teacher;
-use App\Models\PaymentDetail;
 use App\Models\TeacherPayment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -209,7 +209,7 @@ Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar
     Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
-    
+
     // Admin-specific booking management
     Route::post('/bookings/{id}/approve', [BookingController::class, 'approveBooking'])->name('bookings.approve');
     Route::post('/bookings/{id}/reject', [BookingController::class, 'rejectBooking'])->name('bookings.reject');
@@ -248,4 +248,3 @@ Route::middleware('check.login')->prefix('admin/reports')->name('reports.')->gro
     Route::get('/filter-options', [ReportsController::class, 'getFilterOptions'])->name('filter-options');
     Route::get('/user-payments', [ReportsController::class, 'userPayments'])->name('user-payments');
 });
-

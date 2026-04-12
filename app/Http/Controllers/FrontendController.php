@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactUsMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class FrontendController extends Controller
 {
@@ -25,7 +25,7 @@ class FrontendController extends Controller
                 ->route('frontend.contact')
                 ->with('success', 'Your message has been sent successfully.');
         } catch (\Exception $e) {
-            $logReference = 'MAIL-' . now()->format('YmdHis');
+            $logReference = 'MAIL-'.now()->format('YmdHis');
 
             Log::error('Contact form mail send failed', [
                 'reference' => $logReference,

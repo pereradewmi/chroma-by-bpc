@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ImageCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ImageCategoryController extends Controller
 {
@@ -35,8 +35,8 @@ class ImageCategoryController extends Controller
      */
     public function form($id = null)
     {
-        $category = $id ? ImageCategory::findOrFail($id) : new ImageCategory();
-        $isEdit = !is_null($id);
+        $category = $id ? ImageCategory::findOrFail($id) : new ImageCategory;
+        $isEdit = ! is_null($id);
 
         return view('backend.image-categories.form', compact('category', 'isEdit'));
     }
@@ -74,16 +74,16 @@ class ImageCategoryController extends Controller
 
         if ($request->get('is_update') && $request->get('category_id')) {
             $category = ImageCategory::findOrFail($request->get('category_id'));
-            
+
             // Delete old image if new one is uploaded
             if ($request->hasFile('background_image') && $category->background_image) {
                 Storage::disk('public')->delete($category->background_image);
             }
-            
+
             $category->update($data);
             $message = 'Image category updated successfully!';
         } else {
-            if (!isset($data['status'])) {
+            if (! isset($data['status'])) {
                 $data['status'] = 1;
             }
 

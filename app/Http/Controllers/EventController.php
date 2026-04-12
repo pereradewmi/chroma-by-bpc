@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -17,15 +17,16 @@ class EventController extends Controller
         $search = trim((string) $request->get('search', ''));
 
         $events = Event::when($search !== '', function ($query) use ($search) {
-                $query->where(function ($subQuery) use ($search) {
-                    $subQuery->where('eName', 'like', "%{$search}%")
-                        ->orWhere('eDescription', 'like', "%{$search}%")
-                        ->orWhere('eID', 'like', "%{$search}%");
-                });
-            })
+            $query->where(function ($subQuery) use ($search) {
+                $subQuery->where('eName', 'like', "%{$search}%")
+                    ->orWhere('eDescription', 'like', "%{$search}%")
+                    ->orWhere('eID', 'like', "%{$search}%");
+            });
+        })
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
         return view('backend.events.index', compact('events'));
     }
 
@@ -36,6 +37,7 @@ class EventController extends Controller
     {
         $events = Event::where('status', 1)->latest('dateFrom')->get();
         $latestEvent = Event::where('status', 1)->latest('dateFrom')->first();
+
         return view('frontend.events', compact('events', 'latestEvent'));
     }
 
@@ -44,8 +46,8 @@ class EventController extends Controller
      */
     public function form($id = null)
     {
-        $event = $id ? Event::findOrFail($id) : new Event();
-        $isEdit = !is_null($id);
+        $event = $id ? Event::findOrFail($id) : new Event;
+        $isEdit = ! is_null($id);
 
         return view('backend.events.form', compact('event', 'isEdit'));
     }
@@ -63,7 +65,7 @@ class EventController extends Controller
             'dateTo' => 'required|date|after_or_equal:dateFrom',
             'status' => 'nullable|in:0,1',
             'is_update' => 'boolean',
-            'event_id' => 'nullable|exists:eventdetails,eID'
+            'event_id' => 'nullable|exists:eventdetails,eID',
         ]);
 
         if ($validator->fails()) {
@@ -80,12 +82,12 @@ class EventController extends Controller
             $image = $request->file('eImage');
 
             // Create storage directory if it doesn't exist
-            if (!Storage::exists('public/events')) {
+            if (! Storage::exists('public/events')) {
                 Storage::makeDirectory('public/events');
             }
 
             // Generate unique filename with timestamp
-            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $filename = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
 
             // Store image in storage/app/public/events/
             $path = $image->storeAs('public/events', $filename);
@@ -98,8 +100,8 @@ class EventController extends Controller
             $event = Event::findOrFail($request->get('event_id'));
 
             // Delete old image if new image is uploaded
-            if ($request->hasFile('eImage') && $event->eImage && Storage::exists('public/events/' . $event->eImage)) {
-                Storage::delete('public/events/' . $event->eImage);
+            if ($request->hasFile('eImage') && $event->eImage && Storage::exists('public/events/'.$event->eImage)) {
+                Storage::delete('public/events/'.$event->eImage);
             }
 
             $event->update($data);
@@ -121,6 +123,7 @@ class EventController extends Controller
     {
         $event = Event::where('status', 1)->findOrFail($id);
         $latestEvent = Event::where('status', 1)->latest('dateFrom')->first();
+
         return view('frontend.event-details', compact('event', 'latestEvent'));
     }
 
@@ -132,8 +135,8 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         // Delete image if it exists
-        if ($event->eImage && Storage::exists('public/events/' . $event->eImage)) {
-            Storage::delete('public/events/' . $event->eImage);
+        if ($event->eImage && Storage::exists('public/events/'.$event->eImage)) {
+            Storage::delete('public/events/'.$event->eImage);
         }
 
         $event->delete();
