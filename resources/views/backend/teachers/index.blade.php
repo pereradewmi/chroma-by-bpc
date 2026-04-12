@@ -50,7 +50,20 @@
                                 @forelse($teachers as $teacher)
                                     <tr>
                                         <td>{{ ($teachers->firstItem() ?? 1) + $loop->index }}</td>
-                                        <td>{{ $teacher->tFName }} {{ $teacher->tLName }}</td>
+                                        <td>
+                                            <a
+                                                href="javascript:void(0)"
+                                                class="teacher-name-link font-weight-600"
+                                                data-name="{{ trim(($teacher->tFName ?? '') . ' ' . ($teacher->tLName ?? '')) }}"
+                                                data-id="{{ $teacher->T_ID }}"
+                                                data-mobile="{{ $teacher->tMobileNo }}"
+                                                data-address="{{ $teacher->tAddress }}"
+                                                data-type="{{ $teacher->teacherType === 'instructor' ? 'Instructor' : 'Class Teacher' }}"
+                                                data-status="{{ (int) $teacher->Active === 1 ? 'Active' : ((int) $teacher->Active === 0 ? 'Inactive' : 'Deleted') }}"
+                                            >
+                                                {{ $teacher->tFName }} {{ $teacher->tLName }}
+                                            </a>
+                                        </td>
                                         <td>{{ $teacher->tMobileNo }}</td>
                                         <td>{{ $teacher->teacherType === 'instructor' ? 'Instructor' : 'Class Teacher' }}</td>
                                         {{-- <td>
@@ -117,6 +130,29 @@
         </div>
     </div>
 
+    <div class="modal fade" id="teacherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="teacherDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teacherDetailsModalLabel">Teacher Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><strong>Name:</strong> <span id="teacher-detail-name">-</span></div>
+                        <div class="col-md-6 mb-2"><strong>Teacher ID:</strong> <span id="teacher-detail-id">-</span></div>
+                        <div class="col-md-6 mb-2"><strong>Teacher Type:</strong> <span id="teacher-detail-type">-</span></div>
+                        <div class="col-md-6 mb-2"><strong>Status:</strong> <span id="teacher-detail-status">-</span></div>
+                        <div class="col-md-6 mb-2"><strong>Mobile Number:</strong> <span id="teacher-detail-mobile">-</span></div>
+                        <div class="col-12 mb-2"><strong>Address:</strong> <span id="teacher-detail-address">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
         .status-switch {
             position: relative;
@@ -161,6 +197,10 @@
 
         .status-switch input:checked + .status-slider:before {
             transform: translateX(10px);
+        }
+
+        .teacher-name-link {
+            cursor: pointer;
         }
     </style>
 
@@ -239,6 +279,41 @@
 
             window.addEventListener('popstate', function () {
                 loadTeachers(window.location.href, false);
+            });
+
+            document.addEventListener('click', function (event) {
+                const link = event.target.closest('.teacher-name-link');
+
+                if (!link) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                const teacher = {
+                    name: link.getAttribute('data-name') || '',
+                    id: link.getAttribute('data-id') || '',
+                    mobile: link.getAttribute('data-mobile') || '',
+                    address: link.getAttribute('data-address') || '',
+                    type: link.getAttribute('data-type') || '',
+                    status: link.getAttribute('data-status') || ''
+                };
+
+                const setText = function (id, value) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = value ? String(value) : '-';
+                    }
+                };
+
+                setText('teacher-detail-name', teacher.name);
+                setText('teacher-detail-id', teacher.id);
+                setText('teacher-detail-type', teacher.type);
+                setText('teacher-detail-status', teacher.status);
+                setText('teacher-detail-mobile', teacher.mobile);
+                setText('teacher-detail-address', teacher.address);
+
+                $('#teacherDetailsModal').modal('show');
             });
         })();
     </script>
