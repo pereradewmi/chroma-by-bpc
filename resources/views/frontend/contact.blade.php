@@ -1,7 +1,6 @@
 @extends("frontend.components.layout")
-@section("title", "Chroma By BPC")
-@section("description", "Discover our modern campus facilities at Chroma By BPC. Explore academic buildings, student services, and recreational spaces.")
-@section("keywords", "Chroma By BPC, campus facilities, academic buildings, student services, recreational spaces")
+@section("description", "Discover our modern campus facilities at CHROMA LIFESTYLE AND CONCEPT STORE. Explore academic buildings, student services, and recreational spaces.")
+@section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, campus facilities, academic buildings, student services, recreational spaces")
 @section("main")
   <main class="main">
 

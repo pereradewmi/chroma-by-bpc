@@ -13,9 +13,8 @@
                             <img src="{{ asset('front-assets/img/logo.png') }}"
                                  alt="Chroma Logo"
                                  class="logo-img mb-3">
+                            <br>
 
-                            <!-- Professional Title -->
-                            <h3 class="text-primary font-weight-bold mb-2">Chroma By BPC</h3>
                             <small class="text-muted">Admin Portal</small>
                         </div>
                     </div>

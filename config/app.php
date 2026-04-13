@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    'name' => env('APP_NAME', 'Chroma By BPC'),
+    'name' => env('APP_NAME', 'CHROMA LIFESTYLE AND CONCEPT STORE'),
 
     'env' => env('APP_ENV', 'production'),
 

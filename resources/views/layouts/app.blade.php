@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ 'Chroma by BPC'}}</title>
+        <title>{{ 'CHROMA LIFESTYLE AND CONCEPT STORE'}}</title>
         <!-- Favicon -->
         <link href="{{ asset('front-assets/img/logo.png') }}" rel="icon" type="image/png">
         <!-- Fonts -->

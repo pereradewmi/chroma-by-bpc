@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ 'Chroma By BPC ' }}</title>
+        <title>{{ 'CHROMA LIFESTYLE AND CONCEPT STORE ' }}</title>
         <!-- Favicon -->
         <link href="{{ asset('front-assets/img/logo.png') }}" rel="icon" type="image/png">
         <!-- Fonts -->
@@ -84,7 +84,7 @@
             }
 
             /*--------------------------------------------------------------
-            # Chroma By BPC - Navy Blue Theme
+            # Chroma By BCHROMA LIFESTYLE AND CONCEPT STORE  - Navy Blue Theme
             =================================================================*/
 
             /* Primary Color Override - Navy Blue */
