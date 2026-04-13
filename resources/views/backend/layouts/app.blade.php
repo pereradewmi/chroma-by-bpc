@@ -403,6 +403,7 @@
 
         <script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('argon') }}/js/parsley.min.js"></script>
         
         <!-- SweetAlert2 for better alerts -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -413,6 +414,35 @@
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
 
         <script>
+            function initBackendParsley(context) {
+                var $scope = context ? $(context) : $(document);
+
+                $scope.find('form').not('#logout-form').each(function () {
+                    var $form = $(this);
+                    if (!$form.attr('data-parsley-validate')) {
+                        $form.attr('data-parsley-validate', '');
+                    }
+
+                    if (!$form.data('Parsley')) {
+                        $form.parsley({
+                            trigger: 'change',
+                            errorClass: 'is-invalid',
+                            successClass: 'is-valid',
+                            errorsWrapper: '<ul class="parsley-errors-list list-unstyled mt-1 mb-0"></ul>',
+                            errorTemplate: '<li class="text-danger small"></li>'
+                        });
+                    }
+                });
+            }
+
+            $(function () {
+                initBackendParsley(document);
+
+                $(document).on('shown.bs.modal', function (event) {
+                    initBackendParsley(event.target);
+                });
+            });
+
             function confirmLogout() {
                 Swal.fire({
                     title: 'Are you sure?',

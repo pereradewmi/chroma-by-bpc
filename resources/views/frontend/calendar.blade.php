@@ -311,6 +311,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
+    const bookingModalEl = document.getElementById('bookingModal');
+    const viewBookingModalEl = document.getElementById('viewBookingModal');
     
     if (!calendarEl) {
         console.error('Calendar element not found!');
@@ -364,6 +366,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     calendar.render();
+
+    // Keep one instance per modal and clean any stale backdrop/body lock state on close.
+    if (bookingModalEl) {
+        window.bookingModalInstance = bootstrap.Modal.getOrCreateInstance(bookingModalEl);
+        bookingModalEl.addEventListener('hidden.bs.modal', cleanupModalArtifacts);
+    }
+
+    if (viewBookingModalEl) {
+        window.viewBookingModalInstance = bootstrap.Modal.getOrCreateInstance(viewBookingModalEl);
+        viewBookingModalEl.addEventListener('hidden.bs.modal', cleanupModalArtifacts);
+    }
     
     // Make calendar globally accessible for refreshing
     window.calendarInstance = calendar;
@@ -377,6 +390,14 @@ document.addEventListener('DOMContentLoaded', function() {
         loadStats();
     }, 30000);
 });
+
+function cleanupModalArtifacts() {
+    document.body.classList.remove('modal-open');
+    document.body.style.removeProperty('padding-right');
+    document.querySelectorAll('.modal-backdrop').forEach(function(backdrop) {
+        backdrop.remove();
+    });
+}
 
 function showBookingModal(selectedDate) {
     // Check if selected date is in the past or today
@@ -415,7 +436,12 @@ function showBookingModal(selectedDate) {
     document.getElementById('booking_date').value = selectedDate; // Reset after form reset
     document.getElementById('bStart_datetime').value = startDateTime;
     
-    const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+    const bookingModalEl = document.getElementById('bookingModal');
+    if (!bookingModalEl) {
+        return;
+    }
+
+    const modal = bootstrap.Modal.getOrCreateInstance(bookingModalEl);
     modal.show();
 }
 
@@ -498,7 +524,11 @@ function submitBooking() {
             });
             
             // Close modal and refresh calendar events
-            bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
+            const bookingModalEl = document.getElementById('bookingModal');
+            const bookingModal = bookingModalEl ? bootstrap.Modal.getOrCreateInstance(bookingModalEl) : null;
+            if (bookingModal) {
+                bookingModal.hide();
+            }
             
             // Refresh calendar events instead of full page reload
             if (window.calendarInstance) {
@@ -631,7 +661,12 @@ function showAllAppointmentsModal(clickedDateTime) {
             <div class="text-center text-muted py-4">No appointments found.</div>
         `;
         
-        const modal = new bootstrap.Modal(document.getElementById('viewBookingModal'));
+        const viewBookingModalEl = document.getElementById('viewBookingModal');
+        if (!viewBookingModalEl) {
+            return;
+        }
+
+        const modal = bootstrap.Modal.getOrCreateInstance(viewBookingModalEl);
         modal.show();
     })
     .catch(error => {

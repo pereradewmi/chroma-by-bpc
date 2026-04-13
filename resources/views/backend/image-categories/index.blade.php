@@ -63,10 +63,27 @@
                                                 <span class="badge badge-danger">Deleted</span>
                                             @endif
                                         </td> --}}
-                                        <td>
-                                            <a href="{{ route('admin.image-categories.form', $category->id) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
-                                                <i class="fas fa-edit" aria-hidden="true"></i>
-                                            </a>
+                                        <td class="image-category-actions-cell">
+                                            <div class="image-category-action-group">
+                                                <a href="{{ route('admin.image-categories.form', $category->id) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
+                                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                                </a>
+                                                @if((int) ($category->status ?? 1) !== 2)
+                                                    <form action="{{ route('admin.image-categories.status', $category->id) }}" method="POST" class="btn btn-sm text-primary d-inline-block align-middle ml-1" title="Toggle Active/Inactive">
+                                                        @csrf
+                                                        <input type="hidden" name="status" value="{{ (int) ($category->status ?? 1) === 1 ? 1 : 0 }}">
+                                                        <label class="status-switch mb-0" for="image-category-status-{{ $category->id }}">
+                                                            <input
+                                                                type="checkbox"
+                                                                id="image-category-status-{{ $category->id }}"
+                                                                {{ (int) ($category->status ?? 1) === 1 ? 'checked' : '' }}
+                                                                onchange="this.form.querySelector('input[name=status]').value = this.checked ? 1 : 0; this.form.submit();"
+                                                            >
+                                                            <span class="status-slider"></span>
+                                                        </label>
+                                                    </form>
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
@@ -174,4 +191,55 @@
             });
         })();
     </script>
+
+    <style>
+        .status-switch {
+            position: relative;
+            display: inline-block;
+            width: 24px;
+            height: 14px;
+            vertical-align: middle;
+        }
+
+        .status-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .status-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #e9ecf3;
+            transition: 0.2s;
+            border-radius: 22px;
+            border: 1px solid #d2d8e5;
+        }
+
+        .status-slider:before {
+            position: absolute;
+            content: "";
+            height: 10px;
+            width: 10px;
+            left: 2px;
+            top: 2px;
+            background-color: #fff;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
+
+        .status-switch input:checked + .status-slider {
+            background-color: #04415f;
+            border-color: #04415f;
+        }
+
+        .status-switch input:checked + .status-slider:before {
+            transform: translateX(10px);
+        }
+
+        .teacher-name-link {
+            cursor: pointer;
+        }
+    </style>
 @endsection
