@@ -9,11 +9,21 @@
                 <div class="card shadow">
                     <div class="card-header border-0">
                         <div class="row align-items-center">
-                            <div class="col">
+                            <div class="col-4 d-flex align-items-center">
                                 <h3 class="mb-0">Instructor Payments</h3>
                             </div>
-                            <div class="col text-right">
-                                <a href="{{ route('instructor-payments.form') }}" class="btn btn-sm btn-primary">Add New Payment</a>
+                            <div class="col-4 d-flex justify-content-center">
+                                <form id="instructor-payments-search-form" class="d-flex align-items-center" role="search" method="GET" action="{{ route('instructor-payments.index') }}">
+                                    <input class="form-control form-control-sm" style="width: 230px;" type="search" name="search" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-sm btn-primary ml-3" type="submit" title="Search">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-4 text-right">
+                                <a href="{{ route('instructor-payments.form') }}" class="btn btn-sm btn-primary" title="Add Payment">
+                                    <i class="fas fa-plus"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -28,12 +38,7 @@
                         </div>
                     @endif
 
-                    <div class="px-4 pb-3 d-flex justify-content-end">
-                        <form id="instructor-payments-search-form" class="m-2 d-flex align-items-center flex-nowrap justify-content-end" role="search" method="GET" action="{{ route('instructor-payments.index') }}">
-                            <input class="form-control form-control-sm mr-2" style="width: 220px;" type="search" name="search" value="{{ request('search') }}" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-sm btn-primary mr-2" type="submit">Search</button>
-                        </form>
-                    </div>
+                    <div class="px-4 pb-3"></div>
 
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
