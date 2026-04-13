@@ -1,6 +1,6 @@
 @extends("frontend.components.layout")
-@section("description", "Discover our modern campus facilities at Chroma By BPC. Explore academic buildings, student services, and recreational spaces.")
-@section("keywords", "Chroma By BPC, campus facilities, academic buildings, student services, recreational spaces")
+@section("description", "Discover our modern campus facilities at CHROMA LIFESTYLE AND CONCEPT STORE. Explore academic buildings, student services, and recreational spaces.")
+@section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, campus facilities, academic buildings, student services, recreational spaces")
 @section("main")
   <main class="main">
     <section id="news-hero" class="news-hero section">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="post-author">
                       <span>by</span>
-                      <a href="https://www.youtube.com/@chromabybpc">Chroma By BPC</a>
+                      <a href="https://www.youtube.com/@chromabybpc">CHROMA LIFESTYLE AND CONCEPT STORE</a>
                     </div>
                   </div>
                 </div>
@@ -88,7 +88,7 @@
                 <div class="d-flex align-items-center">
                   <img src="{{ asset('front-assets/img/logo.png') }}" alt="Author" class="img-fluid post-author-img flex-shrink-0">
                   <div class="post-meta">
-                    <p class="post-author">Chroma By BPC</p>
+                    <p class="post-author">CHROMA LIFESTYLE AND CONCEPT STORE</p>
                     <p class="post-date">
                       <time datetime="{{ optional($newsPostSession->created_at)->format('Y-m-d') ?? now()->format('Y-m-d') }}">{{ optional($newsPostSession->created_at)->format('M j, Y') ?? now()->format('M j, Y') }}</time>
                     </p>

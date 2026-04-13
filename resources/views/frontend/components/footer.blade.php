@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col-lg-4 footer-about">
           <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-            <img src="{{ asset('front-assets/img/logo.png') }}" alt="Chroma by BPC" >
+            <img src="{{ asset('front-assets/img/logo.png') }}" alt="CHROMA LIFESTYLE AND CONCEPT STORE" >
           </a>
           <div class="footer-contact pt-3">
             <p><strong>Phone :</strong> <span>+94 76 661 3376</span></p>
