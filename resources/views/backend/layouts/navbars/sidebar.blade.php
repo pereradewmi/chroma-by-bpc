@@ -88,17 +88,17 @@
                 </li>
                 <div class="collapse {{ $paymentsOpen ? 'show' : '' }}" id="paymentsMenu">
                     <ul class="navbar-nav px-3">
-                        <li class="nav-item pl-4">
-                            <a class="nav-link {{ str_contains(Route::currentRouteName(), 'payments.') ? 'active' : '' }}" href="{{ route('payments.index') }}">
+                        <li class="nav-item pl-4 m-1">
+                            <a class="nav-link {{ str_contains(Route::currentRouteName(), 'payments.') && !str_contains(Route::currentRouteName(), 'teacher-') && !str_contains(Route::currentRouteName(), 'instructor-') ? 'active' : '' }}" href="{{ route('payments.index') }}">
                                 {{ __('Student') }}
                             </a>
                         </li>
-                        <li class="nav-item pl-4">
+                        <li class="nav-item pl-4 m-1">
                             <a class="nav-link {{ str_contains(Route::currentRouteName(), 'teacher-payments.') ? 'active' : '' }}" href="{{ route('teacher-payments.index') }}">
                                 {{ __('Teacher') }}
                             </a>
                         </li>
-                        <li class="nav-item pl-4">
+                        <li class="nav-item pl-4 m-1">
                             <a class="nav-link {{ str_contains(Route::currentRouteName(), 'instructor-payments.') ? 'active' : '' }}" href="{{ route('instructor-payments.index') }}">
                                 {{ __('Instructor') }}
                             </a>
@@ -120,12 +120,12 @@
                 </li>
                 <div class="collapse {{ $reportsOpen ? 'show' : '' }}" id="reportsMenu">
                     <ul class="navbar-nav px-3">
-                        <li class="nav-item pl-4">
+                        <li class="nav-item pl-4 m-1">
                             <a class="nav-link {{ Route::currentRouteName() === 'reports.index' ? 'active' : '' }}" href="{{ route('reports.index') }}">
                                 {{ __('Booking') }}
                             </a>
                         </li>
-                        <li class="nav-item pl-4">
+                        <li class="nav-item pl-4 m-1">
                             <a class="nav-link {{ Route::currentRouteName() === 'reports.user-payments' ? 'active' : '' }}" href="{{ route('reports.user-payments') }}">
                                 {{ __('Users') }}
                             </a>
