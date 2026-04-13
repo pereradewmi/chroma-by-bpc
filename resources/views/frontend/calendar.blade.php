@@ -176,8 +176,6 @@
 </style>
 @endpush
 
-@section('title', 'Chroma By BPC')
-
 @section('main')
 
 <main class="main calendar-page">

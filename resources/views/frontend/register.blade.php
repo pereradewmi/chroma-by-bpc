@@ -88,8 +88,6 @@
 </style>
 @endpush
 
-@section('title', 'Student Registration')
-
 @section('main')
 <main class="main register-page">
     <section class="register-hero">

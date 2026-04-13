@@ -1,5 +1,4 @@
 @extends("frontend.components.layout")
-@section("title", "Chroma By BPC")
 @section("description", "{{ $event->eDescription }}")
 @section("keywords", "Chroma By BPC, events, {{ $event->eName }}, event details, workshops, community gatherings, activities")
 @section("main")

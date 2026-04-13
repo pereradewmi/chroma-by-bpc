@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>@yield('title', 'Chroma By BPC')</title>
+  <title>@yield('title', 'CHROMA LIFESTYLE AND CONCEPT STORE')</title>
   <meta name="description" content="@yield('description', '')">
   <meta name="keywords" content="@yield('keywords', '')">
 

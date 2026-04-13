@@ -1,5 +1,4 @@
 @extends("frontend.components.layout")
-@section("title", "Chroma By BPC")
 @section("description", "Welcome to Chroma By BPC, your premier destination for innovative education and transformative learning experiences. Explore our diverse programs, expert faculty, and vibrant campus life.")
 @section("keywords", "Chroma By BPC, education, learning, programs, faculty, campus life, innovative education, transformative learning")
 @section("main")
