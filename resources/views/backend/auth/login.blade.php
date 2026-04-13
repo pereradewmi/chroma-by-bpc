@@ -13,7 +13,8 @@
                             <img src="{{ asset('front-assets/img/logo.png') }}"
                                  alt="Chroma Logo"
                                  class="logo-img mb-3">
-                            
+                            <br>
+
                             <small class="text-muted">Admin Portal</small>
                         </div>
                     </div>
