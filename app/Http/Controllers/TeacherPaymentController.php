@@ -6,6 +6,7 @@ use App\Models\TeacherPayment;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TeacherPaymentController extends Controller
 {
@@ -105,6 +106,13 @@ class TeacherPaymentController extends Controller
     public function receipt($id)
     {
         $payment = TeacherPayment::with(['teacher'])->findOrFail($id);
+        if (request()->query('download') == 1) {
+            $pdf = Pdf::loadView('backend.payments.teacher-receipt', compact('payment'));
+
+            $fileName = 'teacher-receipt-' . ($payment->paymentID ?? $payment->id) . '.pdf';
+
+            return $pdf->download($fileName);
+        }
 
         return view('backend.payments.teacher-receipt', compact('payment'));
     }

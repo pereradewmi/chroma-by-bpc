@@ -13,11 +13,7 @@
                         <div class="col">
                             <h3 class="mb-0">{{ __('Filter Reports') }}</h3>
                         </div>
-                        <div class="col text-right">
-                            <button type="button" class="btn btn-sm btn-primary" onclick="resetFilters()">
-                                <i class="fas fa-refresh"></i> {{ __('Reset Filters') }}
-                            </button>
-                        </div>
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -70,32 +66,12 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="col-md-3 col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-control-label">{{ __('Event Category') }}</label>
-                                    <select class="form-control" name="event_category" id="event_category">
-                                        <option value="all">{{ __('All Categories') }}</option>
-                                        <!-- Dynamic options will be loaded here -->
-                                    </select>
+                            <div class="col-md-3 col-sm-6"></div>
+                              <div class="col-md-6 d-flex align-items-end justify-content-end mb-3">
+                                    <button type="submit" class="btn btn-primary mr-2">Apply Filters</button>
+                                    <a href="{{ route('reports.index') }}" class="btn btn-secondary">Reset</a>
                                 </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-control-label">Search</label>
-                                    <input class="form-control" type="search" name="search" value="{{ request('search') }}" placeholder="Search bookings">
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-6 pt-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-filter mr-1"></i>{{ __('Apply Filters') }}
-                                </button>
-                                <button type="button" class="btn btn-success" onclick="downloadReport('excel')">
-                                    <i class="fas fa-file-excel mr-1"></i>{{ __('Download') }}
-                                </button>
-                            </div>
 
-                            
                         </div>
                     </form>
                 </div>

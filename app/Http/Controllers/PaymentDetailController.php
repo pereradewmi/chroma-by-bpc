@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\PaymentDetail;
 use App\Models\Student;
 use App\Models\ClassRoom;
-use App\Mail\PaymentNotificationMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use App\Mail\PaymentNotificationMail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentDetailController extends Controller
 {
@@ -248,6 +250,14 @@ class PaymentDetailController extends Controller
     public function receipt($id)
     {
         $payment = PaymentDetail::with(['student', 'classRoom'])->findOrFail($id);
+
+        if (request()->query('download') == 1) {
+            $pdf = Pdf::loadView('backend.payments.student-receipt', compact('payment'));
+
+            $fileName = 'student-receipt-' . ($payment->paymentID ?? $payment->id) . '.pdf';
+
+            return $pdf->download($fileName);
+        }
 
         return view('backend.payments.student-receipt', compact('payment'));
     }
