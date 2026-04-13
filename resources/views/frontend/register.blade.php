@@ -99,7 +99,7 @@
                             <i class="bi bi-mortarboard-fill"></i>
                             Student Registration
                         </div>
-                        <h1 class="h3 mb-3">Join Chroma By BPC</h1>
+                        <h1 class="h3 mb-3">Join CHROMA LIFESTYLE AND CONCEPT STORE</h1>
                         <p class="mb-4">Register your student details online and select the classes you want to enroll in.</p>
                         <div class="mb-3">
                             <strong>What to prepare</strong>

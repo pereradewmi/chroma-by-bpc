@@ -1,6 +1,6 @@
 @extends("frontend.components.layout")
 @section("description", "{{ $event->eDescription }}")
-@section("keywords", "Chroma By BPC, events, {{ $event->eName }}, event details, workshops, community gatherings, activities")
+@section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, events, {{ $event->eName }}, event details, workshops, community gatherings, activities")
 @section("main")
 
   <main class="main">

@@ -132,7 +132,7 @@
             This is a system-generated receipt for your records.
         </p>
         <p class="pdf-muted">
-            Processed by Chroma by BPC.
+            Processed by CHROMA.
         </p>
     @else
         <div class="card receipt-card">
@@ -188,7 +188,7 @@
                 </p>
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">Processed by Chroma by BPC.</small>
+                    <small class="text-muted">Processed by CHROMA.</small>
                     @if(!request()->has('download'))
                         <a href="{{ route('instructor-payments.receipt', ['id' => $payment->paymentID]) }}?download=1" class="btn btn-sm btn-primary no-print">Download PDF</a>
                     @endif
