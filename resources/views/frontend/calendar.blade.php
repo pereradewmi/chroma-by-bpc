@@ -342,6 +342,11 @@ document.addEventListener('DOMContentLoaded', function() {
         select: function(info) {
             showBookingModal(info.startStr);
         },
+
+        // Mobile-friendly single tap on a date cell
+        dateClick: function(info) {
+            showBookingModal(info.dateStr);
+        },
         
         // Handle event click
         eventClick: function(info) {
@@ -652,10 +657,15 @@ function loadStats() {
     fetch('{{ route("Appointment.stats") }}')
     .then(response => response.json())
     .then(stats => {
-        document.getElementById('totalBookings').textContent = stats.total;
-        document.getElementById('pendingBookings').textContent = stats.pending;
-        document.getElementById('approvedBookings').textContent = stats.approved;
-        document.getElementById('todayBookings').textContent = stats.today;
+        const totalBookings = document.getElementById('totalBookings');
+        const pendingBookings = document.getElementById('pendingBookings');
+        const approvedBookings = document.getElementById('approvedBookings');
+        const todayBookings = document.getElementById('todayBookings');
+
+        if (totalBookings) totalBookings.textContent = stats.total;
+        if (pendingBookings) pendingBookings.textContent = stats.pending;
+        if (approvedBookings) approvedBookings.textContent = stats.approved;
+        if (todayBookings) todayBookings.textContent = stats.today;
     })
     .catch(error => {
         console.error('Error loading stats:', error);
@@ -663,34 +673,40 @@ function loadStats() {
 }
 
 // Auto-calculate end time based on duration
-document.getElementById('duration_hours').addEventListener('change', function() {
-    const startTime = document.getElementById('start_time').value;
-    const duration = parseInt(this.value);
-    
-    if (startTime && duration) {
-        const start = new Date('2000-01-01T' + startTime);
-        start.setHours(start.getHours() + duration);
-        
-        const endTime = start.toTimeString().substr(0, 5);
-        document.getElementById('end_time').value = endTime;
-    }
-});
+const durationHoursField = document.getElementById('duration_hours');
+const startTimeField = document.getElementById('start_time');
+const endTimeField = document.getElementById('end_time');
 
-// Auto-calculate duration based on end time
-document.getElementById('end_time').addEventListener('change', function() {
-    const startTime = document.getElementById('start_time').value;
-    const endTime = this.value;
-    
-    if (startTime && endTime) {
-        const start = new Date('2000-01-01T' + startTime);
-        const end = new Date('2000-01-01T' + endTime);
-        
-        if (end > start) {
-            const duration = (end - start) / (1000 * 60 * 60);
-            document.getElementById('duration_hours').value = Math.round(duration);
+if (durationHoursField && startTimeField && endTimeField) {
+    durationHoursField.addEventListener('change', function() {
+        const startTime = startTimeField.value;
+        const duration = parseInt(this.value);
+
+        if (startTime && duration) {
+            const start = new Date('2000-01-01T' + startTime);
+            start.setHours(start.getHours() + duration);
+
+            const endTime = start.toTimeString().substr(0, 5);
+            endTimeField.value = endTime;
         }
-    }
-});
+    });
+
+    // Auto-calculate duration based on end time
+    endTimeField.addEventListener('change', function() {
+        const startTime = startTimeField.value;
+        const endTime = this.value;
+
+        if (startTime && endTime) {
+            const start = new Date('2000-01-01T' + startTime);
+            const end = new Date('2000-01-01T' + endTime);
+
+            if (end > start) {
+                const duration = (end - start) / (1000 * 60 * 60);
+                durationHoursField.value = Math.round(duration);
+            }
+        }
+    });
+}
 </script>
 
 @endsection

@@ -57,6 +57,10 @@
           </div>
         </div> --}}
 
+        <div class="d-flex justify-content-end mb-4" data-aos="fade-up" data-aos-delay="150">
+          <a href="{{ route('frontend.register') }}" style="display:inline-block; padding:10px 16px; border-radius:8px; background: linear-gradient(135deg, #001f3f 0%, #003d82 100%); color:#fff; font-weight:600; text-decoration:none;">Student Registration</a>
+        </div>
+
         <!-- Facilities Categories Grid -->
         <div class="facilities-grid" data-aos="fade-up" data-aos-delay="200">
           @forelse($classes as $index => $class)

@@ -279,7 +279,7 @@
             }
 
             .card-footer .pagination .page-link {
-                color: #0d6efd;
+                color: #04415f;
                 background-color: #ffffff;
                 border: 1px solid #dee2e6;
                 border-radius: 4px !important;
@@ -290,8 +290,8 @@
 
             .card-footer .pagination .page-item.active .page-link {
                 color: #ffffff;
-                background-color: #0d6efd;
-                border-color: #0d6efd;
+                background-color: #04415f;
+                border-color: #04415f;
                 font-weight: 600;
             }
 
@@ -303,8 +303,8 @@
             }
 
             .card-footer .pagination .page-link:hover {
-                color: #0d6efd;
-                border-color: #0d6efd;
+                color: #04415f;
+                border-color: #04415f;
             }
 
             .card-footer .pagination .page-link:focus {
