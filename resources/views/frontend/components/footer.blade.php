@@ -41,6 +41,6 @@
       </div>
     </div>
     <div class="container copyright text-center mt-3">
-      <p style="margin: 0;">© <span>Copyright</span> <strong class="px-1 sitename">Chroma By BPC</strong> <span>All Rights Reserved</span></p>
+      <p style="margin: 0;">© <span>Copyright</span> <strong class="px-1 sitename">CHROMA</strong> <span>All Rights Reserved</span></p>
     </div>
 </footer>
