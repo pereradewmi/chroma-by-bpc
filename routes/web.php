@@ -238,6 +238,7 @@ Route::middleware('check.login')->prefix('admin/image-categories')->name('admin.
     Route::get('/', [ImageCategoryController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [ImageCategoryController::class, 'form'])->name('form');
     Route::post('/store', [ImageCategoryController::class, 'store'])->name('store');
+    Route::post('/{id}/status', [ImageCategoryController::class, 'updateStatus'])->name('status');
     Route::delete('/{id}', [ImageCategoryController::class, 'destroy'])->name('destroy');
 });
 

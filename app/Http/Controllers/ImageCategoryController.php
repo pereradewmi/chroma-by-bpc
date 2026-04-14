@@ -95,6 +95,25 @@ class ImageCategoryController extends Controller
             ->with('success', $message);
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $category = ImageCategory::findOrFail($id);
+        $category->update(['status' => (int) $request->status]);
+
+        return redirect()->route('admin.image-categories.index')
+            ->with('success', 'Image category status updated successfully!');
+    }
+
     /**
      * Soft delete by setting status = 2
      */

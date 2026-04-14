@@ -3,6 +3,15 @@
 @section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, campus facilities, academic buildings, student services, recreational spaces")
 @section("main")
 
+<style>
+  @media (max-width: 991.98px) {
+    #gallery-dynamic-section .category-card-item .category-overlay,
+    #gallery-dynamic-section .category-card-item .category-name {
+      opacity: 1 !important;
+    }
+  }
+</style>
+
 <main class="main">
 
     <!-- Students Life Section -->
@@ -26,7 +35,7 @@
                   @endphp
                   <div style="width: 100%; height: 100%; background: url('{{ $bgImage }}') center/cover no-repeat; position: relative; display: flex; align-items: center; justify-content: center;">
                     <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s ease;" class="category-overlay"></div>
-                    <h5 class="text-white text-center fw-bold" style="position: relative; z-index: 2; opacity: 0; transition: opacity 0.3s ease; font-size: 1.5rem;">
+                    <h5 class="text-white text-center fw-bold category-name" style="position: relative; z-index: 2; opacity: 0; transition: opacity 0.3s ease; font-size: 1.5rem;">
                       {{ $category->name }}
                     </h5>
                   </div>
