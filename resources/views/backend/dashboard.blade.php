@@ -3,10 +3,8 @@
 @section('content')
     @include('backend.layouts.headers.cards')
     
-    <!-- Page content -->
     <div class="container-fluid mt--4 mb-4">
         <div class="row">
-            <!-- Calendar Section -->
             <div class="col-xl-9 col-lg-9 mb-4">
                 <div class="card shadow h-100">
                     <div class="card-body p-4">
@@ -15,7 +13,6 @@
                 </div>
             </div>
 
-            <!-- Unpaid summaries -->
             <div class="col-xl-3 col-lg-3">
                 <div class="card shadow mb-4">
                     <div class="card-header border-0 pb-2">
@@ -85,17 +82,14 @@
                 </button>
             </div>
             <div class="modal-body" id="bookingDetails">
-                <!-- Booking details will be loaded here -->
             </div>
         </div>
     </div>
 </div>
 
 @push('js')
-<!-- FullCalendar CSS & JS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-<!-- SweetAlert2 for better alerts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -112,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth'
         },
         height: 600,
         aspectRatio: 1.8,
@@ -130,10 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: false,
         dayMaxEvents: true,
         
-        // Responsive behavior
         windowResizeDelay: 100,
-        
-        // Better styling
         themeSystem: 'bootstrap4',
         
         // Handle date selection
@@ -158,7 +149,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.render();
     
-    // Make calendar globally accessible for refreshing
     window.calendarInstance = calendar;
     
     // Load statistics
@@ -174,13 +164,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function showBookingModal(selectedDate) {
     document.getElementById('booking_date').value = selectedDate;
     
-    // Set default start datetime to selected date at current time
     const now = new Date();
     const startDateTime = selectedDate + 'T' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
     document.getElementById('bStart_datetime').value = startDateTime;
     
     document.getElementById('bookingForm').reset();
-    document.getElementById('booking_date').value = selectedDate; // Reset after form reset
+    document.getElementById('booking_date').value = selectedDate; 
     document.getElementById('bStart_datetime').value = startDateTime;
     
     $('#bookingModal').modal('show');
@@ -196,7 +185,6 @@ function submitBooking() {
         data[key] = value;
     });
     
-    // Show loading state
     const submitButton = document.getElementById('submitBooking');
     const originalText = submitButton.innerHTML;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Booking...';
@@ -224,7 +212,6 @@ function submitBooking() {
                 showConfirmButton: false
             });
             
-            // Close modal and refresh calendar events
             $('#bookingModal').modal('hide');
             
             // Refresh calendar events instead of full page reload
@@ -232,7 +219,6 @@ function submitBooking() {
                 window.calendarInstance.refetchEvents();
             }
             
-            // Also refresh statistics
             loadStats();
         } else {
             let errorMessage = data.message || 'An error occurred';
@@ -284,12 +270,11 @@ function showBookingDetails(bookingId) {
                     <p><strong>Customer:</strong> ${booking.customer_name}</p>
                     <p><strong>Phone:</strong> ${booking.phone_number}</p>
                     <p><strong>Email:</strong> ${booking.email || 'Not provided'}</p>
-                    <p><strong>People:</strong> ${booking.number_of_people}</p>
                     <p><strong>Status:</strong> ${statusBadge}</p>
                 </div>
             </div>
             ${booking.description ? `<div class="mt-3"><strong>Description:</strong><br>${booking.description}</div>` : ''}
-            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> $${booking.price}</div>` : ''}
+            ${booking.price ? `<div class="mt-2"><strong>Price:</strong> LKR ${booking.price}</div>` : ''}
         `;
         
         $('#viewBookingModal').modal('show');
@@ -398,7 +383,6 @@ if (document.getElementById('end_time')) {
     text-overflow: ellipsis;
 }
 
-/* .text-primary { color: #007bff !important; } */
 .text-success { color: #28a745 !important; }
 .text-warning { color: #ffc107 !important; }
 .text-info { color: #17a2b8 !important; }

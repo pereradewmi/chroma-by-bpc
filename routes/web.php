@@ -218,13 +218,6 @@ Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar
     Route::get('/bookings/{id}/logs', [BookingController::class, 'getBookingLogs'])->name('bookings.logs');
 });
 
-// Backend booking management
-Route::middleware('check.login')->prefix('admin/bookings')->name('admin.bookings.')->group(function () {
-    Route::get('/', function () {
-        return view('backend.bookings.index');
-    })->name('index');
-});
-
 Route::middleware('check.login')->prefix('admin/images')->name('admin.images.')->group(function () {
     Route::get('/', [ImageController::class, 'index'])->name('index');
     Route::get('/form/{id?}', [ImageController::class, 'form'])->name('form');

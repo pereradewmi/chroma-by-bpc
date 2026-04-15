@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-                right: 'dayGridMonth'
+            right: 'dayGridMonth'
         },
         height: 'auto',
         events: {

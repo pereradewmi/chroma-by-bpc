@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="card-body p-4 instructor-payment-form-compact">
-                        <form method="POST" action="{{ route('instructor-payments.store') }}">
+                        <form id="instructor_payment_form" method="POST" action="{{ route('instructor-payments.store') }}">
                             @csrf
 
                             <!-- First row: Instructor and Session -->
@@ -116,12 +116,32 @@
                                 <a href="{{ route('instructor-payments.index') }}" class="btn btn-secondary mr-2">
                                     Cancel
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" onclick="openInstructorPaymentConfirmModal()">
                                     Record Payment
                                 </button>
                             </div>
                         </form>
-                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructor Payment Confirm Modal -->
+    <div class="modal fade" id="instructorPaymentConfirmModal" tabindex="-1" role="dialog" aria-labelledby="instructorPaymentConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="instructorPaymentConfirmModalLabel">Confirm Instructor Payment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to record this instructor payment? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('instructor_payment_form').submit();">Yes, record payment</button>
                 </div>
             </div>
         </div>
@@ -136,4 +156,10 @@
             margin-bottom: 1rem !important;
         }
     </style>
+
+    <script>
+        function openInstructorPaymentConfirmModal() {
+            $('#instructorPaymentConfirmModal').modal('show');
+        }
+    </script>
 @endsection

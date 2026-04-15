@@ -1,16 +1,13 @@
 <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white d-flex flex-column" id="sidenav-main">
     <div class="container-fluid d-flex flex-column h-100 p-0">
-        <!-- Sidebar Header with Toggle -->
+
         <div class="navbar-brand-wrapper d-flex align-items-center justify-content-between p-3">
-            <!-- Brand -->
             <a class="navbar-brand pt-0 m-0 d-flex align-items-center" href="{{ route('dashboard') }}">
-                <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="Chroma Logo" style="max-height: 40px;">
-                {{-- <span class="ms-2 text-white font-weight-bold" style="font-size: 0.9rem;">Chroma</span> --}}
+                <img src="{{ asset('front-assets') }}/img/logo.png" class="navbar-brand-img" alt="Chroma Logo" style="max-height: 40px;">  
             </a>
             
         </div>
         
-        <!-- Mobile Toggler -->
         <button class="navbar-toggler d-md-none mx-3 mb-2" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

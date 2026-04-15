@@ -80,16 +80,6 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="card shadow">
-                    <!-- <div class="card-header bg-primary">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0 text-white">
-                                    <i class="fas fa-calendar-alt mr-2"></i>Booking Calendar
-                                </h3>
-                                <p class="text-white-50 mb-0">Click on a date to create new booking or click on existing events to view details</p>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="card-body p-0">
                         <div id="calendar"></div>
                     </div>
@@ -102,7 +92,7 @@
                             <i class="fas fa-exclamation-triangle mr-2"></i>Pending Review
                         </h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pending-reviews-body">
                         <div id="pendingBookingsList">
                             <p class="text-muted mb-0">
                                 <i class="fas fa-spinner fa-spin mr-2"></i>Loading...
@@ -475,10 +465,8 @@
 </style>
 
 @push('js')
-<!-- FullCalendar CSS & JS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-<!-- SweetAlert2 for better alerts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -500,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth'
         },
         height: 'auto',
         events: {
@@ -1037,7 +1025,7 @@ function loadPendingBookings() {
                 </p>
             `;
         } else {
-            let html = `<small class="text-muted">Recent private events needing review:</small><br>`;
+            let html = '';
 
             privateBookings.slice(0, 5).forEach(booking => {
                 const date = new Date(booking.start).toLocaleDateString();
@@ -1054,9 +1042,7 @@ function loadPendingBookings() {
                 `;
             });
 
-            if (privateBookings.length > 5) {
-                html += `<small class="text-muted mt-2 d-block">...and ${privateBookings.length - 5} more</small>`;
-            }
+
 
             pendingList.innerHTML = html;
         }
@@ -1329,6 +1315,11 @@ function viewBookingLogs() {
 /* Alert improvements */
 .alert {
     border-radius: 0.5rem;
+}
+
+.pending-reviews-body {
+    max-height: 350px;
+    overflow-y: auto;
 }
 </style>
 @endpush
