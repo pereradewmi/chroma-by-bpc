@@ -15,8 +15,10 @@ class ImageCategoryController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->get('search', ''));
+        $activeFilter = (string) $request->get('active', '1');
 
         $categories = ImageCategory::where('status', '!=', 2)
+            ->where('status', (int) $activeFilter)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('name', 'like', "%{$search}%")
@@ -27,7 +29,7 @@ class ImageCategoryController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('backend.image-categories.index', compact('categories'));
+        return view('backend.image-categories.index', compact('categories', 'activeFilter'));
     }
 
     /**

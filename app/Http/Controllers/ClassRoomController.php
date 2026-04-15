@@ -15,8 +15,10 @@ class ClassRoomController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->get('search', ''));
+        $activeFilter = (string) $request->get('active', '1');
 
         $classes = ClassRoom::where('status', '!=', 2)
+            ->where('status', (int) $activeFilter)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('cName', 'like', "%{$search}%")
@@ -28,7 +30,7 @@ class ClassRoomController extends Controller
             ->orderBy('cID', 'asc')
             ->paginate(10)
             ->withQueryString();
-        return view('backend.classes.index', compact('classes'));
+        return view('backend.classes.index', compact('classes', 'activeFilter'));
     }
 
     /**

@@ -15,8 +15,11 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->get('search', ''));
+        $activeFilter = (string) $request->get('active', '1');
 
-        $events = Event::when($search !== '', function ($query) use ($search) {
+        $events = Event::where('status', '!=', 2)
+            ->where('status', (int) $activeFilter)
+            ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('eName', 'like', "%{$search}%")
                         ->orWhere('eDescription', 'like', "%{$search}%")
@@ -26,7 +29,7 @@ class EventController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
-        return view('backend.events.index', compact('events'));
+        return view('backend.events.index', compact('events', 'activeFilter'));
     }
 
     /**

@@ -14,8 +14,10 @@ class TeacherController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->get('search', ''));
+        $activeFilter = (string) $request->get('active', '1');
 
         $teachers = Teacher::where('Active', '!=', 2)
+            ->where('Active', (int) $activeFilter)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('tFName', 'like', "%{$search}%")
@@ -28,7 +30,7 @@ class TeacherController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
-        return view('backend.teachers.index', compact('teachers'));
+        return view('backend.teachers.index', compact('teachers', 'activeFilter'));
     }
 
     /**
