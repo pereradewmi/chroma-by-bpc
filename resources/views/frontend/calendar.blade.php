@@ -1,9 +1,7 @@
 @extends('frontend.components.layout')
 
 @push('head-scripts')
-<!-- FullCalendar CSS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
-<!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
     .calendar-page {
@@ -303,9 +301,7 @@
 @endsection
 
 @section('scripts')
-<!-- FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-<!-- SweetAlert2 for better alerts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -325,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
             left: 'prev,next today',
             center: 'title',
                 right: 'dayGridMonth'
-                // right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         height: 'auto',
         events: {

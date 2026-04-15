@@ -4,9 +4,7 @@
 @section("main")
   <main class="main">
 
-    <!-- Contact Section -->
     <section id="contact" class="contact section">
-
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="contact-main-wrapper">
           <div class="map-wrapper">
@@ -58,8 +56,6 @@
 
             <div class="contact-form-container" data-aos="fade-up" data-aos-delay="400">
               <h3>Get in Touch</h3>
-              {{-- <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua consectetur adipiscing.</p> --}}
-
               <form action="{{ route('frontend.contact.send') }}" method="post">
                 @csrf
                 <div class="row php-email-form">
@@ -103,19 +99,13 @@
                   <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%); border: none; padding: 12px 40px; font-size: 1rem; font-weight: 600; border-radius: 8px; transition: all 0.3s ease;">
                     <i class="fas fa-paper-plane me-2"></i>Send Message
                   </button>
-                  {{-- <div class="social-links">
-                    <a href="#"><i class="bi bi-twitter"></i></a>
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                  </div> --}}
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-    </section><!-- /Contact Section -->
+    </section>
 
   </main>
 
