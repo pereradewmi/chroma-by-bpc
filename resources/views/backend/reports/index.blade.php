@@ -101,7 +101,7 @@
                     <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">No</th>
                                 <th scope="col">{{ __('Name') }}</th>
                                 <th scope="col">{{ __('Contact') }}</th>
                                 <th scope="col">{{ __('Booking Date') }}</th>
@@ -115,7 +115,7 @@
                         <tbody>
                             @forelse($bookings as $booking)
                             <tr>
-                                <td>{{ $booking->booking_ID }}</td>
+                                <td>{{ ($bookings->firstItem() ?? 1) + $loop->index }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div>

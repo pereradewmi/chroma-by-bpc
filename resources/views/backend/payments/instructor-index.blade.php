@@ -38,13 +38,11 @@
                         </div>
                     @endif
 
-                    <div class="px-4 pb-3"></div>
-
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Payment ID</th>
+                                    <th scope="col">No</th>
                                     <th scope="col">Instructor</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Sessions</th>
@@ -57,7 +55,7 @@
                             <tbody id="instructor-payments-table-body">
                                 @forelse($payments as $payment)
                                     <tr>
-                                        <td>{{ $payment->paymentID }}</td>
+                                        <td>{{ ($payments->firstItem() ?? 1) + $loop->index }}</td>                                
                                         <td>
                                             <div class="media align-items-center">
                                                 <div class="media-body">
@@ -189,7 +187,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#instructor-payments-pagination a.page-link');
+                const pageLink = event.target.closest('#instructor-payments-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;

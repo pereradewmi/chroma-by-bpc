@@ -14,14 +14,11 @@
 
 <main class="main">
 
-    <!-- Students Life Section -->
     <section id="students-life" class="students-life section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div id="gallery-dynamic-section" class="student-gallery mt-5 pt-3" data-aos="fade-up" data-aos-delay="200">
           <h3 class="text-center mb-4">Student Life Gallery</h3>
-
-          <!-- Category Cards View -->
           <div id="category-cards-view" class="row g-4">
             @forelse($categories as $category)
               <div class="col-md-4" data-aos="zoom-in" data-aos-delay="{{ (($loop->index % 6) + 1) * 100 }}">
@@ -48,7 +45,6 @@
             @endforelse
           </div>
 
-          <!-- Images View -->
           <div id="images-view" style="display: none;">
             <button id="back-to-categories" class="btn btn-sm btn-outline-primary mb-4" style="border-radius: 20px; box-shadow: 0 4px 12px rgba(4, 65, 95, 0.25); border-color: #04415f; color: #04415f; padding: 0.5rem 1rem;">
               <i class="bi bi-arrow-left"></i> Back to Categories
@@ -71,10 +67,8 @@
             </div>
           </div>
         </div>
-
       </div>
-
-    </section><!-- /Students Life Section -->
+    </section>
 
   </main>
 

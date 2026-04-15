@@ -15,8 +15,10 @@ class ClassRoomController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->get('search', ''));
+        $activeFilter = (string) $request->get('active', '1');
 
         $classes = ClassRoom::where('status', '!=', 2)
+            ->where('status', (int) $activeFilter)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('cName', 'like', "%{$search}%")
@@ -28,7 +30,7 @@ class ClassRoomController extends Controller
             ->orderBy('cID', 'asc')
             ->paginate(10)
             ->withQueryString();
-        return view('backend.classes.index', compact('classes'));
+        return view('backend.classes.index', compact('classes', 'activeFilter'));
     }
 
     /**
@@ -60,7 +62,7 @@ class ClassRoomController extends Controller
             'cName' => 'required|string|max:255',
             'cDescription' => 'nullable|string',
             'classfee' => 'required|numeric|min:0',
-            'admission_amount' => 'nullable|numeric|min:0',
+            // 'admission_amount' => 'nullable|numeric|min:0', // Temporarily disabled
             'status' => 'nullable|in:0,1,2',
             'cVideo' => 'nullable|file|mimetypes:video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska|max:51200',
             'is_update' => 'boolean',
@@ -73,7 +75,7 @@ class ClassRoomController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['cName', 'cDescription', 'classfee', 'admission_amount']);
+        $data = $request->only(['cName', 'cDescription', 'classfee']); // admission_amount temporarily omitted
         $data['status'] = (int) $request->get('status', 1);
 
         // Handle video upload

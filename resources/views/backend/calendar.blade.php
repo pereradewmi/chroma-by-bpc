@@ -80,16 +80,6 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="card shadow">
-                    <!-- <div class="card-header bg-primary">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3 class="mb-0 text-white">
-                                    <i class="fas fa-calendar-alt mr-2"></i>Booking Calendar
-                                </h3>
-                                <p class="text-white-50 mb-0">Click on a date to create new booking or click on existing events to view details</p>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="card-body p-0">
                         <div id="calendar"></div>
                     </div>
@@ -102,7 +92,7 @@
                             <i class="fas fa-exclamation-triangle mr-2"></i>Pending Review
                         </h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pending-reviews-body">
                         <div id="pendingBookingsList">
                             <p class="text-muted mb-0">
                                 <i class="fas fa-spinner fa-spin mr-2"></i>Loading...
@@ -443,20 +433,23 @@
 <style>
     /* Ensure booking modals always fit the viewport and keep footer buttons visible */
     #bookingModal .modal-dialog,
-    #editBookingModal .modal-dialog {
+    #editBookingModal .modal-dialog,
+    #bookingLogsModal .modal-dialog {
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
 
     #bookingModal .modal-content,
-    #editBookingModal .modal-content {
+    #editBookingModal .modal-content,
+    #bookingLogsModal .modal-content {
         max-height: calc(100vh - 2rem);
         display: flex;
         flex-direction: column;
     }
 
     #bookingModal .modal-body,
-    #editBookingModal .modal-body {
+    #editBookingModal .modal-body,
+    #bookingLogsModal .modal-body {
         flex: 1 1 auto;
         overflow-y: auto;
     }
@@ -475,10 +468,8 @@
 </style>
 
 @push('js')
-<!-- FullCalendar CSS & JS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-<!-- SweetAlert2 for better alerts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -500,7 +491,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth'
         },
         height: 'auto',
         events: {
@@ -809,26 +800,6 @@ function submitEditBooking() {
     const today = new Date().toISOString().split('T')[0];
     const now = new Date().toISOString();
     
-    // Check booking date
-    if (bookingDate && bookingDate < today) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid Date',
-            text: 'Booking date cannot be in the past.'
-        });
-        return;
-    }
-    
-    // Check start datetime
-    if (startDateTime && startDateTime < now.substring(0, 16)) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid Date/Time',
-            text: 'Start date and time cannot be in the past.'
-        });
-        return;
-    }
-    
     // Check end datetime is after start datetime
     if (startDateTime && endDateTime && endDateTime <= startDateTime) {
         Swal.fire({
@@ -1037,7 +1008,7 @@ function loadPendingBookings() {
                 </p>
             `;
         } else {
-            let html = `<small class="text-muted">Recent private events needing review:</small><br>`;
+            let html = '';
 
             privateBookings.slice(0, 5).forEach(booking => {
                 const date = new Date(booking.start).toLocaleDateString();
@@ -1054,9 +1025,7 @@ function loadPendingBookings() {
                 `;
             });
 
-            if (privateBookings.length > 5) {
-                html += `<small class="text-muted mt-2 d-block">...and ${privateBookings.length - 5} more</small>`;
-            }
+
 
             pendingList.innerHTML = html;
         }
@@ -1193,6 +1162,20 @@ function viewBookingLogs() {
                         'REJECTED': 'danger',
                         'DELETED': 'dark'
                     }[log.action] || 'secondary';
+
+                    const detailParts = [];
+                    if (log.title) detailParts.push(`Title: ${log.title}`);
+                    if (log.customer_name) detailParts.push(`Customer: ${log.customer_name}`);
+                    if (log.phone) detailParts.push(`Phone: ${log.phone}`);
+                    if (log.email) detailParts.push(`Email: ${log.email}`);
+                    if (log.description_full) detailParts.push(`Description: ${log.description_full}`);
+
+                    let detailLine = detailParts.join(' | ');
+                    if (log.changes_summary && log.changes_summary !== 'No significant changes') {
+                        detailLine = detailLine
+                            ? `${detailLine} | ${log.changes_summary}`
+                            : log.changes_summary;
+                    }
                     
                     logsHtml += `
                         <div class="timeline-item mb-3">
@@ -1207,8 +1190,7 @@ function viewBookingLogs() {
                                     </div>
                                     <p class="mb-1 mt-2"><strong>${log.user_name}</strong> (${log.user_role})</p>
                                     <p class="mb-1">${log.description}</p>
-                                    ${log.changes_summary !== 'No significant changes' ? 
-                                        `<small class="text-muted">${log.changes_summary}</small>` : ''}
+                                    ${detailLine ? `<small class="text-muted d-block mt-1">${detailLine}</small>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -1329,6 +1311,11 @@ function viewBookingLogs() {
 /* Alert improvements */
 .alert {
     border-radius: 0.5rem;
+}
+
+.pending-reviews-body {
+    max-height: 350px;
+    overflow-y: auto;
 }
 </style>
 @endpush

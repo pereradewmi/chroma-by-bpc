@@ -100,13 +100,13 @@
                             Student Registration
                         </div>
                         <h1 class="h3 mb-3">Join CHROMA LIFESTYLE AND CONCEPT STORE</h1>
-                        <p class="mb-4">Register your student details online and select the classes you want to enroll in.</p>
+                        <p class="mb-4">Register your student details online.</p>
                         <div class="mb-3">
                             <strong>What to prepare</strong>
                             <ul class="mt-2 mb-0 ps-3">
                                 <li>Student contact details</li>
                                 <li>Guardian information</li>
-                                <li>A profile photo if available</li>
+                                <li>A Profile photo if available</li>
                             </ul>
                         </div>
                     </div>
@@ -119,7 +119,10 @@
                         </div>
                         <div class="card-body p-4 p-md-5">
                             @if (session('success'))
-                                <div class="alert alert-success">{{ session('success') }}</div>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
                             @endif
 
                             @if ($errors->any())
@@ -152,11 +155,11 @@
                                         <label class="form-label" for="studentemail">Email Address <span class="text-danger">*</span></label>
                                         <input type="email" id="studentemail" name="studentemail" class="form-control @error('studentemail') is-invalid @enderror" value="{{ old('studentemail') }}" required>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label class="form-label" for="Age">Age <span class="text-danger">*</span></label>
                                         <input type="number" id="Age" name="Age" class="form-control @error('Age') is-invalid @enderror" min="1" max="100" value="{{ old('Age') }}" required>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <label class="form-label" for="Address">Address <span class="text-danger">*</span></label>
                                         <textarea id="Address" name="Address" rows="1" class="form-control @error('Address') is-invalid @enderror" required>{{ old('Address') }}</textarea>
                                     </div>
@@ -172,22 +175,6 @@
                                         <label class="form-label" for="studentpic">Student Picture</label>
                                         <input type="file" id="studentpic" name="studentpic" class="form-control @error('studentpic') is-invalid @enderror" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
                                     </div>
-                                    {{-- <div class="col-md-6">
-                                        <label class="form-label">Select Classes</label>
-                                        <div class="class-scroll">
-                                            @forelse($classes as $class)
-                                                <label class="class-item mb-0">
-                                                    <span>
-                                                        <strong>{{ $class->cName }}</strong>
-                                                        <span class="d-block small text-muted">Rs. {{ number_format($class->classfee ?? 0, 2) }}</span>
-                                                    </span>
-                                                    <input type="checkbox" name="class_ids[]" value="{{ $class->cID }}" class="form-check-input m-0">
-                                                </label>
-                                            @empty
-                                                <div class="text-muted">No classes available right now.</div>
-                                            @endforelse
-                                        </div>
-                                    </div> --}}
                                 </div>
 
                                 <div class="d-flex flex-wrap gap-2 justify-content-end mt-4">

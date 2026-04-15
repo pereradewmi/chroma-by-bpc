@@ -85,6 +85,7 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
+                                    <th scope="col">No</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Type</th>
                                     <th scope="col">Student</th>
@@ -98,6 +99,7 @@
                             <tbody>
                                 @forelse($payments as $payment)
                                     <tr>
+                                        <td>{{ ($payments->firstItem() ?? 1) + $loop->index }}</td>
                                         <td>{{ optional($payment['date'])->format('Y-m-d') }}</td>
                                         <td>{{ $payment['type'] }}</td>
                                         <td>{{ $payment['student'] ?? '-' }}</td>
@@ -114,6 +116,19 @@
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+                    <div class="card-footer py-4">
+                        <nav class="d-flex justify-content-end" aria-label="...">
+                            @if($payments->hasPages())
+                                {{ $payments->links() }}
+                            @else
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                    <li class="page-item active"><span class="page-link">1</span></li>
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                                </ul>
+                            @endif
+                        </nav>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 @section("description", "Discover our modern campus facilities at CHROMA LIFESTYLE AND CONCEPT STORE. Explore academic buildings, student services, and recreational spaces.")
 @section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, campus facilities, academic buildings, student services, recreational spaces")
 @section("main")
+
   <main class="main">
     <section id="news-hero" class="news-hero section">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -12,9 +13,9 @@
                 <iframe width="100%" height="496" src="https://www.youtube.com/embed/6NczqPk9K7I" title="Pottery at Chroma" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <div class="post-overlay">
                   <div class="post-content">
-                    <div class="post-meta">
+                    {{-- <div class="post-meta">
                       <span class="category">Session</span>
-                    </div>
+                    </div> --}}
                     <div class="post-author">
                       <span>by</span>
                       <a href="https://www.youtube.com/@chromabybpc">CHROMA LIFESTYLE AND CONCEPT STORE</a>
@@ -55,7 +56,6 @@
                     <div class="row g-0 align-items-center">
                       <div class="col-12">
                         <iframe width="100%" height="196" src="https://www.youtube.com/embed/B3Z_bDhFo3k" title="Clay Tales  Studio Pottery" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        {{-- <iframe width="100%" height="196" src="https://www.youtube.com/embed/uQaoSbVcv4Y" title="Art Piece : The Inception" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
                       </div>
                     </div>
                   </article>

@@ -1,8 +1,10 @@
 @extends('backend.layouts.app')
 
 @section('content')
-    @include('backend.layouts.headers.cards')
-    
+	@include('backend.layouts.headers.cards')
+    @php
+        $activeFilter = isset($activeFilter) ? (string) $activeFilter : (string) request('active', '1');
+    @endphp
     <div class="container-fluid mt-4">
         <div class="row">
             <div class="col">
@@ -11,6 +13,20 @@
                         <div class="row align-items-center">
                             <div class="col-4 d-flex align-items-center">
                                 <h3 class="mb-0">Classes</h3>
+                                <label class="status-switch ml-3 mb-0" title="Toggle Active / Inactive" for="classes-active-toggle">
+                                    <input
+                                        id="classes-active-toggle"
+                                        type="checkbox"
+                                        {{ $activeFilter === '1' ? 'checked' : '' }}
+                                        onchange="
+                                            var hidden = document.getElementById('classes-active-filter');
+                                            var form = document.getElementById('classes-search-form');
+                                            if (hidden) { hidden.value = this.checked ? '1' : '0'; }
+                                            if (form) { form.dispatchEvent(new Event('submit', { cancelable: true })); }
+                                        "
+                                    >
+                                    <span class="status-slider"></span>
+                                </label>
                             </div>
                             <div class="col-4 d-flex justify-content-center">
                                 <form id="classes-search-form" class="d-flex align-items-center" role="search" method="GET" action="{{ route('classes.index') }}">
@@ -18,6 +34,7 @@
                                     <button class="btn btn-sm btn-primary ml-3" type="submit" title="Search">
                                         <i class="fas fa-search"></i>
                                     </button>
+                                    <input type="hidden" name="active" id="classes-active-filter" value="{{ $activeFilter }}">
                                 </form>
                             </div>
                             <div class="col-4 text-right">
@@ -36,8 +53,6 @@
                             </button>
                         </div>
                     @endif
-
-                    <div class="px-3 pb-3"></div>
 
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
@@ -188,6 +203,7 @@
         (function () {
             const form = document.getElementById('classes-search-form');
             const input = form ? form.querySelector('input[name="search"]') : null;
+            const activeInput = form ? form.querySelector('input[name="active"]') : null;
             const tableBody = document.getElementById('classes-table-body');
             const pagination = document.getElementById('classes-pagination');
             let searchTimer = null;
@@ -236,6 +252,9 @@
                     targetUrl.searchParams.set('search', searchValue);
                 }
 
+                const activeValue = activeInput ? (activeInput.value || '1') : '1';
+                targetUrl.searchParams.set('active', activeValue);
+
                 loadClasses(targetUrl.toString());
             });
 
@@ -247,7 +266,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#classes-pagination a.page-link');
+                const pageLink = event.target.closest('#classes-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;
