@@ -62,7 +62,7 @@ class ClassRoomController extends Controller
             'cName' => 'required|string|max:255',
             'cDescription' => 'nullable|string',
             'classfee' => 'required|numeric|min:0',
-            'admission_amount' => 'nullable|numeric|min:0',
+            // 'admission_amount' => 'nullable|numeric|min:0', // Temporarily disabled
             'status' => 'nullable|in:0,1,2',
             'cVideo' => 'nullable|file|mimetypes:video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska|max:51200',
             'is_update' => 'boolean',
@@ -75,7 +75,7 @@ class ClassRoomController extends Controller
                 ->withInput();
         }
 
-        $data = $request->only(['cName', 'cDescription', 'classfee', 'admission_amount']);
+        $data = $request->only(['cName', 'cDescription', 'classfee']); // admission_amount temporarily omitted
         $data['status'] = (int) $request->get('status', 1);
 
         // Handle video upload

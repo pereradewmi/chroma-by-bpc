@@ -42,7 +42,7 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Payment ID</th>
+                                    <th scope="col">No</th>
                                     <th scope="col">Instructor</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Sessions</th>
@@ -55,7 +55,7 @@
                             <tbody id="instructor-payments-table-body">
                                 @forelse($payments as $payment)
                                     <tr>
-                                        <td>{{ $payment->paymentID }}</td>
+                                        <td>{{ ($payments->firstItem() ?? 1) + $loop->index }}</td>                                
                                         <td>
                                             <div class="media align-items-center">
                                                 <div class="media-body">

@@ -297,37 +297,6 @@ class BookingController extends Controller
     }
 
     /**
-     * Delete a booking with logging
-     */
-    public function destroy($id)
-    {
-        $booking = Booking::find($id);
-        
-        if (!$booking) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Booking not found'
-            ], 404);
-        }
-
-        // Log before deletion
-        BookingLog::logBookingChange(
-            $booking,
-            'deleted',
-            $booking->toArray(),
-            null,
-            'Booking deleted by admin'
-        );
-
-        $booking->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Booking deleted successfully'
-        ]);
-    }
-
-    /**
      * Get booking statistics
      */
     public function getStats()
@@ -477,8 +446,9 @@ class BookingController extends Controller
             $validator = Validator::make($request->all(), [
                 'bTitle' => 'required|string|max:50',
                 'bEvent_type' => 'required|in:event,session',
-                'booking_date' => 'required|date|after:today',
-                'bStart_datetime' => 'required|date|after:today',
+                // Allow editing of existing past bookings; only validate format here
+                'booking_date' => 'required|date',
+                'bStart_datetime' => 'required|date',
                 'bEnd_datetime' => 'nullable|date|after:bStart_datetime',
                 'bName' => 'required|string|max:50',
                 'bPhone' => 'required|string|max:10',
@@ -487,9 +457,6 @@ class BookingController extends Controller
                 'bStatus' => 'nullable|in:pending,approved,rejected',
                 'bPrice' => 'nullable|numeric|min:0',
                 'bPayment_status' => 'nullable|in:pending,paid,refunded'
-            ], [
-                'booking_date.after' => 'Booking date must be tomorrow or later.',
-                'bStart_datetime.after' => 'Start date and time must be tomorrow or later.'
             ]);
 
             if ($validator->fails()) {
@@ -558,67 +525,150 @@ class BookingController extends Controller
                 ], 404);
             }
 
-            // For now, return basic booking info as history since the log table might not have data
-            // In the future, this should pull from actual audit logs
-            $logs = [];
+            $logsResponse = [];
 
-            // Add booking creation record
-            $logs[] = [
-                'id' => 1,
-                'action' => 'CREATED',
-                'description' => 'Booking created',
-                'changes_summary' => 'Initial booking created',
-                'user_name' => 'System',
-                'user_role' => 'System',
-                'logged_at' => $booking->created_at ? $booking->created_at->format('Y-m-d H:i:s') : now()->format('Y-m-d H:i:s'),
-                'logged_at_human' => $booking->created_at ? $booking->created_at->diffForHumans() : now()->diffForHumans()
-            ];
+            // Try to pull detailed audit logs; if anything goes wrong, fall back gracefully
+            try {
+                // Each row in bookingdetailsdeleted is a snapshot of a previous state
+                $logs = BookingLog::where('booking_ID', $booking->booking_ID)
+                    ->orderByDesc('created_at')
+                    ->get();
 
-            // If there are updates, show them
-            if ($booking->updated_at && $booking->updated_at->ne($booking->created_at)) {
-                $logs[] = [
-                    'id' => 2,
-                    'action' => 'UPDATED',
-                    'description' => 'Booking updated',
-                    'changes_summary' => 'Booking status: ' . ucfirst($booking->bStatus),
-                    'user_name' => $booking->bApproved_by ? 'Admin' : 'System',
-                    'user_role' => 'Admin',
-                    'logged_at' => $booking->updated_at->format('Y-m-d H:i:s'),
-                    'logged_at_human' => $booking->updated_at->diffForHumans()
-                ];
+                if ($logs->isNotEmpty()) {
+                    $logsResponse = $logs->map(function ($log, $index) {
+                        // Derive an action label from status for display purposes
+                        $status = strtolower((string) $log->bStatus);
+                        if ($status === 'approved') {
+                            $action = 'APPROVED';
+                            $description = 'Booking approved';
+                        } elseif ($status === 'rejected') {
+                            $action = 'REJECTED';
+                            $description = 'Booking rejected';
+                        } else {
+                            $action = 'UPDATED';
+                            $description = 'Booking updated';
+                        }
+
+                        // Build a concise snapshot summary
+                        $parts = [];
+                        if ($log->booking_date) {
+                            $parts[] = 'Date: ' . $log->booking_date->format('Y-m-d');
+                        }
+                        if ($log->bStart_datetime) {
+                            $parts[] = 'Start: ' . $log->bStart_datetime->format('Y-m-d H:i');
+                        }
+                        if ($log->bEnd_datetime) {
+                            $parts[] = 'End: ' . $log->bEnd_datetime->format('Y-m-d H:i');
+                        }
+                        if ($log->bStatus) {
+                            $parts[] = 'Status: ' . ucfirst($log->bStatus);
+                        }
+                        if ($log->bPayment_status) {
+                            $parts[] = 'Payment: ' . ucfirst($log->bPayment_status);
+                        }
+                        if ($log->bPrice !== null) {
+                            $parts[] = 'Price: ' . $log->bPrice;
+                        }
+
+                        $changesSummary = implode(', ', $parts);
+
+                        return [
+                            'id' => $index + 1,
+                            'action' => $action,
+                            'description' => $description,
+                            'changes_summary' => $changesSummary ?: 'Snapshot of booking at this time',
+                            'user_name' => 'Admin',
+                            'user_role' => 'Admin',
+                            'logged_at' => $log->created_at ? $log->created_at->format('Y-m-d H:i:s') : now()->format('Y-m-d H:i:s'),
+                            'logged_at_human' => $log->created_at ? $log->created_at->diffForHumans() : now()->diffForHumans(),
+                            // Full snapshot details for history display
+                            'title' => $log->bTitle,
+                            'customer_name' => $log->bName,
+                            'phone' => $log->bPhone,
+                            'email' => $log->bEmail,
+                            'description_full' => $log->bDescription,
+                            'rejection_reason' => $log->bRejection_reason,
+                        ];
+                    })->values()->all();
+                }
+            } catch (\Exception $e) {
+                \Log::warning('Booking audit logs unavailable, falling back to basic history: ' . $e->getMessage());
             }
 
-            // If approved, show approval
-            if ($booking->bStatus === 'approved' && $booking->bApproved_at) {
-                $logs[] = [
-                    'id' => 3,
-                    'action' => 'APPROVED',
-                    'description' => 'Booking approved',
-                    'changes_summary' => 'Booking was approved',
-                    'user_name' => $booking->bApproved_by ?? 'Admin',
-                    'user_role' => 'Admin',
-                    'logged_at' => $booking->bApproved_at->format('Y-m-d H:i:s'),
-                    'logged_at_human' => $booking->bApproved_at->diffForHumans()
-                ];
-            }
+            // Fallback to basic history (similar to original implementation) if no audit logs
+            if (empty($logsResponse)) {
+                $basicLogs = [];
 
-            // If rejected, show rejection
-            if ($booking->bStatus === 'rejected' && $booking->bReject_at) {
-                $logs[] = [
-                    'id' => 4,
-                    'action' => 'REJECTED',
-                    'description' => 'Booking rejected: ' . ($booking->bRejection_reason ?? 'No reason provided'),
-                    'changes_summary' => 'Booking was rejected',
-                    'user_name' => $booking->bReject_by ?? 'Admin',
-                    'user_role' => 'Admin',
-                    'logged_at' => $booking->bReject_at->format('Y-m-d H:i:s'),
-                    'logged_at_human' => $booking->bReject_at->diffForHumans()
+                // Creation record
+                $basicLogs[] = [
+                    'id' => 1,
+                    'action' => 'CREATED',
+                    'description' => 'Booking created',
+                    'changes_summary' => 'Initial booking created',
+                    'user_name' => 'System',
+                    'user_role' => 'System',
+                    'logged_at' => $booking->created_at ? $booking->created_at->format('Y-m-d H:i:s') : now()->format('Y-m-d H:i:s'),
+                    'logged_at_human' => $booking->created_at ? $booking->created_at->diffForHumans() : now()->diffForHumans()
                 ];
+
+                // Updated
+                if ($booking->updated_at && $booking->updated_at->ne($booking->created_at)) {
+                    $status = $booking->bStatus ? ucfirst($booking->bStatus) : 'N/A';
+                    $paymentStatus = $booking->bPayment_status ? ucfirst($booking->bPayment_status) : 'N/A';
+                    $price = $booking->bPrice !== null ? $booking->bPrice : 'N/A';
+                    $date = $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'N/A';
+
+                    $basicLogs[] = [
+                        'id' => 2,
+                        'action' => 'UPDATED',
+                        'description' => 'Booking updated',
+                        'changes_summary' => "Current values → Status: {$status}, Payment: {$paymentStatus}, Date: {$date}, Price: {$price}",
+                        'user_name' => 'Admin',
+                        'user_role' => 'Admin',
+                        'logged_at' => $booking->updated_at->format('Y-m-d H:i:s'),
+                        'logged_at_human' => $booking->updated_at->diffForHumans()
+                    ];
+                }
+
+                // Approved
+                if ($booking->bStatus === 'approved' && $booking->bApproved_at) {
+                    $basicLogs[] = [
+                        'id' => 3,
+                        'action' => 'APPROVED',
+                        'description' => 'Booking approved',
+                        'changes_summary' => 'Booking was approved',
+                        'user_name' => $booking->bApproved_by ?? 'Admin',
+                        'user_role' => 'Admin',
+                        'logged_at' => $booking->bApproved_at->format('Y-m-d H:i:s'),
+                        'logged_at_human' => $booking->bApproved_at->diffForHumans()
+                    ];
+                }
+
+                // Rejected
+                if ($booking->bStatus === 'rejected' && $booking->bReject_at) {
+                    $basicLogs[] = [
+                        'id' => 4,
+                        'action' => 'REJECTED',
+                        'description' => 'Booking rejected: ' . ($booking->bRejection_reason ?? 'No reason provided'),
+                        'changes_summary' => 'Booking was rejected',
+                        'user_name' => $booking->bReject_by ?? 'Admin',
+                        'user_role' => 'Admin',
+                        'logged_at' => $booking->bReject_at->format('Y-m-d H:i:s'),
+                        'logged_at_human' => $booking->bReject_at->diffForHumans()
+                    ];
+                }
+
+                // Sort basic logs latest-first by logged_at
+                usort($basicLogs, function ($a, $b) {
+                    return strcmp($b['logged_at'], $a['logged_at']);
+                });
+
+                $logsResponse = $basicLogs;
             }
 
             return response()->json([
                 'success' => true,
-                'logs' => $logs
+                'logs' => $logsResponse
             ]);
 
         } catch (\Exception $e) {
@@ -630,61 +680,5 @@ class BookingController extends Controller
         }
     }
 
-    /**
-     * Update booking public/private status
-     */
-    public function updatePubPrivateStatus(Request $request, $id)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'pubprievent' => 'required|in:PUB,PRI'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            $booking = Booking::find($id);
-
-            if (!$booking) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Booking not found'
-                ], 404);
-            }
-
-            // Store old data for logging
-            $oldData = $booking->toArray();
-
-            $user = Auth::user();
-            $booking->update([
-                'pubprievent' => $request->pubprievent
-            ]);
-
-            // Log the status change
-            $statusLabel = $request->pubprievent === 'PUB' ? 'Public' : 'Private';
-            BookingLog::logBookingChange(
-                $booking,
-                'visibility_updated',
-                $oldData,
-                $booking->fresh()->toArray(),
-                "Event visibility changed to {$statusLabel}"
-            );
-
-            return response()->json([
-                'success' => true,
-                'message' => "Event visibility updated to {$statusLabel} successfully!",
-                'booking' => $booking->fresh()
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating event visibility: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+    
 }

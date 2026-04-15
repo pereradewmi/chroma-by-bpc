@@ -85,6 +85,7 @@
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
+                                    <th scope="col">No</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Type</th>
                                     <th scope="col">Student</th>
@@ -98,6 +99,7 @@
                             <tbody>
                                 @forelse($payments as $payment)
                                     <tr>
+                                        <td>{{ ($payments->firstItem() ?? 1) + $loop->index }}</td>
                                         <td>{{ optional($payment['date'])->format('Y-m-d') }}</td>
                                         <td>{{ $payment['type'] }}</td>
                                         <td>{{ $payment['student'] ?? '-' }}</td>
