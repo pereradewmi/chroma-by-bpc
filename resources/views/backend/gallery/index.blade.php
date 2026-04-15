@@ -151,7 +151,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#gallery-pagination a.page-link');
+                const pageLink = event.target.closest('#gallery-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;

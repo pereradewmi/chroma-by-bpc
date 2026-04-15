@@ -195,7 +195,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#image-categories-pagination a.page-link');
+                const pageLink = event.target.closest('#image-categories-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;

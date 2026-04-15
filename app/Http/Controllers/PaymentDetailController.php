@@ -36,7 +36,7 @@ class PaymentDetailController extends Controller
                 });
             })
             ->latest()
-            ->paginate(15)
+			->paginate(10)
             ->withQueryString();
 
         return view('backend.payments.index', compact('payments'));

@@ -60,12 +60,8 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No</th>
-                                    {{-- <th scope="col">Photo</th> --}}
                                     <th scope="col">Name</th>
                                     <th scope="col">Classes</th>
-                                    {{-- <th scope="col">Mobile Number</th>
-                                    <th scope="col">Guardian Name</th> --}}
-                                    {{-- <th scope="col">Status</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -73,23 +69,8 @@
                                 @forelse($students as $student)
                                     <tr>
                                         <td>{{ ($students->firstItem() ?? 1) + $loop->index }}</td>
-                                        {{-- <td>
-                                            @if($student->studentpic)
-                                                <img
-                                                    src="{{ $student->photo_url }}"
-                                                    alt="{{ $student->fName }} {{ $student->lName }}"
-                                                    class="avatar rounded-circle"
-                                                    style="width: 40px; height: 40px; object-fit: cover;"
-                                                >
-                                            @else
-                                                <span class="avatar rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                    {{ strtoupper(substr($student->fName, 0, 1)) }}
-                                                </span>
-                                            @endif
-                                        </td> --}}
                                         <td>
                                             @php
-                                                // Prefer pivot table if available, fall back to JSON column
                                                 $classNames = [];
 
                                                 if ($student->relationLoaded('classes') || method_exists($student, 'classes')) {
@@ -125,18 +106,7 @@
                                                 {{ $student->fName }} {{ $student->lName }}
                                             </a>
                                         </td>
-                                        <td>{{ $classNamesText }}</td>
-                                        {{-- <td>{{ $student->mobileNo }}</td>
-                                        <td>{{ $student->guardian_name }}</td> --}}
-                                        {{-- <td>
-                                            @if((int) $student->Active === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) $student->Active === 0)
-                                                <span class="badge badge-secondary">Inactive</span>
-                                            @else
-                                                <span class="badge badge-danger">Deleted</span>
-                                            @endif
-                                        </td> --}}
+                                        <td>{{ $classNamesText }}</td>             
                                         <td >
                                             <a href="{{ route('students.form', $student->AutoID) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
@@ -382,7 +352,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#students-pagination a');
+                const pageLink = event.target.closest('#students-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;

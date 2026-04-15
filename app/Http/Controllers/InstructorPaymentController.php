@@ -33,7 +33,7 @@ class InstructorPaymentController extends Controller
                 });
             })
             ->latest()
-            ->paginate(15)
+			->paginate(10)
             ->withQueryString();
 
         return view('backend.payments.instructor-index', compact('payments'));

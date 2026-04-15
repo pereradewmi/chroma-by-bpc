@@ -29,7 +29,7 @@ class TeacherPaymentController extends Controller
                 });
             })
             ->latest()
-            ->paginate(15)
+			->paginate(10)
             ->withQueryString();
 
         return view('backend.payments.teacher-index', compact('payments'));

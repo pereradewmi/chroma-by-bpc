@@ -192,7 +192,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#payments-pagination a.page-link');
+                const pageLink = event.target.closest('#payments-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;

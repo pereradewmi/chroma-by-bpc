@@ -266,7 +266,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#classes-pagination a.page-link');
+                const pageLink = event.target.closest('#classes-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;
