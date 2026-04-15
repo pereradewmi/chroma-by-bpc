@@ -2,7 +2,10 @@
 
 @section('content')
     @include('backend.layouts.headers.cards')
-    
+    @php
+        $activeFilter = isset($activeFilter) ? (string) $activeFilter : (string) request('active', '1');
+    @endphp
+
     <div class="container-fluid mt-4">
         <div class="row">
             <div class="col">
@@ -11,6 +14,20 @@
                         <div class="row align-items-center">
                             <div class="col-4 d-flex align-items-center">
                                 <h3 class="mb-0">Students</h3>
+                                <label class="status-switch ml-3 mb-0" title="Toggle Active / Inactive" for="students-active-toggle">
+                                    <input
+                                        type="checkbox"
+                                        id="students-active-toggle"
+                                        {{ $activeFilter === '1' ? 'checked' : '' }}
+                                        onchange="
+                                            var hidden = document.getElementById('students-active-filter');
+                                            var form = document.getElementById('students-search-form');
+                                            if (hidden) { hidden.value = this.checked ? '1' : '0'; }
+                                            if (form) { form.dispatchEvent(new Event('submit', { cancelable: true })); }
+                                        "
+                                    >
+                                    <span class="status-slider"></span>
+                                </label>
                             </div>
                             <div class="col-4 d-flex justify-content-center">
                                 <form id="students-search-form" class="d-flex align-items-center" role="search" method="GET" action="{{ route('students.index') }}">
@@ -18,6 +35,7 @@
                                     <button class="btn btn-sm btn-primary ml-3" type="submit" title="Search">
                                         <i class="fas fa-search"></i>
                                     </button>
+                                    <input type="hidden" name="active" id="students-active-filter" value="{{ $activeFilter }}">
                                 </form>
                             </div>
                             <div class="col-4 text-right">
@@ -37,19 +55,13 @@
                         </div>
                     @endif
 
-                    <div class="px-3 pb-3"></div>
-
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">No</th>
-                                    {{-- <th scope="col">Photo</th> --}}
                                     <th scope="col">Name</th>
                                     <th scope="col">Classes</th>
-                                    {{-- <th scope="col">Mobile Number</th>
-                                    <th scope="col">Guardian Name</th> --}}
-                                    {{-- <th scope="col">Status</th> --}}
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -57,23 +69,8 @@
                                 @forelse($students as $student)
                                     <tr>
                                         <td>{{ ($students->firstItem() ?? 1) + $loop->index }}</td>
-                                        {{-- <td>
-                                            @if($student->studentpic)
-                                                <img
-                                                    src="{{ $student->photo_url }}"
-                                                    alt="{{ $student->fName }} {{ $student->lName }}"
-                                                    class="avatar rounded-circle"
-                                                    style="width: 40px; height: 40px; object-fit: cover;"
-                                                >
-                                            @else
-                                                <span class="avatar rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                    {{ strtoupper(substr($student->fName, 0, 1)) }}
-                                                </span>
-                                            @endif
-                                        </td> --}}
                                         <td>
                                             @php
-                                                // Prefer pivot table if available, fall back to JSON column
                                                 $classNames = [];
 
                                                 if ($student->relationLoaded('classes') || method_exists($student, 'classes')) {
@@ -109,18 +106,7 @@
                                                 {{ $student->fName }} {{ $student->lName }}
                                             </a>
                                         </td>
-                                        <td>{{ $classNamesText }}</td>
-                                        {{-- <td>{{ $student->mobileNo }}</td>
-                                        <td>{{ $student->guardian_name }}</td> --}}
-                                        {{-- <td>
-                                            @if((int) $student->Active === 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @elseif((int) $student->Active === 0)
-                                                <span class="badge badge-secondary">Inactive</span>
-                                            @else
-                                                <span class="badge badge-danger">Deleted</span>
-                                            @endif
-                                        </td> --}}
+                                        <td>{{ $classNamesText }}</td>             
                                         <td >
                                             <a href="{{ route('students.form', $student->AutoID) }}" class="btn btn-sm text-primary" title="Edit" aria-label="Edit">
                                                 <i class="fas fa-edit" aria-hidden="true"></i>
@@ -301,6 +287,7 @@
         (function () {
             const form = document.getElementById('students-search-form');
             const input = form ? form.querySelector('input[name="search"]') : null;
+            const activeInput = form ? form.querySelector('input[name="active"]') : null;
             const tableBody = document.getElementById('students-table-body');
             const pagination = document.getElementById('students-pagination');
             const paginationWrapper = document.getElementById('students-pagination-wrapper');
@@ -351,6 +338,9 @@
                     targetUrl.searchParams.set('search', searchValue);
                 }
 
+                const activeValue = activeInput ? (activeInput.value || '1') : '1';
+                targetUrl.searchParams.set('active', activeValue);
+
                 loadStudents(targetUrl.toString());
             });
 
@@ -362,7 +352,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#students-pagination a');
+                const pageLink = event.target.closest('#students-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;

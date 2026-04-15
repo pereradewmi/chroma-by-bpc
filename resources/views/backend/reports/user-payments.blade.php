@@ -115,6 +115,19 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-footer py-4">
+                        <nav class="d-flex justify-content-end" aria-label="...">
+                            @if($payments->hasPages())
+                                {{ $payments->links() }}
+                            @else
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Previous"><i class="fas fa-chevron-left" aria-hidden="true"></i></span></li>
+                                    <li class="page-item active"><span class="page-link">1</span></li>
+                                    <li class="page-item disabled"><span class="page-link" aria-label="Next"><i class="fas fa-chevron-right" aria-hidden="true"></i></span></li>
+                                </ul>
+                            @endif
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>

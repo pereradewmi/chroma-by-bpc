@@ -12,6 +12,7 @@ use App\Models\ClassRoom;
 use App\Models\Teacher;
 use App\Models\Student;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Response;
 
 class ReportsController extends Controller
@@ -38,8 +39,8 @@ class ReportsController extends Controller
             });
         }
         
-        // Get paginated results
-        $bookings = $query->orderBy('created_at', 'desc')->paginate(50)->withQueryString();
+        // Get paginated results (10 per page)
+        $bookings = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
         
         // Get summary statistics
         $stats = $this->getStatistics($request);
@@ -142,7 +143,7 @@ class ReportsController extends Controller
             ];
         });
 
-        $payments = $studentPayments
+        $paymentsCollection = $studentPayments
             ->concat($instructorPayments)
             ->concat($teacherPayments)
             ->when(!empty($filters['search']), function ($collection) use ($filters) {
@@ -158,6 +159,21 @@ class ReportsController extends Controller
             })
             ->sortByDesc('date')
             ->values();
+
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $pagedItems = $paymentsCollection->forPage($currentPage, $perPage)->values();
+
+        $payments = new LengthAwarePaginator(
+            $pagedItems,
+            $paymentsCollection->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
 
         // Dropdown options
         $classes = ClassRoom::orderBy('cName')->get();

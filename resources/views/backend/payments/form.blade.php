@@ -16,7 +16,6 @@
                         <div id="payment_message" style="display:none;" class="alert" role="alert"></div>
                         <form id="payment_form">
 
-                            <!-- Step 1: Student Search -->
                             <div id="step1" class="payment-step mb-4 pb-4 border-bottom">
                                 <div class="form-group mb-3">
                                     <label class="form-control-label font-weight-600">Search Student</label>
@@ -28,7 +27,6 @@
                                     <input type="hidden" id="selected_student_id" name="studentID" value="">
                                 </div>
 
-                                <!-- Selected Student Info -->
                                 <div class="alert alert-secondary mt-3 p-3" id="selected_student_info" style="display: none; border-radius: 0.5rem;">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
@@ -44,12 +42,8 @@
                                 </div>
                             </div>
 
-                            <!-- Step 2: Payment Details (Only shows after student selection) -->
-                            <div id="step2" style="display: none;">
-                                <h6 class="heading-small text-muted mb-3">
-                                    <i class="fas fa-file-invoice"></i> Payment Details
-                                </h6>
 
+                            <div id="step2" style="display: none;">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <div class="form-group">
@@ -92,12 +86,11 @@
                                     <button type="button" class="btn btn-secondary mr-2" onclick="resetForm()">
                                         Reset
                                     </button>
-                                    <button type="button" id="submit_payment_btn" class="btn btn-primary" onclick="submitPayment()">
+                                    <button type="button" id="submit_payment_btn" class="btn btn-primary" onclick="openStudentPaymentConfirmModal()">
                                         Record Payment
                                     </button>
                                 </div>
 
-                                <!-- Loading Spinner -->
                                 <div id="loading" style="display: none;" class="text-center py-4">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
@@ -131,11 +124,30 @@
         }
     </style>
 
+    <div class="modal fade" id="studentPaymentConfirmModal" tabindex="-1" role="dialog" aria-labelledby="studentPaymentConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="studentPaymentConfirmModalLabel">Confirm Student Payment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to record this student payment? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitPayment()">Yes, record payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let searchTimeout;
         let selectedStudent = null;
 
-        // Student search functionality
         document.getElementById('student_search').addEventListener('input', function() {
             const query = this.value.trim();
             clearTimeout(searchTimeout);
@@ -245,6 +257,11 @@
             document.getElementById('student_search').focus();
         }
 
+		function openStudentPaymentConfirmModal() {
+			clearPaymentMessage();
+			$('#studentPaymentConfirmModal').modal('show');
+		}
+
         function submitPayment() {
             const studentID = document.getElementById('selected_student_id').value;
             const classID = document.getElementById('classID').value;
@@ -279,7 +296,6 @@
                 document.getElementById('submit_payment_btn').disabled = false;
 
                 if (data.success) {
-                    // On success, go straight back to the payments index table with a success flag
                     window.location.href = '{{ route('payments.index') }}?success=1';
                 } else {
                     if (data.errors) {

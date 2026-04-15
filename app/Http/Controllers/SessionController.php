@@ -15,8 +15,10 @@ class SessionController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->get('search', ''));
+        $activeFilter = (string) $request->get('active', '1');
 
         $sessions = Session::where('status', '!=', 2)
+            ->where('status', (int) $activeFilter)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('sName', 'like', "%{$search}%")
@@ -27,7 +29,7 @@ class SessionController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
-        return view('backend.sessions.index', compact('sessions'));
+        return view('backend.sessions.index', compact('sessions', 'activeFilter'));
     }
 
     /**

@@ -13,12 +13,8 @@
                     </div>
 
                     <div class="card-body p-4 teacher-payment-form-compact">
-                        <form method="POST" action="{{ route('teacher-payments.store') }}">
+                        <form id="teacher_payment_form" method="POST" action="{{ route('teacher-payments.store') }}">
                             @csrf
-
-                            <h6 class="heading-small text-muted mb-3">
-                                <i class="fas fa-money-bill-wave"></i> Payment Information
-                            </h6>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -75,12 +71,32 @@
                                 <a href="{{ route('teacher-payments.index') }}" class="btn btn-secondary mr-2">
                                     Cancel
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" onclick="openTeacherPaymentConfirmModal()">
                                     Record Payment
                                 </button>
                             </div>
                         </form>
-                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Payment Confirm Modal -->
+    <div class="modal fade" id="teacherPaymentConfirmModal" tabindex="-1" role="dialog" aria-labelledby="teacherPaymentConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teacherPaymentConfirmModalLabel">Confirm Teacher Payment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to record this teacher payment? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('teacher_payment_form').submit();">Yes, record payment</button>
                 </div>
             </div>
         </div>
@@ -95,4 +111,10 @@
             margin-bottom: 1rem !important;
         }
     </style>
+
+    <script>
+        function openTeacherPaymentConfirmModal() {
+            $('#teacherPaymentConfirmModal').modal('show');
+        }
+    </script>
 @endsection

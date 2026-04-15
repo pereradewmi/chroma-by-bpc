@@ -43,8 +43,6 @@
                         </div>
                     @endif
 
-                    <div class="px-4 pb-3"></div>
-
                     <div class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <thead class="thead-light">
@@ -194,7 +192,7 @@
             });
 
             document.addEventListener('click', function (event) {
-                const pageLink = event.target.closest('#payments-pagination a.page-link');
+                const pageLink = event.target.closest('#payments-pagination .page-link');
 
                 if (!pageLink || !pageLink.href) {
                     return;
