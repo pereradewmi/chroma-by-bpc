@@ -433,20 +433,23 @@
 <style>
     /* Ensure booking modals always fit the viewport and keep footer buttons visible */
     #bookingModal .modal-dialog,
-    #editBookingModal .modal-dialog {
+    #editBookingModal .modal-dialog,
+    #bookingLogsModal .modal-dialog {
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
 
     #bookingModal .modal-content,
-    #editBookingModal .modal-content {
+    #editBookingModal .modal-content,
+    #bookingLogsModal .modal-content {
         max-height: calc(100vh - 2rem);
         display: flex;
         flex-direction: column;
     }
 
     #bookingModal .modal-body,
-    #editBookingModal .modal-body {
+    #editBookingModal .modal-body,
+    #bookingLogsModal .modal-body {
         flex: 1 1 auto;
         overflow-y: auto;
     }
@@ -796,26 +799,6 @@ function submitEditBooking() {
     
     const today = new Date().toISOString().split('T')[0];
     const now = new Date().toISOString();
-    
-    // Check booking date
-    if (bookingDate && bookingDate < today) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid Date',
-            text: 'Booking date cannot be in the past.'
-        });
-        return;
-    }
-    
-    // Check start datetime
-    if (startDateTime && startDateTime < now.substring(0, 16)) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid Date/Time',
-            text: 'Start date and time cannot be in the past.'
-        });
-        return;
-    }
     
     // Check end datetime is after start datetime
     if (startDateTime && endDateTime && endDateTime <= startDateTime) {
@@ -1179,6 +1162,20 @@ function viewBookingLogs() {
                         'REJECTED': 'danger',
                         'DELETED': 'dark'
                     }[log.action] || 'secondary';
+
+                    const detailParts = [];
+                    if (log.title) detailParts.push(`Title: ${log.title}`);
+                    if (log.customer_name) detailParts.push(`Customer: ${log.customer_name}`);
+                    if (log.phone) detailParts.push(`Phone: ${log.phone}`);
+                    if (log.email) detailParts.push(`Email: ${log.email}`);
+                    if (log.description_full) detailParts.push(`Description: ${log.description_full}`);
+
+                    let detailLine = detailParts.join(' | ');
+                    if (log.changes_summary && log.changes_summary !== 'No significant changes') {
+                        detailLine = detailLine
+                            ? `${detailLine} | ${log.changes_summary}`
+                            : log.changes_summary;
+                    }
                     
                     logsHtml += `
                         <div class="timeline-item mb-3">
@@ -1193,8 +1190,7 @@ function viewBookingLogs() {
                                     </div>
                                     <p class="mb-1 mt-2"><strong>${log.user_name}</strong> (${log.user_role})</p>
                                     <p class="mb-1">${log.description}</p>
-                                    ${log.changes_summary !== 'No significant changes' ? 
-                                        `<small class="text-muted">${log.changes_summary}</small>` : ''}
+                                    ${detailLine ? `<small class="text-muted d-block mt-1">${detailLine}</small>` : ''}
                                 </div>
                             </div>
                         </div>

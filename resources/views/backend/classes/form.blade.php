@@ -54,6 +54,7 @@
                                         </div>
                                     </div>
 
+                                    {{--
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-control-label" for="admission_amount">Admission Amount (Rs.)</label>
@@ -66,6 +67,7 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    --}}
                                 </div>
 
                                 <div class="row">

@@ -19,7 +19,7 @@ class ClassRoom extends Model
         'cVideo',
         'status',
         'classfee',
-        'admission_amount'
+        // 'admission_amount', // Temporarily disabled; will be reintroduced later
     ];
 
     protected $casts = [
