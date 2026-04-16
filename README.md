@@ -39,13 +39,6 @@ CHROMA Lifestyle and Concept Store is a Laravel-based management platform for a 
 7. Build the frontend assets with `npm run build`, or use `npm run dev` while developing.
 8. Start the application with `php artisan serve`.
 
-## Default Admin Login
-
-After running the database seeders, the default admin account is:
-
-- Email: `admin@croma.com`
-- Password: `password`
-
 Change this credential immediately after first login.
 
 ## Common Commands
