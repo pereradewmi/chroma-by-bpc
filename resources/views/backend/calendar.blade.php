@@ -191,17 +191,6 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="bStatus" class="form-label">Status</label>
-                            <select class="form-control" id="bStatus" name="bStatus">
-                                <option value="pending" selected>Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
                             <label for="bPayment_status" class="form-label">Payment Status</label>
                             <select class="form-control" id="bPayment_status" name="bPayment_status">
                                 <option value="pending" selected>Pending</option>
@@ -214,6 +203,18 @@
                             <input type="number" class="form-control" id="bPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="bStatus" class="form-label">Status</label>
+                            <select class="form-control" id="bStatus" name="bStatus">
+                                <option value="pending" selected>Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                 </form>
             </div>
             <div class="modal-footer">
@@ -248,14 +249,8 @@
                     <i class="fas fa-history mr-2"></i>View History
                 </button>
                 <div class="d-flex flex-wrap" style="gap: 8px;">
-                    <button type="button" class="btn btn-danger" id="rejectBookingBtn" onclick="rejectCurrentBooking()">
-                        <i class="fas fa-times mr-2"></i>Reject
-                    </button>
                     <button type="button" class="btn btn-info" id="editBookingBtn" onclick="editCurrentBooking()">
                         <i class="fas fa-pencil-alt mr-2"></i>Edit
-                    </button>
-                    <button type="button" class="btn btn-success" id="approveBookingBtn" onclick="approveCurrentBooking()">
-                        <i class="fas fa-check mr-2"></i>Approve
                     </button>
                 </div>
             </div>
@@ -337,17 +332,6 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="editStatus" class="form-label">Status</label>
-                            <select class="form-control" id="editStatus" name="bStatus">
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
                             <label for="editPayment_status" class="form-label">Payment Status</label>
                             <select class="form-control" id="editPayment_status" name="bPayment_status">
                                 <option value="pending">Pending</option>
@@ -360,47 +344,31 @@
                             <input type="number" class="form-control" id="editPrice" name="bPrice" min="0" step="0.01">
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editStatus" class="form-label">Status</label>
+                            <select class="form-control" id="editStatus" name="bStatus">
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row d-none" id="editRejectReasonWrapper">
+                        <div class="col-md-12 mb-3">
+                            <label for="editRejectionReason" class="form-label">Reject Reason*</label>
+                            <textarea class="form-control" id="editRejectionReason" name="bRejection_reason" rows="3"
+                                      placeholder="Please provide a reason for rejection..."></textarea>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" onclick="submitEditBooking()">
                     <i class="fas fa-save mr-2"></i>Save Changes
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Reject Booking Modal -->
-<div class="modal fade" id="rejectBookingModal" tabindex="-1" aria-labelledby="rejectBookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="rejectBookingModalLabel">
-                    <i class="fas fa-times-circle mr-2"></i>Reject Booking
-                </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="rejectBookingForm">
-                    <div class="mb-3">
-                        <label for="rejectionReason" class="form-label">Rejection Reason*</label>
-                        <textarea class="form-control" id="rejectionReason" name="rejection_reason" rows="4" 
-                                  placeholder="Please provide a reason for rejection..." required></textarea>
-                    </div>
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>
-                        This action will reject the booking and notify the customer.
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" onclick="submitRejectBooking()">
-                    <i class="fas fa-times mr-2"></i>Reject Booking
                 </button>
             </div>
         </div>
@@ -539,6 +507,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load statistics and pending bookings
     loadStats();
     loadPendingBookings();
+
+    document.getElementById('editStatus').addEventListener('change', toggleEditRejectReason);
 
     // Auto-refresh calendar every 60 seconds
     setInterval(function() {
@@ -774,12 +744,14 @@ function editCurrentBooking() {
         document.getElementById('editStart_datetime').value = booking.start_datetime ? booking.start_datetime.replace(' ', 'T') : '';
         document.getElementById('editEnd_datetime').value = booking.end_datetime ? booking.end_datetime.replace(' ', 'T') : '';
         document.getElementById('editStatus').value = booking.status || '';
+        document.getElementById('editRejectionReason').value = booking.rejection_reason || '';
         document.getElementById('editPayment_status').value = booking.payment_status || '';
         document.getElementById('editPrice').value = booking.price || '';
         document.getElementById('editName').value = booking.customer_name || '';
         document.getElementById('editPhone').value = booking.phone_number || '';
         document.getElementById('editEmail').value = booking.email || '';
         document.getElementById('editDescription').value = booking.description || '';
+        toggleEditRejectReason();
 
         // Hide view modal and show edit modal
         $('#viewBookingModal').modal('hide');
@@ -793,12 +765,8 @@ function editCurrentBooking() {
 
 function submitEditBooking() {
     // Validate dates before submitting
-    const bookingDate = document.getElementById('editBooking_date').value;
     const startDateTime = document.getElementById('editStart_datetime').value;
     const endDateTime = document.getElementById('editEnd_datetime').value;
-    
-    const today = new Date().toISOString().split('T')[0];
-    const now = new Date().toISOString();
     
     // Check end datetime is after start datetime
     if (startDateTime && endDateTime && endDateTime <= startDateTime) {
@@ -806,6 +774,18 @@ function submitEditBooking() {
             icon: 'error',
             title: 'Invalid Time Range',
             text: 'End date and time must be after start date and time.'
+        });
+        return;
+    }
+
+    const selectedStatus = document.getElementById('editStatus').value;
+    const rejectionReason = document.getElementById('editRejectionReason').value.trim();
+
+    if (selectedStatus === 'rejected' && !rejectionReason) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Reject Reason Required',
+            text: 'Please provide a reject reason when status is rejected.'
         });
         return;
     }
@@ -850,44 +830,6 @@ function submitEditBooking() {
     });
 }
 
-function deleteCurrentBooking() {
-    if (!currentBookingId) return;
-    
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetch('{{ route("admin.calendar.bookings.destroy", ":id") }}'.replace(':id', currentBookingId), {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire('Deleted!', 'The booking has been deleted.', 'success');
-                    $('#viewBookingModal').modal('hide');
-                    refreshCalendar();
-                    loadStats();
-                } else {
-                    Swal.fire('Error!', data.message || 'Could not delete booking', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire('Error!', 'Network error occurred', 'error');
-            });
-        }
-    });
-}
-
 function getStatusBadge(status) {
     const badges = {
         'pending': '<span class="badge badge-warning">Pending</span>',
@@ -906,76 +848,6 @@ function getPaymentBadge(status) {
     return badges[status] || '<span class="badge badge-secondary">Unknown</span>';
 }
 
-function getVisibilityBadge(pubprievent) {
-    const badges = {
-        'PUB': '<span class="badge badge-success"><i class="fas fa-eye mr-1"></i>Public</span>',
-        'PRI': '<span class="badge badge-warning"><i class="fas fa-eye-slash mr-1"></i>Private</span>'
-    };
-    return badges[pubprievent] || '<span class="badge badge-secondary">Unknown</span>';
-}
-
-function updateEventVisibility(bookingId, visibility) {
-    const visibilityLabel = visibility === 'PUB' ? 'Public' : 'Private';
-
-    // Show confirmation dialog
-    Swal.fire({
-        title: `Make Event ${visibilityLabel}?`,
-        text: `Are you sure you want to make this event ${visibilityLabel.toLowerCase()}?`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: `Yes, make it ${visibilityLabel.toLowerCase()}!`
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Send AJAX request to update visibility
-            fetch('{{ route("admin.calendar.bookings.visibility", ":id") }}'.replace(':id', bookingId), {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    pubprievent: visibility
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: data.message,
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-
-                    // Refresh calendar to show updated visibility
-                    refreshCalendar();
-                    loadPendingBookings();
-
-                    // Close the booking details modal
-                    $('#viewBookingModal').modal('hide');
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: data.message || 'Failed to update event visibility'
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Network error occurred while updating visibility'
-                });
-            });
-        }
-    });
-}
-
 function loadStats() {
     fetch('{{ route("admin.calendar.stats") }}')
     .then(response => response.json())
@@ -991,12 +863,13 @@ function loadStats() {
 }
 
 function loadPendingBookings() {
-    // Load private bookings that need admin attention
-    fetch('{{ route("admin.calendar.bookings") }}?private_only=true')
+    // Load pending bookings that need admin attention
+    fetch('{{ route("admin.calendar.bookings") }}')
     .then(response => response.json())
     .then(bookings => {
         const privateBookings = bookings.filter(booking =>
-            booking.extendedProps && booking.extendedProps.pubprievent === 'PRI'
+            booking.extendedProps &&
+            booking.extendedProps.status === 'pending'
         );
 
         const pendingList = document.getElementById('pendingBookingsList');
@@ -1047,89 +920,19 @@ function refreshCalendar() {
     }
 }
 
-function approveCurrentBooking() {
-    if (!currentBookingId) return;
-    
-    Swal.fire({
-        title: 'Approve Booking?',
-        text: "This will approve the booking and notify the customer.",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, approve it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetch('{{ route("admin.calendar.bookings.approve", ":id") }}'.replace(':id', currentBookingId), {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire('Approved!', 'The booking has been approved.', 'success');
-                    $('#viewBookingModal').modal('hide');
-                    refreshCalendar();
-                    loadStats();
-                } else {
-                    Swal.fire('Error!', data.message || 'Could not approve booking', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire('Error!', 'Network error occurred', 'error');
-            });
-        }
-    });
-}
+function toggleEditRejectReason() {
+    const status = document.getElementById('editStatus').value;
+    const rejectReasonWrapper = document.getElementById('editRejectReasonWrapper');
+    const rejectReasonInput = document.getElementById('editRejectionReason');
 
-function rejectCurrentBooking() {
-    if (!currentBookingId) return;
-    
-    $('#viewBookingModal').modal('hide');
-    $('#rejectBookingModal').modal('show');
-}
-
-function submitRejectBooking() {
-    const rejectionReason = document.getElementById('rejectionReason').value.trim();
-    
-    if (!rejectionReason) {
-        Swal.fire('Error!', 'Please provide a rejection reason', 'error');
-        return;
+    if (status === 'rejected') {
+        rejectReasonWrapper.classList.remove('d-none');
+        rejectReasonInput.setAttribute('required', 'required');
+    } else {
+        rejectReasonWrapper.classList.add('d-none');
+        rejectReasonInput.removeAttribute('required');
+        rejectReasonInput.value = '';
     }
-    
-    fetch('{{ route("admin.calendar.bookings.reject", ":id") }}'.replace(':id', currentBookingId), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            rejection_reason: rejectionReason
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire('Rejected!', 'The booking has been rejected.', 'success');
-            $('#rejectBookingModal').modal('hide');
-            document.getElementById('rejectionReason').value = ''; // Clear the form
-            refreshCalendar();
-            loadStats();
-        } else {
-            let errorMessage = data.message || 'Could not reject booking';
-            if (data.errors) {
-                errorMessage = Object.values(data.errors).flat().join('\n');
-            }
-            Swal.fire('Error!', errorMessage, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire('Error!', 'Network error occurred', 'error');
-    });
 }
 
 function viewBookingLogs() {

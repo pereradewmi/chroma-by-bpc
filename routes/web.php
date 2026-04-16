@@ -206,15 +206,10 @@ Route::middleware('check.login')->prefix('admin/calendar')->name('admin.calendar
     Route::get('/bookings', [BookingController::class, 'getBookings'])->name('bookings');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
-    Route::put('/bookings/{id}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
-    Route::delete('/bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     Route::get('/stats', [BookingController::class, 'getStats'])->name('stats');
     
     // Admin-specific booking management
-    Route::post('/bookings/{id}/approve', [BookingController::class, 'approveBooking'])->name('bookings.approve');
-    Route::post('/bookings/{id}/reject', [BookingController::class, 'rejectBooking'])->name('bookings.reject');
     Route::put('/bookings/{id}/update', [BookingController::class, 'updateBooking'])->name('bookings.update');
-    Route::put('/bookings/{id}/visibility', [BookingController::class, 'updatePubPrivateStatus'])->name('bookings.visibility');
     Route::get('/bookings/{id}/logs', [BookingController::class, 'getBookingLogs'])->name('bookings.logs');
 });
 
