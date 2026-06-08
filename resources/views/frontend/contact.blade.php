@@ -1,112 +1,164 @@
 @extends("frontend.components.layout")
-@section("description", "Discover our modern campus facilities at CHROMA LIFESTYLE AND CONCEPT STORE. Explore academic buildings, student services, and recreational spaces.")
-@section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, campus facilities, academic buildings, student services, recreational spaces")
+@section("description", "Discover our modern campus facilities at CHROMA LIFESTYLE AND CONCEPT STORE. Explore academic
+buildings, student services, and recreational spaces.")
+@section("keywords", "CHROMA LIFESTYLE AND CONCEPT STORE, campus facilities, academic buildings, student services,
+recreational spaces")
 @section("main")
-  <main class="main">
+<main class="main">
 
-    <section id="contact" class="contact section">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="contact-main-wrapper">
-          <div class="map-wrapper">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d506986.52351414727!2d79.59664412906386!3d6.910656146308238!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef1004efe67b%3A0xa41b8c76433a2690!2sCHROMA%20BY%20BANDULA%20PAINT%20CENTRE!5e0!3m2!1sen!2slk!4v1772434622445!5m2!1sen!2slk" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  <section id="contact" class="contact section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="contact-main-wrapper">
+        <div class="map-wrapper">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d506986.52351414727!2d79.59664412906386!3d6.910656146308238!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef1004efe67b%3A0xa41b8c76433a2690!2sCHROMA%20BY%20BANDULA%20PAINT%20CENTRE!5e0!3m2!1sen!2slk!4v1772434622445!5m2!1sen!2slk"
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <div class="contact-content">
+          <div class="contact-cards-container" data-aos="fade-up" data-aos-delay="300">
+            <div class="contact-card">
+              <div class="icon-box">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div class="contact-text">
+                <h4>Location</h4>
+                <p>357 Negombo - Colombo Main Rd, Negombo</p>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="icon-box">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div class="contact-text">
+                <h4>Email</h4>
+                <p>chromabybpc@gmail.com</p>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="icon-box">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div class="contact-text">
+                <h4>Call</h4>
+                <p>+94 76 661 3376</p>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="icon-box">
+                <i class="bi bi-clock"></i>
+              </div>
+              <div class="contact-text">
+                <h4>Open Hours</h4>
+                <p>Monday-Friday: 9AM - 6PM</p>
+              </div>
+            </div>
           </div>
 
-          <div class="contact-content">
-            <div class="contact-cards-container" data-aos="fade-up" data-aos-delay="300">
-              <div class="contact-card">
-                <div class="icon-box">
-                  <i class="bi bi-geo-alt"></i>
+          <div class="contact-form-container" data-aos="fade-up" data-aos-delay="400">
+            <h3>Get in Touch</h3>
+            <form id="contactForm">
+              @csrf
+              <div class="row php-email-form">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" value="{{ old('name') }}"
+                    required>
                 </div>
-                <div class="contact-text">
-                  <h4>Location</h4>
-                  <p>357 Negombo - Colombo Main Rd, Negombo</p>
+
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="email" class="form-control" name="email" placeholder="Your Email"
+                    value="{{ old('email') }}" required>
                 </div>
               </div>
 
-              <div class="contact-card">
-                <div class="icon-box">
-                  <i class="bi bi-envelope"></i>
+              <div class="form-group mt-3">
+                <input type="text" class="form-control" name="subject" placeholder="Subject"
+                  value="{{ old('subject') }}" required>
+              </div>
+
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="message" rows="5" placeholder="Message"
+                  required>{{ old('message') }}</textarea>
+              </div>
+
+              <div class="my-3">
+                <div id="successMessage" class="sent-message d-none">
+                  Message sent successfully!
                 </div>
-                <div class="contact-text">
-                  <h4>Email</h4>
-                  <p>chromabybpc@gmail.com</p>
+
+                <div id="errorMessage" class="error-message d-none">
+                  Failed to send message.
                 </div>
               </div>
 
-              <div class="contact-card">
-                <div class="icon-box">
-                  <i class="bi bi-telephone"></i>
-                </div>
-                <div class="contact-text">
-                  <h4>Call</h4>
-                  <p>+94 76 661 3376</p>
-                </div>
+              <div class="form-submit">
+                <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%);
+                       border: none;
+                       padding: 12px 40px;
+                       font-size: 1rem;
+                       font-weight: 600;
+                       border-radius: 8px;">
+                  <i class="fas fa-paper-plane me-2"></i>
+                  Send Message
+                </button>
               </div>
-
-              <div class="contact-card">
-                <div class="icon-box">
-                  <i class="bi bi-clock"></i>
-                </div>
-                <div class="contact-text">
-                  <h4>Open Hours</h4>
-                  <p>Monday-Friday: 9AM - 6PM</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="contact-form-container" data-aos="fade-up" data-aos-delay="400">
-              <h3>Get in Touch</h3>
-              <form action="{{ route('frontend.contact.send') }}" method="post">
-                @csrf
-                <div class="row php-email-form">
-                  <div class="col-md-6 form-group">
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" value="{{ old('name') }}" required="">
-                  </div>
-                  <div class="col-md-6 form-group mt-3 mt-md-0">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" value="{{ old('email') }}" required="">
-                  </div>
-                </div>
-                <div class="form-group mt-3 php-email-form">
-                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" value="{{ old('subject') }}" required="">
-                </div>
-                <div class="form-group mt-3 php-email-form">
-                  <textarea class="form-control" name="message" rows="5" placeholder="Message" required="">{{ old('message') }}</textarea>
-                </div>
-
-                <div class="my-3">
-                  @if (session('success'))
-                    <div class="sent-message d-block">{{ session('success') }}</div>
-                  @endif
-
-                  @if (session('error'))
-                    <div class="error-message d-block">{{ session('error') }}</div>
-                  @endif
-
-                  @if (session('error_detail'))
-                    <div class="error-message d-block" style="white-space: pre-wrap;">{{ session('error_detail') }}</div>
-                  @endif
-
-                  @if ($errors->any())
-                    <div class="error-message d-block">
-                      @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                      @endforeach
-                    </div>
-                  @endif
-                </div>
-
-                <div class="form-submit">
-                  <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #001f3f 0%, #003d82 100%); border: none; padding: 12px 40px; font-size: 1rem; font-weight: 600; border-radius: 8px; transition: all 0.3s ease;">
-                    <i class="fas fa-paper-plane me-2"></i>Send Message
-                  </button>
-                </div>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+emailjs.init({
+    publicKey: "SsQiiFRMXuJznVISH"
+});
 
+document.getElementById("contactForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const button = this.querySelector("button");
+    button.disabled = true;
+    button.innerHTML = "Sending...";
+
+    document.getElementById("successMessage").classList.add("d-none");
+    document.getElementById("errorMessage").classList.add("d-none");
+
+    emailjs.sendForm(
+        "service_j8y9dqf",
+        "template_mf21f74",
+        this
+    )
+    .then(() => {
+
+        document.getElementById("successMessage")
+            .classList.remove("d-none");
+
+        this.reset();
+
+    })
+    .catch((error) => {
+
+        console.error(error);
+
+        document.getElementById("errorMessage")
+            .classList.remove("d-none");
+    })
+    .finally(() => {
+
+        button.disabled = false;
+        button.innerHTML =
+            '<i class="fas fa-paper-plane me-2"></i>Send Message';
+
+    });
+});
+</script>
 @endsection
